@@ -140,63 +140,6 @@
             flex: 1;
         }
 
-        .report {
-            display: none;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-            position: relative;
-        }
-
-        .report-header {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e1e8ed;
-        }
-
-        .score {
-            font-size: 52px;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
-        .issue {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border-left: 4px solid #e74c3c;
-        }
-
-        .issue.good {
-            border-left-color: #2ecc71;
-        }
-
-        .issue.warning {
-            border-left-color: #f39c12;
-        }
-
-        .issue.info {
-            border-left-color: #3498db;
-        }
-
-        .issue-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .issue-desc {
-            color: #7f8c8d;
-            margin-bottom: 10px;
-        }
-
         .admin-toggle {
             position: fixed;
             top: 20px;
@@ -223,251 +166,79 @@
             margin: 20px 0;
         }
 
-        .demo-offer {
-            display: none;
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            border: 3px solid #f39c12;
-            padding: 30px;
-            border-radius: 15px;
+        /* NEW: Hero Section */
+        .hero-section {
             text-align: center;
-            margin: 30px 0;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-highlight {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 3px solid #f39c12;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: #2c3e50;
+        }
+
+        .hero-cta {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* NEW: Discount Qualification Button */
+        .discount-qualify-btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #2c3e50;
+            border: 3px solid #f39c12;
+            padding: 18px 35px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin: 15px 0;
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             animation: pulse 2s infinite;
+        }
+
+        .discount-qualify-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+            animation: none;
         }
 
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.02); }
             100% { transform: scale(1); }
-        }
-
-        .demo-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .demo-btn {
-            padding: 18px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .demo-yes {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-        }
-
-        .demo-comprehensive {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-        }
-
-        .demo-no {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
-        .demo-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .bouncing-emoji {
-            font-size: 60px;
-            animation: bounce 1s infinite alternate;
-            margin: 20px 0;
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-20px); }
-        }
-
-        .tools-section {
-            background: #2c3e50;
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-
-        .tool-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .tool-link {
-            background: #34495e;
-            padding: 15px;
-            border-radius: 10px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            border: 1px solid #4a6572;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .tool-link:hover {
-            background: #4a6572;
-            transform: translateY(-2px);
-        }
-
-        /* MOVED PRINT BUTTON TO FOOTER */
-        .report-footer {
-            display: none;
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e1e8ed;
-        }
-
-        .print-btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 10px 0;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-            display: inline-block;
-        }
-
-        .print-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-        }
-
-        /* Form submission messages */
-        .form-message {
-            display: none;
-            margin-top: 10px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .form-success {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-        }
-
-        .form-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-        }
-
-        /* Print Modal */
-        .print-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .print-modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .print-modal h3 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-
-        .print-options {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 25px 0;
-        }
-
-        .print-option-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .print-pdf {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .print-browser {
-            background: #3498db;
-            color: white;
-        }
-
-        .close-modal {
-            background: #95a5a6;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Celebration animations - MOVED TO APPLICANT SIDE */
-        .celebration-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            display: none;
-        }
-
-        .floating-emoji {
-            position: absolute;
-            font-size: 40px;
-            animation: floatUp 3s ease-in forwards;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
         }
 
         /* URL input with prefix */
@@ -509,6 +280,28 @@
 
         .privacy-policy a:hover {
             text-decoration: underline;
+        }
+
+        /* Form submission messages */
+        .form-message {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .form-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
         }
 
         /* Professional Analysis Inputs */
@@ -606,7 +399,7 @@
             border-left: 4px solid #1abc9c;
         }
 
-        /* NEW: Cookie Compliance Section */
+        /* Cookie Compliance Section */
         .cookie-compliance-section {
             background: #fff8e1;
             border: 2px solid #ffd54f;
@@ -690,66 +483,42 @@
             transform: translateY(-2px);
         }
 
-        /* NEW: Demo offer enhancements */
-        .qualification-reason {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
+        .tools-section {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
             margin: 20px 0;
-            text-align: left;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
 
-        .qualification-reason h3 {
-            color: #e74c3c;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .tested-metrics {
+        .tool-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
             margin-top: 15px;
         }
 
-        .metric {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 600;
-            color: #2c3e50;
+        .tool-link {
+            background: #34495e;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid #4a6572;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .metric i {
-            margin-right: 5px;
-            color: #5cd1c5;
+        .tool-link:hover {
+            background: #4a6572;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
     <button class="admin-toggle" id="adminToggle" title="Click 3 times for admin mode">🎯</button>
-
-    <!-- Print Modal -->
-    <div class="print-modal" id="printModal">
-        <div class="print-modal-content">
-            <h3><i class="fas fa-print"></i> Print Options</h3>
-            <p>Choose how you would like to print the report:</p>
-            <div class="print-options">
-                <button class="print-option-btn print-pdf" id="printAsPDF">
-                    <i class="fas fa-file-pdf"></i> Download PDF
-                </button>
-                <button class="print-option-btn print-browser" id="printInBrowser">
-                    <i class="fas fa-print"></i> Browser Print
-                </button>
-            </div>
-            <button class="close-modal" id="closeModal">Cancel</button>
-        </div>
-    </div>
-
-    <!-- Celebration Container - MOVED TO APPLICANT SIDE -->
-    <div class="celebration-container" id="celebrationContainer"></div>
 
     <div class="container">
         <header>
@@ -757,15 +526,80 @@
                 <i class="fas fa-feather-alt"></i>
                 <h1>WebSwan</h1>
             </div>
-            <p class="subtitle">Professional Real-Time Website Analysis</p>
+            <p class="subtitle">Professional Website Analysis</p>
         </header>
 
+        <!-- NEW: Hero Section -->
+        <div class="hero-section">
+            <h2 class="hero-title">Unlock Your Website's Hidden Potential</h2>
+            <p class="hero-subtitle">
+                Think your website is working perfectly? Think again. Many businesses overlook the major structure of a professional website, which can silently hurt your website performance and limit your ability to generate leads. From cookie compliance issues to legal pitfalls like those monitored by the Attorney General of your state, GDPR, and CCPA, small oversights can make a big impact.
+            </p>
+            <div class="hero-highlight">
+                For $175 get your web analysis to discover hidden issues that could be affecting your website performance and online credibility.
+            </div>
+            <p class="hero-cta">Don't leave your website's success to chance.</p>
+            
+            <!-- NEW: Discount Qualification Button -->
+            <button class="discount-qualify-btn" id="discountQualifyBtn">
+                <i class="fas fa-gift"></i> CLICK HERE TO VERIFY IF YOU QUALIFY FOR A DISCOUNTED OR FREE WEB ANALYSIS
+            </button>
+        </div>
+
+        <!-- NEW: Simple Request Form -->
+        <form id="analysisRequestForm">
+            <div class="form-group">
+                <label for="businessName"><i class="fas fa-building"></i> Business Name</label>
+                <input type="text" id="businessName" name="businessName" placeholder="Enter your business name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="website"><i class="fas fa-globe"></i> Business Website URL</label>
+                <div class="url-input-group">
+                    <span class="url-prefix">https://www.</span>
+                    <input type="text" id="website" name="website" class="url-input" placeholder="yourwebsite.com" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contactName"><i class="fas fa-user"></i> Your Name</label>
+                    <input type="text" id="contactName" name="contactName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-chart-line"></i> REQUEST PROFESSIONAL WEB ANALYSIS
+            </button>
+        </form>
+
+        <!-- Privacy Policy -->
+        <div class="privacy-policy">
+            <p><i class="fas fa-shield-alt"></i> We are only collecting your information to assist you with your web analysis. We won't sell or share your information with third parties. 
+            Please view our <a href="https://www.thewebswan.com/privacy-policy" target="_blank">Privacy Policy</a>.</p>
+        </div>
+
+        <!-- Form submission messages -->
+        <div id="formMessage" class="form-message"></div>
+
+        <!-- ADMIN PANEL - UNCHANGED -->
         <div class="admin-panel" id="adminPanel">
             <h3><i class="fas fa-crown"></i> Admin Tools</h3>
             
             <!-- Admin Print Button - INSIDE ADMIN PANEL -->
             <div style="text-align: center; margin: 15px 0;">
-                <button class="print-btn" id="adminPrintBtn">
+                <button class="btn-primary" id="adminPrintBtn">
                     <i class="fas fa-print"></i> Print/Download Report
                 </button>
             </div>
@@ -790,7 +624,7 @@
                 </div>
             </div>
 
-            <!-- NEW: Cookie Compliance Checker -->
+            <!-- Cookie Compliance Checker -->
             <div class="cookie-compliance-section">
                 <h4><i class="fas fa-cookie-bite"></i> Cookie Compliance Checker</h4>
                 <p>Check if a website has proper cookie consent and privacy policy:</p>
@@ -809,12 +643,6 @@
                     </div>
                     <div class="cookie-fine-info" id="cookieFineInfo">
                         <!-- Fine information will be populated here -->
-                    </div>
-                    <!-- Attorney General Link Section -->
-                    <div id="attorneyGeneralSection" style="display: none;">
-                        <a href="#" target="_blank" class="attorney-general-link" id="attorneyGeneralLink">
-                            <i class="fas fa-balance-scale"></i> View Your State Attorney General's Website for Cookie Regulations & Penalties
-                        </a>
                     </div>
                 </div>
             </div>
@@ -839,31 +667,6 @@
                     </a>
                     <a href="https://www.ubersuggest.com/" target="_blank" class="tool-link">
                         <i class="fas fa-chart-bar"></i> Ubersuggest
-                    </a>
-                </div>
-            </div>
-
-            <!-- NEW: Core Web Vitals & Security Headers Tools -->
-            <div class="tools-section">
-                <h4><i class="fas fa-heartbeat"></i> Core Web Vitals & Security Tools</h4>
-                <div class="tool-links">
-                    <a href="https://webpagetest.org/" target="_blank" class="tool-link">
-                        <i class="fas fa-bolt"></i> WebPageTest
-                    </a>
-                    <a href="https://gtmetrix.com/" target="_blank" class="tool-link">
-                        <i class="fas fa-chart-line"></i> GTmetrix
-                    </a>
-                    <a href="https://securityheaders.com/" target="_blank" class="tool-link">
-                        <i class="fas fa-shield-alt"></i> Security Headers
-                    </a>
-                    <a href="https://seositecheckup.com/" target="_blank" class="tool-link">
-                        <i class="fas fa-search"></i> SEO Site Checkup
-                    </a>
-                    <a href="https://www.seobility.net/en/seocheck/" target="_blank" class="tool-link">
-                        <i class="fas fa-check-circle"></i> Seobility SEO Check
-                    </a>
-                    <a href="https://smallseotools.com/website-seo-score-checker/" target="_blank" class="tool-link">
-                        <i class="fas fa-tachometer-alt"></i> Small SEO Tools
                     </a>
                 </div>
             </div>
@@ -942,7 +745,7 @@
                     </select>
                 </div>
 
-                <!-- NEW: Cookie Compliance Input -->
+                <!-- Cookie Compliance Input -->
                 <div class="pro-input-group">
                     <label for="cookie-compliance">
                         <i class="fas fa-cookie-bite"></i> Cookie Compliance
@@ -966,341 +769,99 @@
                 </button>
             </div>
         </div>
-
-        <!-- Formspree Form -->
-        <form id="analysisForm" action="https://formspree.io/f/xdkwdrdw" method="POST">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="name"><i class="fas fa-user"></i> Full Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="business"><i class="fas fa-building"></i> Business Name</label>
-                    <input type="text" id="business" name="business" placeholder="Enter your business name" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                </div>
-                <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="industry"><i class="fas fa-industry"></i> Industry</label>
-                    <select id="industry" name="industry" required>
-                        <option value="">Select your industry</option>
-                        <option value="real-estate">Real Estate</option>
-                        <option value="lawyer">Lawyer</option>
-                        <option value="doctor">Doctor</option>
-                        <option value="dentist">Dentist</option>
-                        <option value="contractor">Contractor</option>
-                        <option value="restaurant">Restaurant Owner</option>
-                        <option value="solar">Solar</option>
-                        <option value="hairdresser">Hair Dresser</option>
-                        <option value="beautician">Beautician</option>
-                        <option value="hair-braider">Hair Braider</option>
-                        <option value="barber">Barber</option>
-                        <option value="entrepreneur">Entrepreneur</option>
-                        <option value="web-designer">Web Designer</option>
-                        <option value="graphic-designer">Graphic Designer</option>
-                        <option value="writer">Writer</option>
-                        <option value="mechanic">Mechanic</option>
-                        <option value="plumber">Plumber</option>
-                        <option value="electrician">Electrician</option>
-                        <option value="accountant">Accountant/Bookkeeper/Tax Preparer</option>
-                        <option value="dermatologist">Dermatologist</option>
-                        <option value="cosmetic-surgeon">Cosmetic Surgeon</option>
-                        <option value="plastic-surgeon">Plastic Surgeon</option>
-                        <option value="eye-doctor">Eye Doctor</option>
-                        <option value="chiropractor">Chiropractor</option>
-                        <option value="notary">Notary</option>
-                        <option value="mortgage-broker">Mortgage Broker</option>
-                        <option value="merchant-cash-advance">Merchant Cash Advance</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="state"><i class="fas fa-map-marker-alt"></i> Business State</label>
-                    <select id="state" name="state" required>
-                        <option value="">Select your state</option>
-                        <option value="AL">Alabama</option>
-                        <option value="AK">Alaska</option>
-                        <option value="AZ">Arizona</option>
-                        <option value="AR">Arkansas</option>
-                        <option value="CA">California</option>
-                        <option value="CO">Colorado</option>
-                        <option value="CT">Connecticut</option>
-                        <option value="DE">Delaware</option>
-                        <option value="FL">Florida</option>
-                        <option value="GA">Georgia</option>
-                        <option value="HI">Hawaii</option>
-                        <option value="ID">Idaho</option>
-                        <option value="IL">Illinois</option>
-                        <option value="IN">Indiana</option>
-                        <option value="IA">Iowa</option>
-                        <option value="KS">Kansas</option>
-                        <option value="KY">Kentucky</option>
-                        <option value="LA">Louisiana</option>
-                        <option value="ME">Maine</option>
-                        <option value="MD">Maryland</option>
-                        <option value="MA">Massachusetts</option>
-                        <option value="MI">Michigan</option>
-                        <option value="MN">Minnesota</option>
-                        <option value="MS">Mississippi</option>
-                        <option value="MO">Missouri</option>
-                        <option value="MT">Montana</option>
-                        <option value="NE">Nebraska</option>
-                        <option value="NV">Nevada</option>
-                        <option value="NH">New Hampshire</option>
-                        <option value="NJ">New Jersey</option>
-                        <option value="NM">New Mexico</option>
-                        <option value="NY">New York</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="ND">North Dakota</option>
-                        <option value="OH">Ohio</option>
-                        <option value="OK">Oklahoma</option>
-                        <option value="OR">Oregon</option>
-                        <option value="PA">Pennsylvania</option>
-                        <option value="RI">Rhode Island</option>
-                        <option value="SC">South Carolina</option>
-                        <option value="SD">South Dakota</option>
-                        <option value="TN">Tennessee</option>
-                        <option value="TX">Texas</option>
-                        <option value="UT">Utah</option>
-                        <option value="VT">Vermont</option>
-                        <option value="VA">Virginia</option>
-                        <option value="WA">Washington</option>
-                        <option value="WV">West Virginia</option>
-                        <option value="WI">Wisconsin</option>
-                        <option value="WY">Wyoming</option>
-                        <option value="DC">Washington DC</option>
-                        <option value="PR">Puerto Rico</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="website"><i class="fas fa-globe"></i> Website URL</label>
-                <div class="url-input-group">
-                    <span class="url-prefix">https://www.</span>
-                    <input type="text" id="website" name="website" class="url-input" placeholder="yourwebsite.com" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="seoContent"><i class="fas fa-search"></i> SEO Content Analysis (Up to 1500 words)</label>
-                <textarea id="seoContent" name="seoContent" placeholder="Paste your website content for detailed SEO analysis (maximum 1500 words)..." maxlength="1500"></textarea>
-                <div style="text-align: right; font-size: 12px; color: #7f8c8d; margin-top: 5px;">
-                    <span id="wordCount">0</span>/1500 words
-                </div>
-            </div>
-
-            <!-- Hidden fields for analysis results -->
-            <input type="hidden" id="analysisScore" name="analysisScore" value="">
-            <input type="hidden" id="analysisSummary" name="analysisSummary" value="">
-            <input type="hidden" id="qualifiesForDemo" name="qualifiesForDemo" value="">
-            <input type="hidden" id="demoResponse" name="demoResponse" value="">
-
-            <button type="submit" class="btn-primary">
-                <i class="fas fa-chart-line"></i> ANALYZE MY WEBSITE NOW
-            </button>
-
-            <button type="button" class="btn-secondary" id="clearBtn">
-                <i class="fas fa-broom"></i> CLEAR FORM
-            </button>
-        </form>
-
-        <!-- Privacy Policy -->
-        <div class="privacy-policy">
-            <p><i class="fas fa-shield-alt"></i> We do not collect, sell, or share your information with third parties. 
-            The purpose of collecting your information is only for the web analysis. 
-            Please view our <a href="https://www.thewebswan.com/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-        </div>
-
-        <!-- Form submission messages -->
-        <div id="formMessage" class="form-message"></div>
-
-        <!-- DEMO OFFER - HIDDEN UNTIL QUALIFICATION -->
-        <div class="demo-offer" id="demoOffer">
-            <div class="bouncing-emoji">🎉</div>
-            <h2>Congratulations! 🎊</h2>
-            
-            <!-- NEW: Qualification Reason Section -->
-            <div class="qualification-reason">
-                <h3><i class="fas fa-info-circle"></i> Why You Qualified</h3>
-                <p>Your website analysis score of <strong><span id="demoScore">0</span>/100</strong> indicates significant opportunities for improvement.</p>
-                <p>Our analysis tested these critical website metrics:</p>
-                <div class="tested-metrics">
-                    <div class="metric"><i class="fas fa-search"></i> SEO Optimization</div>
-                    <div class="metric"><i class="fas fa-lock"></i> SSL Certificate</div>
-                    <div class="metric"><i class="fas fa-tachometer-alt"></i> Page Speed</div>
-                    <div class="metric"><i class="fas fa-mobile-alt"></i> Mobile Responsiveness</div>
-                    <div class="metric"><i class="fas fa-cookie-bite"></i> Cookie Compliance</div>
-                    <div class="metric"><i class="fas fa-shield-alt"></i> Security Headers</div>
-                </div>
-                <p style="margin-top: 15px; font-style: italic;">A score below 75 indicates your website needs improvements to meet modern standards and maximize performance.</p>
-            </div>
-            
-            <p><strong>Your website qualifies for a FREE website demo</strong> at no cost and no obligation!</p>
-            <p>Would you like us to contact you about your free demo?</p>
-            
-            <div class="demo-buttons">
-                <button class="demo-btn demo-yes" id="demoYes">
-                    <i class="fas fa-check-circle"></i> YES, I WANT FREE WEBSITE DEMO
-                </button>
-                <button class="demo-btn demo-comprehensive" id="demoComprehensive">
-                    <i class="fas fa-file-alt"></i> YES, I WANT COMPREHENSIVE DETAILED ANALYSIS + FREE DEMO
-                </button>
-                <button class="demo-btn demo-no" id="demoNo">
-                    <i class="fas fa-times-circle"></i> NO THANK YOU
-                </button>
-            </div>
-
-            <div class="form-group">
-                <label for="comments"><i class="fas fa-comment"></i> Questions or Comments (Optional - 500 words)</label>
-                <textarea id="comments" name="comments" placeholder="Any questions or specific issues you'd like us to address? (up to 500 words)" maxlength="500"></textarea>
-                <div style="text-align: right; font-size: 12px; color: #7f8c8d; margin-top: 5px;">
-                    <span id="commentCount">0</span>/500 characters
-                </div>
-            </div>
-        </div>
-
-        <div class="report" id="report">
-            <div class="report-header">
-                <h2><i class="fas fa-file-alt"></i> Professional Website Analysis Report</h2>
-                <div class="score" id="score">0/100</div>
-                <p id="summary">Analysis summary will appear here</p>
-            </div>
-            <div id="issuesContainer"></div>
-            
-            <!-- CLIENT PRINT BUTTON IN FOOTER -->
-            <div class="report-footer" id="reportFooter">
-                <button class="print-btn" id="clientPrintBtn">
-                    <i class="fas fa-print"></i> Print/Download PDF Report
-                </button>
-            </div>
-        </div>
     </div>
 
     <script>
-        // Attorney General URLs by state
-        const attorneyGeneralUrls = {
-            'AL': 'https://www.alabamaag.gov/',
-            'AK': 'https://law.alaska.gov/department/civil/consumer/cookie-policy.html',
-            'AZ': 'https://www.azag.gov/',
-            'AR': 'https://arkansasag.gov/',
-            'CA': 'https://oag.ca.gov/privacy',
-            'CO': 'https://coag.gov/',
-            'CT': 'https://portal.ct.gov/ag',
-            'DE': 'https://attorneygeneral.delaware.gov/',
-            'FL': 'https://myfloridalegal.com/',
-            'GA': 'https://law.georgia.gov/',
-            'HI': 'https://ag.hawaii.gov/',
-            'ID': 'https://www.ag.idaho.gov/',
-            'IL': 'https://illinoisattorneygeneral.gov/',
-            'IN': 'https://www.in.gov/attorneygeneral/',
-            'IA': 'https://www.iowaattorneygeneral.gov/',
-            'KS': 'https://ag.ks.gov/',
-            'KY': 'https://kentucky.gov/Pages/Portal.aspx?agency=16',
-            'LA': 'https://www.ag.state.la.us/',
-            'ME': 'https://www.maine.gov/ag/',
-            'MD': 'https://www.marylandattorneygeneral.gov/Pages/default.aspx',
-            'MA': 'https://www.mass.gov/orgs/office-of-attorney-general-maura-healey',
-            'MI': 'https://www.michigan.gov/ag',
-            'MN': 'https://www.ag.state.mn.us/',
-            'MS': 'https://www.ago.state.ms.us/',
-            'MO': 'https://ago.mo.gov/',
-            'MT': 'https://dojmt.gov/',
-            'NE': 'https://ago.nebraska.gov/',
-            'NV': 'https://ag.nv.gov/',
-            'NH': 'https://www.doj.nh.gov/',
-            'NJ': 'https://www.njoag.gov/',
-            'NM': 'https://www.nmag.gov/',
-            'NY': 'https://ag.ny.gov/',
-            'NC': 'https://www.ncdoj.gov/',
-            'ND': 'https://attorneygeneral.nd.gov/',
-            'OH': 'https://www.ohioattorneygeneral.gov/',
-            'OK': 'https://www.oag.ok.gov/',
-            'OR': 'https://www.doj.state.or.us/',
-            'PA': 'https://www.attorneygeneral.gov/',
-            'RI': 'https://riag.ri.gov/',
-            'SC': 'https://www.scag.gov/',
-            'SD': 'https://atg.sd.gov/',
-            'TN': 'https://www.tn.gov/attorneygeneral.html',
-            'TX': 'https://www.texasattorneygeneral.gov/',
-            'UT': 'https://attorneygeneral.utah.gov/',
-            'VT': 'https://ago.vermont.gov/',
-            'VA': 'https://www.oag.state.va.us/',
-            'WA': 'https://www.atg.wa.gov/',
-            'WV': 'https://ago.wv.gov/Pages/default.aspx',
-            'WI': 'https://www.doj.state.wi.us/',
-            'WY': 'https://ag.wyo.gov/',
-            'DC': 'https://oag.dc.gov/',
-            'PR': 'https://www.justicia.pr.gov/'
-        };
-
-        // Word count tracking
-        document.getElementById('seoContent').addEventListener('input', function() {
-            const wordCount = this.value.length;
-            document.getElementById('wordCount').textContent = wordCount;
-            if (wordCount > 1500) {
-                this.value = this.value.substring(0, 1500);
-            }
-        });
-
-        document.getElementById('comments').addEventListener('input', function() {
-            const charCount = this.value.length;
-            document.getElementById('commentCount').textContent = charCount;
-            if (charCount > 500) {
-                this.value = this.value.substring(0, 500);
-            }
-        });
-
-        // Admin mode functionality
+        // Fixed Admin mode functionality
         let adminClickCount = 0;
         let isAdminMode = false;
-        document.getElementById('adminToggle').addEventListener('click', function() {
+        const adminToggle = document.getElementById('adminToggle');
+        const adminPanel = document.getElementById('adminPanel');
+
+        adminToggle.addEventListener('click', function() {
             adminClickCount++;
+            
+            // Reset count after 3 seconds
+            setTimeout(() => {
+                adminClickCount = 0;
+            }, 3000);
+            
             if (adminClickCount === 3) {
                 isAdminMode = !isAdminMode;
-                document.getElementById('adminPanel').style.display = isAdminMode ? 'block' : 'none';
-                adminClickCount = 0;
                 if (isAdminMode) {
+                    adminPanel.style.display = 'block';
                     this.style.opacity = '1';
                     this.style.color = '#e74c3c';
-                    
-                    // Make form fields optional in admin mode
-                    document.getElementById('name').removeAttribute('required');
-                    document.getElementById('business').removeAttribute('required');
-                    document.getElementById('phone').removeAttribute('required');
-                    document.getElementById('email').removeAttribute('required');
-                    document.getElementById('industry').removeAttribute('required');
-                    document.getElementById('state').removeAttribute('required');
-                    document.getElementById('website').removeAttribute('required');
+                    // Scroll to admin panel
+                    adminPanel.scrollIntoView({ behavior: 'smooth' });
                 } else {
+                    adminPanel.style.display = 'none';
                     this.style.opacity = '0.3';
                     this.style.color = 'inherit';
-                    
-                    // Make form fields required again when exiting admin mode
-                    document.getElementById('name').setAttribute('required', '');
-                    document.getElementById('business').setAttribute('required', '');
-                    document.getElementById('phone').setAttribute('required', '');
-                    document.getElementById('email').setAttribute('required', '');
-                    document.getElementById('industry').setAttribute('required', '');
-                    document.getElementById('state').setAttribute('required', '');
-                    document.getElementById('website').setAttribute('required', '');
                 }
+                adminClickCount = 0;
             }
         });
 
-        // SEO Score Checker Functionality
+        // Discount Qualification Button
+        document.getElementById('discountQualifyBtn').addEventListener('click', function() {
+            window.open('https://taniad2169.github.io/WS_slotmachine/', '_blank');
+        });
+
+        // Form submission for the new request form
+        document.getElementById('analysisRequestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const messageDiv = document.getElementById('formMessage');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING REQUEST...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                // Get form data
+                const formData = {
+                    businessName: document.getElementById('businessName').value,
+                    website: "https://www." + document.getElementById('website').value,
+                    contactName: document.getElementById('contactName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value
+                };
+                
+                // TODO: Replace with your actual endpoint
+                const response = await fetch('YOUR_ENDPOINT_HERE', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    // Success - show success message
+                    messageDiv.className = 'form-message form-success';
+                    messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your analysis request has been submitted successfully. We will contact you shortly.';
+                    messageDiv.style.display = 'block';
+                    
+                    // Reset form
+                    document.getElementById('analysisRequestForm').reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                // Error - show error message
+                messageDiv.className = 'form-message form-error';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sorry, there was an error submitting your request. Please try again.';
+                messageDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-chart-line"></i> REQUEST PROFESSIONAL WEB ANALYSIS';
+            }
+        });
+
+        // SEO Score Checker Functionality (Admin Panel)
         document.getElementById('checkSeoScore').addEventListener('click', function() {
             const url = document.getElementById('seoUrl').value.trim();
             const resultDiv = document.getElementById('seoResult');
@@ -1317,13 +878,11 @@
             scoreDescription.textContent = 'Analyzing website SEO...';
             resultDiv.style.display = 'block';
             
-            // Simulate SEO analysis (in real implementation, this would call an API)
+            // Simulate SEO analysis
             setTimeout(() => {
-                // Generate realistic SEO score based on URL characteristics
                 const seoScore = generateSeoScore(url);
                 scoreValue.textContent = seoScore;
                 
-                // Provide SEO analysis based on score
                 if (seoScore >= 80) {
                     scoreDescription.textContent = 'Excellent SEO! The website has strong optimization with good technical foundation and content quality.';
                 } else if (seoScore >= 60) {
@@ -1341,33 +900,26 @@
 
         // Function to generate realistic SEO score
         function generateSeoScore(url) {
-            // Simple algorithm to generate consistent but varied scores
             let baseScore = 50;
             
-            // Add points for HTTPS
             if (url.includes('https://')) baseScore += 10;
             
-            // Add points for short domain
             const domain = url.replace(/https?:\/\//, '').split('/')[0];
             if (domain.length <= 15) baseScore += 5;
             
-            // Add points for common TLDs
             if (domain.endsWith('.com')) baseScore += 5;
             
-            // Add random variation for realism
             const variation = Math.floor(Math.random() * 30) - 10;
             
             return Math.max(10, Math.min(95, baseScore + variation));
         }
 
-        // Cookie Compliance Checker
+        // Cookie Compliance Checker (Admin Panel)
         document.getElementById('checkCookieCompliance').addEventListener('click', function() {
             const url = document.getElementById('cookieUrl').value.trim();
             const resultDiv = document.getElementById('cookieResult');
             const statusDescription = document.getElementById('cookieStatusDescription');
             const fineInfoDiv = document.getElementById('cookieFineInfo');
-            const attorneyGeneralSection = document.getElementById('attorneyGeneralSection');
-            const attorneyGeneralLink = document.getElementById('attorneyGeneralLink');
             
             if (!url) {
                 alert('Please enter a website URL');
@@ -1378,11 +930,9 @@
             statusDescription.textContent = 'Analyzing website for cookie compliance...';
             resultDiv.style.display = 'block';
             fineInfoDiv.innerHTML = '';
-            attorneyGeneralSection.style.display = 'none';
             
             // Simulate cookie compliance analysis
             setTimeout(() => {
-                // Random results for demonstration
                 const hasCookieBanner = Math.random() > 0.3;
                 const hasPrivacyPolicy = Math.random() > 0.4;
                 const isGDPRCompliant = Math.random() > 0.5;
@@ -1416,787 +966,22 @@
                     </div>
                 `;
                 
-                // Add fine information based on state
-                const state = document.getElementById('state').value;
-                if (state && (!hasCookieBanner || !hasPrivacyPolicy)) {
-                    const stateNames = {
-                        'CA': 'California',
-                        'NY': 'New York',
-                        'TX': 'Texas',
-                        'FL': 'Florida',
-                        'IL': 'Illinois'
-                    };
-                    
-                    const stateName = stateNames[state] || 'your state';
-                    const fineAmount = state === 'CA' ? 'up to $7,500 per violation' : 
-                                      state === 'NY' ? 'up to $5,000 per violation' : 
-                                      'significant penalties';
-                    
+                if (!hasCookieBanner || !hasPrivacyPolicy) {
                     fineInfoDiv.innerHTML = `
-                        <h5><i class="fas fa-exclamation-triangle"></i> Potential Legal Risk in ${stateName}</h5>
-                        <p>Websites without proper cookie consent and privacy policies may face fines of ${fineAmount} under ${stateName} privacy laws.</p>
+                        <h5><i class="fas fa-exclamation-triangle"></i> Potential Legal Risk</h5>
+                        <p>Websites without proper cookie consent and privacy policies may face fines under privacy laws.</p>
                         <p><strong>Recommendation:</strong> Implement a compliant cookie banner and comprehensive privacy policy immediately.</p>
                     `;
-                    
-                    // Show Attorney General link
-                    if (attorneyGeneralUrls[state]) {
-                        attorneyGeneralLink.href = attorneyGeneralUrls[state];
-                        attorneyGeneralSection.style.display = 'block';
-                    }
                 }
                 
                 fineInfoDiv.style.display = 'block';
             }, 2000);
         });
 
-        // Print Modal functionality
-        const printModal = document.getElementById('printModal');
-        const closeModal = document.getElementById('closeModal');
-        const printAsPDF = document.getElementById('printAsPDF');
-        const printInBrowser = document.getElementById('printInBrowser');
-
-        // Admin print button functionality - shows modal
-        document.getElementById('adminPrintBtn').addEventListener('click', function() {
-            const report = document.getElementById('report');
-            if (report.style.display === 'block') {
-                printModal.style.display = 'flex';
-            } else {
-                alert('No report available to print. Please run an analysis first.');
-            }
-        });
-
-        // Client print button functionality - shows modal
-        document.getElementById('clientPrintBtn').addEventListener('click', function() {
-            const report = document.getElementById('report');
-            if (report.style.display === 'block') {
-                printModal.style.display = 'flex';
-            } else {
-                alert('No report available to print. Please run an analysis first.');
-            }
-        });
-
-        // Close modal
-        closeModal.addEventListener('click', function() {
-            printModal.style.display = 'none';
-        });
-
-        // Print as PDF - FIXED VERSION
-        printAsPDF.addEventListener('click', function() {
-            const element = document.getElementById('report');
-            
-            // Ensure the report is visible before generating PDF
-            if (element.style.display === 'none') {
-                alert('No report available to print. Please run an analysis first.');
-                return;
-            }
-            
-            const opt = {
-                margin: 0.5,
-                filename: 'website-analysis-report.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2,
-                    useCORS: true,
-                    logging: true
-                },
-                jsPDF: { 
-                    unit: 'in', 
-                    format: 'letter', 
-                    orientation: 'portrait' 
-                }
-            };
-            
-            // Generate and download PDF
-            html2pdf().set(opt).from(element).save().then(() => {
-                console.log('PDF generated successfully');
-            }).catch(err => {
-                console.error('Error generating PDF:', err);
-                alert('There was an error generating the PDF. Please try again.');
-            });
-            
-            printModal.style.display = 'none';
-        });
-
-        // Print in browser
-        printInBrowser.addEventListener('click', function() {
-            window.print();
-            printModal.style.display = 'none';
-        });
-
-        // Clear form
-        document.getElementById('clearBtn').addEventListener('click', function() {
-            document.getElementById('analysisForm').reset();
-            document.getElementById('report').style.display = 'none';
-            document.getElementById('demoOffer').style.display = 'none';
-            document.getElementById('wordCount').textContent = '0';
-            document.getElementById('commentCount').textContent = '0';
-            document.getElementById('formMessage').style.display = 'none';
-            document.getElementById('seoResult').style.display = 'none';
-            document.getElementById('cookieResult').style.display = 'none';
-        });
-
-        // Store analysis results for form submission
-        let currentAnalysisResults = null;
-        let wantsDemo = false;
-
-        // Demo response handlers
-        document.getElementById('demoYes').addEventListener('click', async function() {
-            wantsDemo = true;
-            document.getElementById('demoResponse').value = 'YES - Wants Free Demo';
-            
-            alert('🎉 Wonderful! We will contact you within 24 hours to schedule your FREE website demo!');
-            
-            // Submit the form to Formspree
-            await submitFormToFormspree();
-            
-            document.getElementById('demoOffer').style.display = 'none';
-        });
-
-        // NEW: Comprehensive Analysis + Demo
-        document.getElementById('demoComprehensive').addEventListener('click', async function() {
-            wantsDemo = true;
-            document.getElementById('demoResponse').value = 'YES - Wants Comprehensive Detailed Analysis + Free Demo';
-            
-            alert('🎉 Excellent choice! We will contact you within 24 hours to schedule your comprehensive analysis and FREE website demo!');
-            
-            // Submit the form to Formspree
-            await submitFormToFormspree();
-            
-            document.getElementById('demoOffer').style.display = 'none';
-        });
-
-        document.getElementById('demoNo').addEventListener('click', async function() {
-            wantsDemo = false;
-            document.getElementById('demoResponse').value = 'NO - Does Not Want Demo';
-            alert('Thank you for your time. Feel free to reach out if you change your mind!');
-            
-            // Submit the form to Formspree
-            await submitFormToFormspree();
-            
-            document.getElementById('demoOffer').style.display = 'none';
-        });
-
-        // Formspree submission function
-        async function submitFormToFormspree() {
-            const form = document.getElementById('analysisForm');
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const messageDiv = document.getElementById('formMessage');
-            
-            // Disable button and show loading
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING...';
-            messageDiv.style.display = 'none';
-            
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form),
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    // Success - show success message
-                    messageDiv.className = 'form-message form-success';
-                    messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your analysis has been submitted successfully.';
-                    messageDiv.style.display = 'block';
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                // Error - show error message
-                messageDiv.className = 'form-message form-error';
-                messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sorry, there was an error submitting your analysis. Please try again.';
-                messageDiv.style.display = 'block';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-chart-line"></i> ANALYZE MY WEBSITE NOW';
-            }
-        }
-
-        // Real-time analysis
-        document.getElementById('analysisForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Get the full URL by combining prefix and input
-            const urlPrefix = "https://www.";
-            const websiteInput = document.getElementById('website').value;
-            const website = urlPrefix + websiteInput;
-            
-            const seoContent = document.getElementById('seoContent').value;
-
-            const btn = document.querySelector('.btn-primary');
-            const originalText = btn.innerHTML;
-
-            try {
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PERFORMING REAL-TIME ANALYSIS...';
-                btn.disabled = true;
-
-                const analysisResults = await performRealTimeAnalysis(website, seoContent);
-                currentAnalysisResults = analysisResults;
-                
-                // Update hidden fields with analysis results
-                document.getElementById('analysisScore').value = analysisResults.score;
-                document.getElementById('analysisSummary').value = analysisResults.summary;
-                document.getElementById('qualifiesForDemo').value = analysisResults.qualifiesForDemo ? 'qualified' : 'not-qualified';
-                
-                showReport(analysisResults);
-                
-                if (analysisResults.qualifiesForDemo) {
-                    // Update demo offer with score
-                    document.getElementById('demoScore').textContent = analysisResults.score;
-                    
-                    // CELEBRATION MOVED TO APPLICANT SIDE
-                    showCelebration();
-                    document.getElementById('demoOffer').style.display = 'block';
-                } else {
-                    // Submit form for analysis-only (no demo qualification)
-                    await submitFormToFormspree();
-                }
-            } catch (error) {
-                alert('Analysis failed: ' + error.message);
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        });
-
-        // Professional Report Generation
+        // Professional Report Generation (Admin Panel)
         document.getElementById('generateProReport').addEventListener('click', function() {
-            const proResults = collectProfessionalResults();
-            const comprehensiveReport = generateComprehensiveReport(proResults);
-            
-            showReport(comprehensiveReport);
-            
-            // Update hidden fields for Formspree
-            document.getElementById('analysisScore').value = comprehensiveReport.score;
-            document.getElementById('analysisSummary').value = comprehensiveReport.summary;
-            document.getElementById('qualifiesForDemo').value = comprehensiveReport.qualifiesForDemo ? 'qualified' : 'not-qualified';
-            
-            if (comprehensiveReport.qualifiesForDemo) {
-                // Update demo offer with score
-                document.getElementById('demoScore').textContent = comprehensiveReport.score;
-                
-                // CELEBRATION MOVED TO APPLICANT SIDE
-                showCelebration();
-                document.getElementById('demoOffer').style.display = 'block';
-            }
+            alert('Professional report generation would be implemented here with the collected data.');
         });
-
-        function collectProfessionalResults() {
-            return {
-                pagespeedScore: parseInt(document.getElementById('pagespeed-score').value) || 0,
-                mobileFriendly: document.getElementById('mobile-friendly').value,
-                sslStatus: document.getElementById('ssl-status').value,
-                htmlErrors: parseInt(document.getElementById('html-validation').value) || 0,
-                seoScore: parseInt(document.getElementById('seo-score').value) || 0,
-                coreWebVitals: document.getElementById('core-web-vitals').value,
-                securityHeaders: document.getElementById('security-headers').value,
-                cookieCompliance: document.getElementById('cookie-compliance').value,
-                adminComments: document.getElementById('admin-comments').value
-            };
-        }
-
-        function generateComprehensiveReport(proResults) {
-            const issues = [];
-            let score = 100;
-            let summary = '';
-
-            // PageSpeed Analysis
-            if (proResults.pagespeedScore > 0) {
-                let pagespeedStatus = 'good';
-                if (proResults.pagespeedScore < 50) {
-                    pagespeedStatus = 'poor';
-                    score -= 20;
-                } else if (proResults.pagespeedScore < 90) {
-                    pagespeedStatus = 'medium';
-                    score -= 10;
-                }
-
-                issues.push({
-                    id: 'pagespeed',
-                    title: `📊 PageSpeed Insights: ${proResults.pagespeedScore}/100`,
-                    description: `Performance score: ${proResults.pagespeedScore}/100. ${getPagespeedRecommendation(proResults.pagespeedScore)}`,
-                    impact: pagespeedStatus === 'poor' ? 'High' : pagespeedStatus === 'medium' ? 'Medium' : 'Low',
-                    type: 'performance'
-                });
-            }
-
-            // Mobile-Friendly Test
-            if (proResults.mobileFriendly) {
-                if (proResults.mobileFriendly === 'fail') {
-                    issues.push({
-                        id: 'mobile-friendly',
-                        title: '📱 Mobile Usability: ❌ Not Mobile-Friendly',
-                        description: 'Website is not optimized for mobile devices. This affects user experience and SEO.',
-                        impact: 'High',
-                        type: 'usability'
-                    });
-                    score -= 15;
-                } else if (proResults.mobileFriendly === 'needs-improvement') {
-                    issues.push({
-                        id: 'mobile-friendly',
-                        title: '📱 Mobile Usability: ⚠️ Needs Improvement',
-                        description: 'Mobile experience could be enhanced for better user engagement.',
-                        impact: 'Medium',
-                        type: 'usability'
-                    });
-                    score -= 8;
-                } else {
-                    issues.push({
-                        id: 'mobile-friendly',
-                        title: '📱 Mobile Usability: ✅ Mobile-Friendly',
-                        description: 'Website is properly optimized for mobile devices.',
-                        impact: 'None',
-                        type: 'good'
-                    });
-                }
-            }
-
-            // SSL Certificate Check
-            if (proResults.sslStatus) {
-                if (proResults.sslStatus === 'missing') {
-                    issues.push({
-                        id: 'ssl',
-                        title: '🔒 SSL Certificate: ❌ Missing',
-                        description: 'No SSL certificate detected. This affects security and SEO rankings.',
-                        impact: 'High',
-                        type: 'security'
-                    });
-                    score -= 25;
-                } else if (proResults.sslStatus === 'invalid') {
-                    issues.push({
-                        id: 'ssl',
-                        title: '🔒 SSL Certificate: ❌ Invalid/Expired',
-                        description: 'SSL certificate is invalid or expired. Needs immediate attention.',
-                        impact: 'High',
-                        type: 'security'
-                    });
-                    score -= 20;
-                } else {
-                    issues.push({
-                        id: 'ssl',
-                        title: '🔒 SSL Certificate: ✅ Valid',
-                        description: 'SSL certificate is properly installed and valid.',
-                        impact: 'None',
-                        type: 'good'
-                    });
-                }
-            }
-
-            // HTML Validation
-            if (proResults.htmlErrors > 0) {
-                issues.push({
-                    id: 'html-validation',
-                    title: `⚡ HTML Validation: ${proResults.htmlErrors} Errors`,
-                    description: `${proResults.htmlErrors} HTML validation issues found. These can affect performance and compatibility.`,
-                    impact: proResults.htmlErrors > 10 ? 'High' : 'Medium',
-                    type: 'code-quality'
-                });
-                score -= Math.min(proResults.htmlErrors * 0.5, 15);
-            }
-
-            // SEO Score
-            if (proResults.seoScore > 0) {
-                let seoStatus = 'good';
-                if (proResults.seoScore < 40) {
-                    seoStatus = 'poor';
-                    score -= 15;
-                } else if (proResults.seoScore < 70) {
-                    seoStatus = 'medium';
-                    score -= 8;
-                }
-
-                issues.push({
-                    id: 'seo-score',
-                    title: `🔍 SEO Score: ${proResults.seoScore}/100`,
-                    description: `Overall SEO health score: ${proResults.seoScore}/100. ${getSEORecommendation(proResults.seoScore)}`,
-                    impact: seoStatus === 'poor' ? 'High' : seoStatus === 'medium' ? 'Medium' : 'Low',
-                    type: 'seo'
-                });
-            }
-
-            // Core Web Vitals
-            if (proResults.coreWebVitals) {
-                if (proResults.coreWebVitals === 'poor') {
-                    issues.push({
-                        id: 'core-web-vitals',
-                        title: '⚡ Core Web Vitals: ❌ Poor',
-                        description: 'Core Web Vitals metrics are below acceptable thresholds. Affects user experience and SEO.',
-                        impact: 'High',
-                        type: 'performance'
-                    });
-                    score -= 12;
-                } else if (proResults.coreWebVitals === 'needs-improvement') {
-                    issues.push({
-                        id: 'core-web-vitals',
-                        title: '⚡ Core Web Vitals: ⚠️ Needs Improvement',
-                        description: 'Some Core Web Vitals metrics need optimization for better performance.',
-                        impact: 'Medium',
-                        type: 'performance'
-                    });
-                    score -= 6;
-                } else {
-                    issues.push({
-                        id: 'core-web-vitals',
-                        title: '⚡ Core Web Vitals: ✅ Good',
-                        description: 'All Core Web Vitals metrics meet recommended thresholds.',
-                        impact: 'None',
-                        type: 'good'
-                    });
-                }
-            }
-
-            // Security Headers
-            if (proResults.securityHeaders) {
-                if (proResults.securityHeaders === 'poor') {
-                    issues.push({
-                        id: 'security-headers',
-                        title: '🛡️ Security Headers: ❌ Poor',
-                        description: 'Missing critical security headers. This exposes the website to security vulnerabilities.',
-                        impact: 'High',
-                        type: 'security'
-                    });
-                    score -= 10;
-                } else if (proResults.securityHeaders === 'good') {
-                    issues.push({
-                        id: 'security-headers',
-                        title: '🛡️ Security Headers: 🟡 Good',
-                        description: 'Basic security headers are implemented, but could be enhanced.',
-                        impact: 'Low',
-                        type: 'security'
-                    });
-                    score -= 3;
-                } else {
-                    issues.push({
-                        id: 'security-headers',
-                        title: '🛡️ Security Headers: ✅ Excellent',
-                        description: 'Comprehensive security headers are properly configured.',
-                        impact: 'None',
-                        type: 'good'
-                    });
-                }
-            }
-
-            // Cookie Compliance
-            if (proResults.cookieCompliance) {
-                if (proResults.cookieCompliance === 'non-compliant') {
-                    issues.push({
-                        id: 'cookie-compliance',
-                        title: '🍪 Cookie Compliance: ❌ Non-Compliant',
-                        description: 'Website does not meet cookie consent requirements. This poses legal risks and potential fines.',
-                        impact: 'High',
-                        type: 'legal'
-                    });
-                    score -= 15;
-                } else if (proResults.cookieCompliance === 'partial') {
-                    issues.push({
-                        id: 'cookie-compliance',
-                        title: '🍪 Cookie Compliance: 🟡 Partially Compliant',
-                        description: 'Website has some cookie compliance measures but needs improvement to meet all regulatory requirements.',
-                        impact: 'Medium',
-                        type: 'legal'
-                    });
-                    score -= 8;
-                } else {
-                    issues.push({
-                        id: 'cookie-compliance',
-                        title: '🍪 Cookie Compliance: ✅ Compliant',
-                        description: 'Website meets cookie consent requirements for major privacy regulations.',
-                        impact: 'None',
-                        type: 'good'
-                    });
-                }
-            }
-
-            // Admin Comments
-            if (proResults.adminComments) {
-                issues.push({
-                    id: 'admin-comments',
-                    title: '💬 Professional Observations',
-                    description: proResults.adminComments,
-                    impact: 'Info',
-                    type: 'info'
-                });
-            }
-
-            // Generate summary
-            score = Math.max(0, Math.min(100, Math.round(score)));
-            
-            if (score >= 80) {
-                summary = 'Excellent! Your website demonstrates strong technical performance and SEO health.';
-            } else if (score >= 60) {
-                summary = 'Good overall performance with some areas for improvement to enhance user experience and SEO.';
-            } else {
-                summary = 'Needs significant improvements in multiple areas to meet modern web standards and SEO requirements.';
-            }
-
-            return {
-                score: score,
-                issues: issues,
-                qualifiesForDemo: score < 75,
-                summary: summary,
-                isProfessional: true
-            };
-        }
-
-        function getPagespeedRecommendation(score) {
-            if (score >= 90) return 'Excellent performance! Maintain current optimizations.';
-            if (score >= 70) return 'Good performance. Consider minor optimizations for better results.';
-            if (score >= 50) return 'Performance needs improvement. Focus on core optimizations.';
-            return 'Critical performance issues. Immediate optimization required.';
-        }
-
-        function getSEORecommendation(score) {
-            if (score >= 80) return 'Strong SEO foundation. Continue optimization efforts.';
-            if (score >= 60) return 'Moderate SEO health. Focus on content and technical improvements.';
-            if (score >= 40) return 'SEO needs significant improvements across multiple areas.';
-            return 'Critical SEO issues. Comprehensive strategy needed.';
-        }
-
-        function showReport(results) {
-            const report = document.getElementById('report');
-            const score = document.getElementById('score');
-            const summary = document.getElementById('summary');
-            const issuesContainer = document.getElementById('issuesContainer');
-            const reportFooter = document.getElementById('reportFooter');
-            
-            // Show score as X/100 format without color coding
-            score.textContent = `${results.score}/100`;
-            score.style.color = '#2c3e50'; // Neutral color
-            summary.textContent = results.summary;
-            
-            issuesContainer.innerHTML = '';
-            results.issues.forEach(issue => {
-                const issueEl = document.createElement('div');
-                issueEl.className = `issue ${issue.type === 'good' ? 'good' : issue.type === 'info' ? 'info' : ''}`;
-                issueEl.innerHTML = `
-                    <div class="issue-title">${issue.title}</div>
-                    <div class="issue-desc">${issue.description}</div>
-                `;
-                issuesContainer.appendChild(issueEl);
-            });
-            
-            // Show the report footer with print button
-            reportFooter.style.display = 'block';
-            report.style.display = 'block';
-            report.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showCelebration() {
-            // Confetti celebration - NOW ON APPLICANT SIDE
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.6 }
-            });
-            
-            setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    angle: 60,
-                    spread: 80,
-                    origin: { x: 0 }
-                });
-            }, 250);
-            
-            setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    angle: 120,
-                    spread: 80,
-                    origin: { x: 1 }
-                });
-            }, 400);
-
-            // Floating emojis - NOW ON APPLICANT SIDE
-            showExtendedCelebration();
-        }
-
-        function showExtendedCelebration() {
-            const container = document.getElementById('celebrationContainer');
-            container.style.display = 'block';
-            
-            const emojis = ['🎉', '🎊', '🥳', '✨', '🌟', '💫', '🔥', '💡', '🚀', '🎯'];
-            
-            // Create floating emojis
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const emoji = document.createElement('div');
-                    emoji.className = 'floating-emoji';
-                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    emoji.style.left = Math.random() * 100 + 'vw';
-                    emoji.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    container.appendChild(emoji);
-                    
-                    // Remove emoji after animation
-                    setTimeout(() => {
-                        emoji.remove();
-                    }, 3000);
-                }, i * 150);
-            }
-            
-            // Hide celebration after 3 seconds
-            setTimeout(() => {
-                container.style.display = 'none';
-                container.innerHTML = '';
-            }, 3000);
-        }
-
-        // REAL-TIME ANALYSIS FUNCTION - SIMPLIFIED FOR VIEWERS
-        async function performRealTimeAnalysis(website, seoContent) {
-            const issues = [];
-            let score = 100;
-            let summary = '';
-
-            try {
-                // SSL Check
-                if (!website.startsWith('https://')) {
-                    issues.push({
-                        id: 'ssl',
-                        title: '❌ No SSL Certificate',
-                        description: 'Your website is not using HTTPS. This affects security and SEO rankings.',
-                        impact: 'High',
-                        type: 'security'
-                    });
-                    score -= 25;
-                }
-
-                // Outdated Website Detection (2020 and earlier)
-                const currentYear = new Date().getFullYear();
-                const websiteYear = Math.floor(Math.random() * 10) + 2015; // Simulate website age
-                
-                if (websiteYear <= 2020) {
-                    issues.push({
-                        id: 'outdated',
-                        title: '📅 Outdated Website Design',
-                        description: `Your website appears to be from ${websiteYear}. Modern websites from 2021+ perform better and convert more visitors.`,
-                        impact: 'High',
-                        type: 'design'
-                    });
-                    score -= 20;
-                    
-                    // Template website detection for older sites
-                    if (Math.random() > 0.5) {
-                        issues.push({
-                            id: 'template',
-                            title: '⚙️ Possible Template Website',
-                            description: 'Your website may be using a generic template. Custom designs perform better and build more trust with visitors.',
-                            impact: 'Medium',
-                            type: 'design'
-                        });
-                        score -= 10;
-                    }
-                }
-
-                // Performance Issues (simulated)
-                const performanceScore = Math.floor(Math.random() * 40) + 60;
-                if (performanceScore < 70) {
-                    issues.push({
-                        id: 'performance',
-                        title: '⚠️ Performance Issues',
-                        description: `Performance score: ${performanceScore}/100 - Your website loads slower than optimal, affecting user experience.`,
-                        impact: 'High',
-                        type: 'performance'
-                    });
-                    score -= 15;
-                }
-
-                // SEO Content Analysis
-                if (seoContent) {
-                    const seoIssues = performAdvancedSEOAnalysis(seoContent);
-                    issues.push(...seoIssues);
-                    score -= seoIssues.length * 3;
-                } else {
-                    issues.push({
-                        id: 'seo-content',
-                        title: '❌ Insufficient Content',
-                        description: 'Your website lacks sufficient content for proper SEO optimization. Quality content helps with search rankings.',
-                        impact: 'High',
-                        type: 'seo'
-                    });
-                    score -= 15;
-                }
-
-                // Mobile Responsiveness (simulated)
-                const mobileFriendly = Math.random() > 0.3;
-                if (!mobileFriendly) {
-                    issues.push({
-                        id: 'mobile',
-                        title: '📱 Mobile Optimization Needed',
-                        description: 'Your website is not fully optimized for mobile devices. Over 60% of web traffic comes from mobile.',
-                        impact: 'High',
-                        type: 'usability'
-                    });
-                    score -= 15;
-                }
-
-                // Cookie Compliance Check (simulated)
-                const hasCookieCompliance = Math.random() > 0.4;
-                if (!hasCookieCompliance) {
-                    issues.push({
-                        id: 'cookie-compliance',
-                        title: '🍪 Cookie Compliance Issues',
-                        description: 'Your website may not have proper cookie consent mechanisms. This can lead to legal risks and fines.',
-                        impact: 'High',
-                        type: 'legal'
-                    });
-                    score -= 10;
-                }
-
-                // Generate summary based on score
-                if (score >= 80) {
-                    summary = 'Excellent! Your website is in great condition.';
-                } else if (score >= 60) {
-                    summary = 'Good! Some improvements could enhance performance.';
-                } else {
-                    summary = 'Needs attention! Several issues are affecting your website performance.';
-                }
-
-            } catch (error) {
-                console.error('Analysis error:', error);
-            }
-
-            // Ensure score is accurate based on issues found
-            score = Math.max(0, Math.min(100, score));
-
-            return {
-                score: score,
-                issues: issues,
-                qualifiesForDemo: score < 75,
-                summary: summary,
-                website: website
-            };
-        }
-
-        function performAdvancedSEOAnalysis(content) {
-            const issues = [];
-            const words = content.split(/\s+/).length;
-            
-            if (words < 300) {
-                issues.push({
-                    id: 'seo-content',
-                    title: '❌ Insufficient Content',
-                    description: `Only ${words} words detected - aim for 300+ words per page for better SEO performance.`,
-                    impact: 'High',
-                    type: 'seo'
-                });
-            }
-
-            // Check for keyword optimization
-            if (content.length > 0 && content.split(' ').length < 10) {
-                issues.push({
-                    id: 'keywords',
-                    title: '🔍 Keyword Optimization Needed',
-                    description: 'Your content lacks sufficient keyword optimization for search engines.',
-                    impact: 'Medium',
-                    type: 'seo'
-                });
-            }
-
-            return issues;
-        }
     </script>
 </body>
 </html>
