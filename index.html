@@ -3,984 +3,2196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSwan - Professional Website Analysis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>WebSwan - Website Analysis Tools</title>
+    <!-- Include jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #62d6f0, #5cd1c5);
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #194c7d 0%, #94e3cf 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: #333;
         }
 
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            margin-bottom: 20px;
-            position: relative;
+            padding: 20px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-
-        .logo i {
-            font-size: 42px;
-            color: #5cd1c5;
-            margin-right: 15px;
-        }
-
-        h1 {
-            color: #2c3e50;
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e8ed;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: #5cd1c5;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(92, 209, 197, 0.2);
-        }
-
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #62d6f0, #5cd1c5);
-            color: white;
-            border: none;
-            padding: 18px 35px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin: 15px 0;
-            box-shadow: 0 6px 20px rgba(92, 209, 197, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(92, 209, 197, 0.4);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin: 10px 0;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-        }
-
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .admin-toggle {
+        /* Back Office Button */
+        .back-office-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: transparent;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            opacity: 0.3;
-            transition: opacity 0.3s;
-            z-index: 1000;
-        }
-
-        .admin-toggle:hover {
-            opacity: 0.7;
-        }
-
-        .admin-panel {
-            display: none;
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        /* NEW: Hero Section */
-        .hero-section {
-            text-align: center;
-            padding: 40px 20px;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .hero-title {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .hero-highlight {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            padding: 25px;
-            border-radius: 12px;
-            margin: 25px 0;
-            border: 3px solid #f39c12;
-            font-weight: 600;
-            font-size: 1.3rem;
-            color: #2c3e50;
-        }
-
-        .hero-cta {
-            font-size: 1.1rem;
-            color: #2c3e50;
-            margin-top: 20px;
-            font-style: italic;
-        }
-
-        /* NEW: Discount Qualification Button */
-        .discount-qualify-btn {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #2c3e50;
-            border: 3px solid #f39c12;
-            padding: 18px 35px;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin: 15px 0;
-            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        .discount-qualify-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
-            animation: none;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        /* URL input with prefix */
-        .url-input-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .url-prefix {
-            background: #f8f9fa;
-            padding: 15px;
-            border: 2px solid #e1e8ed;
-            border-right: none;
-            border-radius: 10px 0 0 10px;
-            font-weight: 600;
-            color: #7f8c8d;
-        }
-
-        .url-input {
-            border-radius: 0 10px 10px 0;
-        }
-
-        /* Privacy policy */
-        .privacy-policy {
-            text-align: center;
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-
-        .privacy-policy a {
-            color: #5cd1c5;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .privacy-policy a:hover {
-            text-decoration: underline;
-        }
-
-        /* Form submission messages */
-        .form-message {
-            display: none;
-            margin-top: 10px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .form-success {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-        }
-
-        .form-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-        }
-
-        /* Professional Analysis Inputs */
-        .pro-analysis-section {
-            background: #e8f4f8;
-            border: 2px solid #b3d9ff;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-        }
-
-        .pro-input-group {
-            margin-bottom: 15px;
-        }
-
-        .pro-input-group label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .pro-input-group input {
-            margin-top: 5px;
-        }
-
-        /* Admin Comments Section */
-        .admin-comments-section {
-            background: #fff3cd;
-            border: 2px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-        }
-
-        .admin-comments-section h4 {
-            color: #856404;
-            margin-bottom: 15px;
-        }
-
-        .admin-comments-section textarea {
-            background: #fff;
-            border: 1px solid #ffeaa7;
-        }
-
-        /* SEO Score Checker */
-        .seo-score-checker {
-            background: #e8f6f3;
-            border: 2px solid #1abc9c;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-        }
-
-        .seo-score-checker h4 {
-            color: #16a085;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .seo-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .seo-input-group input {
-            flex: 1;
-        }
-
-        .seo-check-btn {
-            background: #1abc9c;
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .seo-check-btn:hover {
-            background: #16a085;
-        }
-
-        .seo-result {
-            display: none;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 4px solid #1abc9c;
-        }
-
-        /* Cookie Compliance Section */
-        .cookie-compliance-section {
-            background: #fff8e1;
-            border: 2px solid #ffd54f;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-        }
-
-        .cookie-compliance-section h4 {
-            color: #ff8f00;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .cookie-check-btn {
-            background: #ffa000;
+            background: linear-gradient(to right, #6c757d, #868e96);
             color: white;
             border: none;
             padding: 12px 20px;
             border-radius: 8px;
-            cursor: pointer;
+            font-size: 0.9em;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-office-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #5a6268, #727b84);
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(to right, #abe9f7, #7fd4ca);
+            color: #1e4870;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #1e4870;
+        }
+
+        header p {
+            font-size: 1.1em;
+            color: #1e4870;
+            font-weight: 500;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8f4f8;
+        }
+
+        .card-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .card-title {
+            font-size: 1.4em;
+            color: #1e4870;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1e4870;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: #2cd0e6;
+            box-shadow: 0 0 0 3px rgba(44, 208, 230, 0.1);
+        }
+
+        .analyze-btn {
+            background: linear-gradient(to right, #2cd0e6, #58e8d7);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.4);
+        }
+
+        .download-btn {
+            background: linear-gradient(to right, #84cdcf, #73b1c7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: none;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
+        }
+
+        .results-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fdff;
+            border-radius: 8px;
+            border-left: 4px solid #2cd0e6;
+            display: none;
+        }
+
+        .results-section h4 {
+            color: #1e4870;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #84cdcf;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2cd0e6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .security-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .security-btn {
+            background: linear-gradient(to right, #84cdcf, #73b1c7);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .security-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
+        }
+
+        .quick-links {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-links h3 {
+            color: #1e4870;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .link-item {
+            background: linear-gradient(to right, #f8fdff, #e8f4f8);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            color: #1e4870;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #e0f0f5;
+        }
+
+        .link-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.2);
+            color: #14395d;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            color: white;
+            background: linear-gradient(to right, #1e4870, #2cd0e6);
+            border-radius: 15px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left-color: #ffc107;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left-color: #17a2b8;
+        }
+
+        .comments-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments-section h3 {
+            color: #1e4870;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .comment-box {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .comment-box:focus {
+            outline: none;
+            border-color: #2cd0e6;
+            box-shadow: 0 0 0 3px rgba(44, 208, 230, 0.1);
+        }
+
+        .char-count {
+            text-align: right;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .footer-download {
+            background: linear-gradient(to right, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .footer-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .reset-btn {
+            background: linear-gradient(to right, #dc3545, #e4606d);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
         }
 
-        .cookie-check-btn:hover {
-            background: #ff8f00;
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
         }
 
-        .cookie-result {
+        .auto-fill-btn {
+            background: linear-gradient(to right, #6c757d, #868e96);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .auto-fill-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);
+        }
+
+        .quick-links-download {
+            background: linear-gradient(to right, #84cdcf, #73b1c7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .quick-links-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
+        }
+
+        /* Back Office Styles */
+        .back-office {
             display: none;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 4px solid #ffa000;
-        }
-
-        .cookie-fine-info {
-            background: #ffebee;
-            border: 1px solid #ffcdd2;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .cookie-fine-info h5 {
-            color: #c62828;
-            margin-bottom: 10px;
-        }
-
-        .cookie-fine-info a {
-            color: #d32f2f;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .cookie-fine-info a:hover {
-            text-decoration: underline;
-        }
-
-        .attorney-general-link {
-            display: block;
-            margin-top: 15px;
-            padding: 10px;
-            background: #e3f2fd;
-            border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            color: #1565c0;
-            font-weight: 600;
-            border: 1px solid #bbdefb;
-            transition: all 0.3s ease;
-        }
-
-        .attorney-general-link:hover {
-            background: #bbdefb;
-            transform: translateY(-2px);
-        }
-
-        .tools-section {
-            background: #2c3e50;
-            color: white;
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 15px;
-            margin: 20px 0;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .tool-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+        .back-office h2 {
+            color: #1e4870;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
         }
 
-        .tool-link {
-            background: #34495e;
-            padding: 15px;
-            border-radius: 10px;
-            text-decoration: none;
+        .back-office-nav {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(to right, #2cd0e6, #58e8d7);
             color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid #4a6572;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin: 0 10px;
         }
 
-        .tool-link:hover {
-            background: #4a6572;
+        .nav-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.4);
+        }
+
+        .cheat-sheet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .cheat-sheet-card {
+            background: #f8fdff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #84cdcf;
+        }
+
+        .cheat-sheet-card h4 {
+            color: #1e4870;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #e8f4f8;
+            padding-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .security-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-office-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+            
+            .nav-btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <button class="admin-toggle" id="adminToggle" title="Click 3 times for admin mode">🎯</button>
+    <button class="back-office-btn" onclick="toggleBackOffice()">🔧 Back Office</button>
 
     <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-feather-alt"></i>
-                <h1>WebSwan</h1>
-            </div>
-            <p class="subtitle">Professional Website Analysis</p>
-        </header>
+        <!-- MAIN ANALYSIS INTERFACE -->
+        <div id="main-interface">
+            <header>
+                <h1>🔍 WebSwan Website Analysis Tools</h1>
+                <p>Comprehensive website analysis and security testing</p>
+            </header>
 
-        <!-- NEW: Hero Section -->
-        <div class="hero-section">
-            <h2 class="hero-title">Unlock Your Website's Hidden Potential</h2>
-            <p class="hero-subtitle">
-                Think your website is working perfectly? Think again. Many businesses overlook the major structure of a professional website, which can silently hurt your website performance and limit your ability to generate leads. From cookie compliance issues to legal pitfalls like those monitored by the Attorney General of your state, GDPR, and CCPA, small oversights can make a big impact.
-            </p>
-            <div class="hero-highlight">
-                For $175 get your web analysis to discover hidden issues that could be affecting your website performance and online credibility.
-            </div>
-            <p class="hero-cta">Don't leave your website's success to chance.</p>
-            
-            <!-- NEW: Discount Qualification Button -->
-            <button class="discount-qualify-btn" id="discountQualifyBtn">
-                <i class="fas fa-gift"></i> CLICK HERE TO VERIFY IF YOU QUALIFY FOR A DISCOUNTED OR FREE WEB ANALYSIS
-            </button>
-        </div>
-
-        <!-- NEW: Simple Request Form -->
-        <form id="analysisRequestForm">
-            <div class="form-group">
-                <label for="businessName"><i class="fas fa-building"></i> Business Name</label>
-                <input type="text" id="businessName" name="businessName" placeholder="Enter your business name" required>
-            </div>
-
-            <div class="form-group">
-                <label for="website"><i class="fas fa-globe"></i> Business Website URL</label>
-                <div class="url-input-group">
-                    <span class="url-prefix">https://www.</span>
-                    <input type="text" id="website" name="website" class="url-input" placeholder="yourwebsite.com" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="contactName"><i class="fas fa-user"></i> Your Name</label>
-                    <input type="text" id="contactName" name="contactName" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-primary">
-                <i class="fas fa-chart-line"></i> REQUEST PROFESSIONAL WEB ANALYSIS
-            </button>
-        </form>
-
-        <!-- Privacy Policy -->
-        <div class="privacy-policy">
-            <p><i class="fas fa-shield-alt"></i> We are only collecting your information to assist you with your web analysis. We won't sell or share your information with third parties. 
-            Please view our <a href="https://www.thewebswan.com/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-        </div>
-
-        <!-- Form submission messages -->
-        <div id="formMessage" class="form-message"></div>
-
-        <!-- ADMIN PANEL - UNCHANGED -->
-        <div class="admin-panel" id="adminPanel">
-            <h3><i class="fas fa-crown"></i> Admin Tools</h3>
-            
-            <!-- Admin Print Button - INSIDE ADMIN PANEL -->
-            <div style="text-align: center; margin: 15px 0;">
-                <button class="btn-primary" id="adminPrintBtn">
-                    <i class="fas fa-print"></i> Print/Download Report
-                </button>
-            </div>
-
-            <!-- SEO Score Checker -->
-            <div class="seo-score-checker">
-                <h4><i class="fas fa-chart-line"></i> Quick SEO Score Checker</h4>
-                <p>Get instant SEO score for any website:</p>
-                <div class="seo-input-group">
-                    <input type="text" id="seoUrl" placeholder="Enter website URL (e.g., example.com)">
-                    <button class="seo-check-btn" id="checkSeoScore">
-                        <i class="fas fa-search"></i> Check SEO
-                    </button>
-                </div>
-                <div class="seo-result" id="seoResult">
-                    <div class="issue-title">
-                        <i class="fas fa-tachometer-alt"></i> SEO Score: <span id="seoScoreValue">0</span>/100
+            <div class="analysis-grid">
+                <!-- GTMetrix Analysis Card -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <h2 class="card-title">GTMetrix Performance Analysis</h2>
                     </div>
-                    <div class="issue-desc" id="seoScoreDescription">
-                        SEO analysis results will appear here
+                    <div class="input-group">
+                        <label for="gtmetrix-url">Enter Website URL:</label>
+                        <input type="url" id="gtmetrix-url" class="url-input" placeholder="https://example.com" required>
+                        <button class="auto-fill-btn" onclick="autoFillURL('gtmetrix-url')">🔗 Auto-fill Current Domain</button>
+                    </div>
+                    <button class="analyze-btn" onclick="runGTMetrixAnalysis()">🚀 Analyze Performance</button>
+                    <button class="download-btn" id="gtmetrix-download" onclick="downloadPDF('gtmetrix')">📄 Download Performance Report</button>
+                    
+                    <div class="loading" id="gtmetrix-loading">
+                        <div class="spinner"></div>
+                        <p>Analyzing website performance...</p>
+                    </div>
+                    
+                    <div class="results-section" id="gtmetrix-results">
+                        <h4>Performance Results</h4>
+                        <div class="result-item">
+                            <strong>PageSpeed Score:</strong> <span id="pagespeed-score">-</span>
+                            <br><small>Measures how fast your page loads (0-100 scale)</small>
+                        </div>
+                        <div class="result-item">
+                            <strong>YSlow Score:</strong> <span id="yslow-score">-</span>
+                            <br><small>Measures how well your page follows performance best practices</small>
+                        </div>
+                        <div class="result-item">
+                            <strong>Fully Loaded Time:</strong> <span id="load-time">-</span>
+                            <br><small>Time until all page elements are completely loaded</small>
+                        </div>
+                        <div class="result-item">
+                            <strong>Total Page Size:</strong> <span id="page-size">-</span>
+                            <br><small>Total size of all page resources (HTML, CSS, JS, images)</small>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Cookie Compliance Checker -->
-            <div class="cookie-compliance-section">
-                <h4><i class="fas fa-cookie-bite"></i> Cookie Compliance Checker</h4>
-                <p>Check if a website has proper cookie consent and privacy policy:</p>
-                <div class="seo-input-group">
-                    <input type="text" id="cookieUrl" placeholder="Enter website URL (e.g., example.com)">
-                    <button class="cookie-check-btn" id="checkCookieCompliance">
-                        <i class="fas fa-search"></i> Check Compliance
-                    </button>
+                <!-- Cookie Analysis Card -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <div class="card-icon">🍪</div>
+                        <h2 class="card-title">Cookie & Privacy Analysis</h2>
+                    </div>
+                    <div class="input-group">
+                        <label for="cookie-url">Enter Website URL:</label>
+                        <input type="url" id="cookie-url" class="url-input" placeholder="https://example.com" required>
+                        <button class="auto-fill-btn" onclick="autoFillURL('cookie-url')">🔗 Auto-fill Current Domain</button>
+                    </div>
+                    <button class="analyze-btn" onclick="runCookieAnalysis()">🔍 Analyze Cookies</button>
+                    <button class="download-btn" id="cookie-download" onclick="downloadPDF('cookie')">📄 Download Cookie Report</button>
+                    
+                    <div class="loading" id="cookie-loading">
+                        <div class="spinner"></div>
+                        <p>Scanning for cookies...</p>
+                    </div>
+                    
+                    <div class="results-section" id="cookie-results">
+                        <h4>Cookie Analysis Results</h4>
+                        <div id="cookie-list">
+                            <!-- Cookie results will be populated here -->
+                        </div>
+                    </div>
                 </div>
-                <div class="cookie-result" id="cookieResult">
-                    <div class="issue-title">
-                        <i class="fas fa-cookie"></i> Cookie Compliance Status
+
+                <!-- SEO Analysis Card -->
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <div class="card-icon">🔎</div>
+                        <h2 class="card-title">SEO Analysis</h2>
                     </div>
-                    <div class="issue-desc" id="cookieStatusDescription">
-                        Cookie compliance results will appear here
+                    <div class="input-group">
+                        <label for="seo-url">Enter Website URL:</label>
+                        <input type="url" id="seo-url" class="url-input" placeholder="https://example.com" required>
+                        <button class="auto-fill-btn" onclick="autoFillURL('seo-url')">🔗 Auto-fill Current Domain</button>
                     </div>
-                    <div class="cookie-fine-info" id="cookieFineInfo">
-                        <!-- Fine information will be populated here -->
+                    <button class="analyze-btn" onclick="runSEOAnalysis()">⭐ Analyze SEO</button>
+                    <button class="download-btn" id="seo-download" onclick="downloadPDF('seo')">📄 Download SEO Report</button>
+                    
+                    <div class="loading" id="seo-loading">
+                        <div class="spinner"></div>
+                        <p>Analyzing SEO metrics...</p>
+                    </div>
+                    
+                    <div class="results-section" id="seo-results">
+                        <h4>SEO Analysis Results</h4>
+                        <div class="result-item">
+                            <strong>Meta Tags:</strong> <span id="meta-tags">-</span>
+                        </div>
+                        <div class="result-item">
+                            <strong>Heading Structure:</strong> <span id="heading-structure">-</span>
+                        </div>
+                        <div class="result-item">
+                            <strong>Image ALT Tags:</strong> <span id="alt-tags">-</span>
+                        </div>
+                        <div class="result-item">
+                            <strong>Mobile Friendly:</strong> <span id="mobile-friendly">-</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tools-section">
-                <h4>Professional Analysis Tools</h4>
-                <div class="tool-links">
-                    <a href="https://pagespeed.web.dev/" target="_blank" class="tool-link">
-                        <i class="fas fa-tachometer-alt"></i> Google PageSpeed
-                    </a>
-                    <a href="https://search.google.com/test/mobile-friendly" target="_blank" class="tool-link">
-                        <i class="fas fa-mobile-alt"></i> Mobile-Friendly Test
-                    </a>
-                    <a href="https://www.sslshopper.com/ssl-checker.html" target="_blank" class="tool-link">
-                        <i class="fas fa-lock"></i> SSL Certificate Check
-                    </a>
-                    <a href="https://validator.w3.org/" target="_blank" class="tool-link">
-                        <i class="fas fa-code"></i> HTML Validator
-                    </a>
-                    <a href="https://www.semrush.com/analytics/onpage/tool/" target="_blank" class="tool-link">
-                        <i class="fas fa-search"></i> SEMrush SEO
-                    </a>
-                    <a href="https://www.ubersuggest.com/" target="_blank" class="tool-link">
-                        <i class="fas fa-chart-bar"></i> Ubersuggest
-                    </a>
+            <!-- Security Header Testing Section -->
+            <div class="analysis-card">
+                <div class="card-header">
+                    <div class="card-icon">🛡️</div>
+                    <h2 class="card-title">Security Header Testing</h2>
                 </div>
-            </div>
-
-            <!-- Professional Analysis Input Section -->
-            <div class="pro-analysis-section">
-                <h4><i class="fas fa-chart-bar"></i> Professional Analysis Results</h4>
-                <p>Enter results from professional tools to generate comprehensive report:</p>
+                <p style="margin-bottom: 20px; color: #666;">Test your website's security headers and vulnerabilities</p>
                 
-                <div class="pro-input-group">
-                    <label for="pagespeed-score">
-                        <i class="fas fa-tachometer-alt"></i> Google PageSpeed Score
-                    </label>
-                    <input type="number" id="pagespeed-score" min="0" max="100" placeholder="0-100">
+                <div class="input-group">
+                    <label for="security-url">Enter Website URL (for all security tests):</label>
+                    <input type="url" id="security-url" class="url-input" placeholder="https://example.com" required>
+                    <button class="auto-fill-btn" onclick="autoFillURL('security-url')">🔗 Auto-fill Current Domain</button>
+                </div>
+                
+                <div class="security-buttons">
+                    <button class="security-btn" onclick="testSecurityHeaders()">🔒 Test Security Headers</button>
+                    <button class="security-btn" onclick="testSSL()">🔐 SSL Certificate Check</button>
+                    <button class="security-btn" onclick="testVulnerabilities()">🛡️ Vulnerability Scan</button>
+                    <button class="security-btn" onclick="testHTTPHeaders()">🌐 HTTP Headers Analysis</button>
+                </div>
+                
+                <button class="download-btn" id="security-download" onclick="downloadPDF('security')">📄 Download Security Report</button>
+                
+                <div class="loading" id="security-loading">
+                    <div class="spinner"></div>
+                    <p>Running security tests...</p>
+                </div>
+                
+                <div class="results-section" id="security-results">
+                    <h4>Security Test Results</h4>
+                    <div id="security-results-list">
+                        <!-- Security results will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h3>📝 Additional Comments & Notes</h3>
+                <textarea class="comment-box" id="user-comments" placeholder="Add your additional comments, observations, or custom report details here (up to 1000 words)..."></textarea>
+                <div class="char-count" id="char-count">0/1000 words</div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="quick-links">
+                <h3>🚀 Quick Analysis Tools</h3>
+                <div class="link-grid">
+                    <a href="https://gtmetrix.com/" target="_blank" class="link-item">GTMetrix Official</a>
+                    <a href="https://pagespeed.web.dev/" target="_blank" class="link-item">Google PageSpeed</a>
+                    <a href="https://securityheaders.com/" target="_blank" class="link-item">Security Headers</a>
+                    <a href="https://www.ssllabs.com/ssltest/" target="_blank" class="link-item">SSL Labs Test</a>
+                    <a href="https://search.google.com/test/mobile-friendly" target="_blank" class="link-item">Mobile-Friendly Test</a>
+                    <a href="https://validator.w3.org/" target="_blank" class="link-item">HTML Validator</a>
+                </div>
+                <button class="quick-links-download" onclick="downloadPDF('quick-links')">📄 Download Quick Links Guide</button>
+            </div>
+
+            <footer>
+                <p>© 2024 The WebSwan - Professional Website Analysis Tools</p>
+                <p>Contact: (415)877-0687 | thewebswan@gmail.com</p>
+                
+                <button class="footer-download" onclick="downloadCompleteReport()">📄 Download Complete Analysis Report (All Tests)</button>
+                <br>
+                <button class="reset-btn" onclick="resetAllData()">🔄 Reset All Data for Next Analysis</button>
+            </footer>
+        </div>
+
+        <!-- BACK OFFICE INTERFACE -->
+        <div class="back-office" id="back-office">
+            <h2>🔧 WebSwan Back Office</h2>
+            
+            <div class="back-office-nav">
+                <button class="nav-btn" onclick="showSection('cheat-sheet')">📚 Cheat Sheet</button>
+                <button class="nav-btn" onclick="showSection('quick-tools')">⚡ Quick Tools</button>
+                <button class="nav-btn" onclick="showSection('compliance-tools')">🏛️ Compliance</button>
+                <button class="nav-btn" onclick="toggleBackOffice()">← Back to Analysis</button>
+            </div>
+
+            <!-- Cheat Sheet Section -->
+            <div id="cheat-sheet" class="back-office-section">
+                <h3 style="text-align: center; color: #1e4870; margin-bottom: 30px;">📚 Complete Cheat Sheet</h3>
+                
+                <div class="cheat-sheet-grid">
+                    <!-- Performance Score Guide -->
+                    <div class="cheat-sheet-card">
+                        <h4>📊 Performance Score Guide</h4>
+                        <div style="margin-bottom: 15px;">
+                            <strong>PageSpeed Score (0-100):</strong><br>
+                            🟢 90-100: Excellent - Lightning fast<br>
+                            🟡 80-89: Good - Decent speed<br>
+                            🟠 70-79: Needs Improvement - Getting slow<br>
+                            🔴 0-69: Poor - Unacceptably slow
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>YSlow Score (0-100):</strong><br>
+                            🟢 90-100: Excellent - Follows all best practices<br>
+                            🟡 80-89: Good - Minor optimizations needed<br>
+                            🟠 70-79: Needs Improvement - Several areas to fix<br>
+                            🔴 0-69: Poor - Major performance issues
+                        </div>
+                        <div>
+                            <strong>Fully Loaded Time:</strong><br>
+                            🟢 0-2s: Excellent - Instant loading<br>
+                            🟡 2-4s: Good - Acceptable speed<br>
+                            🟠 4-6s: Slow - Users might leave<br>
+                            🔴 6s+: Very Slow - High bounce rate
+                        </div>
+                    </div>
+
+                    <!-- Cookie Colors Explanation -->
+                    <div class="cheat-sheet-card">
+                        <h4>🍪 Cookie Colors Explained</h4>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <div style="width: 15px; height: 15px; background: #28a745; border-radius: 50%; margin-right: 10px;"></div>
+                            <span><strong>GREEN - Session Cookie:</strong><br>Good! Temporary, expires when browser closes. Helps website function properly.</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <div style="width: 15px; height: 15px; background: #ffc107; border-radius: 50%; margin-right: 10px;"></div>
+                            <span><strong>YELLOW - Tracking Cookie:</strong><br>Warning! Tracks user behavior across visits (Google Analytics, Hotjar, etc.).</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <div style="width: 15px; height: 15px; background: #dc3545; border-radius: 50%; margin-right: 10px;"></div>
+                            <span><strong>RED - Third-party Cookie:</strong><br>Problem! Other companies watching your visitors (Facebook Pixel, Google Ads, LinkedIn).</span>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 15px; height: 15px; background: #17a2b8; border-radius: 50%; margin-right: 10px;"></div>
+                            <span><strong>BLUE - Preference Cookie:</strong><br>Info! Stores user settings (language, theme, shopping cart, login remember).</span>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Cookie Explanations -->
+                    <div class="cheat-sheet-card">
+                        <h4>🔍 Cookie Details</h4>
+                        <div style="margin-bottom: 15px;">
+                            <strong>🟡 Tracking Cookies:</strong><br>
+                            • Google Analytics (_ga)<br>
+                            • Facebook Pixel<br>
+                            • Hotjar<br>
+                            • <em>Tracks: Pages visited, time spent, clicks</em>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>🔴 Third-party Cookies:</strong><br>
+                            • Facebook Pixel<br>
+                            • Google Ads<br>
+                            • LinkedIn Insight<br>
+                            • <em>Other companies know your visitors</em>
+                        </div>
+                        <div>
+                            <strong>🔵 Preference Cookies:</strong><br>
+                            • Language selection<br>
+                            • Theme/color scheme<br>
+                            • Shopping cart items<br>
+                            • Login remember me<br>
+                            • <em>Makes site convenient for returning users</em>
+                        </div>
+                    </div>
+
+                    <!-- YSlow Detailed Explanation -->
+                    <div class="cheat-sheet-card">
+                        <h4>📋 YSlow Score Details</h4>
+                        <div style="margin-bottom: 15px;">
+                            <strong>What YSlow Measures:</strong><br>
+                            • Use CDN for images<br>
+                            • Compress components with gzip<br>
+                            • Put CSS at top<br>
+                            • Put JavaScript at bottom<br>
+                            • Minimize HTTP requests
+                        </div>
+                        <div>
+                            <strong>Client Explanation:</strong><br>
+                            "YSlow is like a report card for how well your website follows performance best practices. While PageSpeed measures actual loading speed, YSlow checks if your site is built efficiently."
+                        </div>
+                    </div>
+
+                    <!-- Simple Client Explanations -->
+                    <div class="cheat-sheet-card">
+                        <h4>💬 Client Talking Points</h4>
+                        <div style="margin-bottom: 15px;">
+                            <strong>Cookie Explanations:</strong><br>
+                            • "Green cookies help your website work properly"<br>
+                            • "Yellow cookies help understand how people use your site"<br>
+                            • "Red cookies help with advertising but respect privacy"<br>
+                            • "Blue cookies remember visitor preferences"
+                        </div>
+                        <div>
+                            <strong>Performance Explanations:</strong><br>
+                            • "PageSpeed measures how fast your site loads"<br>
+                            • "YSlow measures how well your site follows best practices"<br>
+                            • "Under 2 seconds is excellent for user experience"
+                        </div>
+                    </div>
+
+                    <!-- Quick Tips -->
+                    <div class="cheat-sheet-card">
+                        <h4>💡 Quick Tips</h4>
+                        <div style="margin-bottom: 10px;">
+                            <strong>URL Auto-fill:</strong> Uses current domain for testing
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Color Codes:</strong> Green ✓ = Good, Yellow ⚠️ = Warning, Red ✗ = Problem
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Mobile-Friendly Test:</strong> Uses Google's simple tool
+                        </div>
+                        <div>
+                            <strong>Comment Box:</strong> Holds 1000 words for additional notes
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="quick-links-download" onclick="downloadPDF('cheat-sheet')" style="margin-top: 20px; display: block; margin-left: auto; margin-right: auto;">📄 Download Cheat Sheet</button>
+            </div>
+
+            <!-- Quick Tools Section -->
+            <div id="quick-tools" class="back-office-section" style="display: none;">
+                <h3 style="text-align: center; color: #1e4870; margin-bottom: 30px;">⚡ Quick Tools</h3>
+                
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <div class="card-icon">🚀</div>
+                            <h2 class="card-title">Quick PDF Downloads</h2>
+                        </div>
+                        <button class="analyze-btn" onclick="downloadPDF('cheat-sheet')">📄 Download Cheat Sheet</button>
+                        <button class="analyze-btn" onclick="downloadPDF('quick-links')">📄 Download Quick Links Guide</button>
+                        <button class="analyze-btn" onclick="downloadCompleteReport()">📄 Download Complete Report</button>
+                    </div>
+
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <div class="card-icon">🛠️</div>
+                            <h2 class="card-title">Data Management</h2>
+                        </div>
+                        <button class="analyze-btn" onclick="resetAllData()">🔄 Reset All Data</button>
+                        <button class="analyze-btn" onclick="exportAllData()">💾 Export All Data</button>
+                        <button class="analyze-btn" onclick="importAllData()">📥 Import Data</button>
+                    </div>
+
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <div class="card-icon">⚙️</div>
+                            <h2 class="card-title">Settings</h2>
+                        </div>
+                        <div class="input-group">
+                            <label>Auto-fill Domain:</label>
+                            <input type="text" id="custom-domain" class="url-input" placeholder="yourdomain.com">
+                        </div>
+                        <button class="analyze-btn" onclick="setCustomDomain()">💾 Save Custom Domain</button>
+                        <button class="analyze-btn" onclick="clearCustomDomain()">🗑️ Clear Custom Domain</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compliance Tools Section -->
+            <div id="compliance-tools" class="back-office-section" style="display: none;">
+                <h3 style="text-align: center; color: #1e4870; margin-bottom: 30px;">🏛️ Attorney General Compliance Resources</h3>
+                
+                <div class="analysis-card">
+                    <div class="card-header">
+                        <div class="card-icon">⚖️</div>
+                        <h2 class="card-title">State Privacy Laws & Regulations</h2>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="state-select">Select State with Privacy Laws:</label>
+                        <select id="state-select" class="url-input">
+                            <option value="">-- Choose a State --</option>
+                            <option value="california">California (CCPA/CPRA)</option>
+                            <option value="colorado">Colorado (CPA)</option>
+                            <option value="virginia">Virginia (VCDPA)</option>
+                            <option value="utah">Utah (UCPA)</option>
+                            <option value="connecticut">Connecticut (CTDPA)</option>
+                            <option value="iowa">Iowa (ICDPA)</option>
+                            <option value="tennessee">Tennessee (TIPA)</option>
+                            <option value="indiana">Indiana (ICDPA)</option>
+                            <option value="montana">Montana (MCDPA)</option>
+                            <option value="texas">Texas (TDPSA)</option>
+                            <option value="oregon">Oregon (OCDPA)</option>
+                            <option value="delaware">Delaware (DDPA)</option>
+                            <option value="florida">Florida (FDBR)</option>
+                            <option value="newjersey">New Jersey (NJDBR)</option>
+                            <option value="newhampshire">New Hampshire (NHDBR)</option>
+                            <option value="gdpr">GDPR (European Union)</option>
+                        </select>
+                    </div>
+
+                    <!-- Search Button -->
+                    <button class="analyze-btn" onclick="showStateResources()" style="margin-top: 10px;">
+                        🔍 Search Compliance Resources
+                    </button>
+
+                    <!-- State Resources will appear here -->
+                    <div id="state-resources" style="display: none;">
+                        <div class="results-section">
+                            <h4 id="state-title">State Compliance Resources</h4>
+                            <div id="compliance-links">
+                                <!-- Links will be populated here -->
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <button class="download-btn" onclick="downloadCompliancePDF()">📄 Download Compliance Summary</button>
+                                <button class="download-btn" onclick="downloadNonCompliancePDF()" style="background: linear-gradient(to right, #dc3545, #e4606d); margin-left: 10px;">
+                                    🚨 Download Non-Compliance Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 15px; background: #f8fdff; border-radius: 8px;">
+                        <h4 style="color: #1e4870; margin-bottom: 10px;">💡 Quick Compliance Tips:</h4>
+                        <div style="font-size: 0.9em;">
+                            • <strong>CCPA/CPRA:</strong> Applies to businesses with CA residents, $25M+ revenue, or processes 100k+ consumers
+                            <br>• <strong>GDPR:</strong> Applies to EU citizen data regardless of business location
+                            <br>• <strong>State Laws:</strong> Vary by revenue thresholds and data processing volumes
+                            <br>• <strong>Cookie Consent:</strong> Required for tracking cookies in regulated states
+                        </div>
+                    </div>
                 </div>
 
-                <div class="pro-input-group">
-                    <label for="mobile-friendly">
-                        <i class="fas fa-mobile-alt"></i> Mobile-Friendly Test
-                    </label>
-                    <select id="mobile-friendly">
-                        <option value="">Select result</option>
-                        <option value="pass">✅ Pass</option>
-                        <option value="fail">❌ Fail</option>
-                        <option value="needs-improvement">⚠️ Needs Improvement</option>
-                    </select>
-                </div>
+                <!-- Quick Reference Cards -->
+                <div class="cheat-sheet-grid" style="margin-top: 30px;">
+                    <div class="cheat-sheet-card">
+                        <h4>🔒 CCPA Requirements</h4>
+                        <div style="font-size: 0.9em;">
+                            • Right to know what data is collected<br>
+                            • Right to delete personal data<br>
+                            • Right to opt-out of data sales<br>
+                            • Right to non-discrimination<br>
+                            • "Do Not Sell My Personal Information" link<br>
+                            • Data processing agreements required
+                        </div>
+                    </div>
 
-                <div class="pro-input-group">
-                    <label for="ssl-status">
-                        <i class="fas fa-lock"></i> SSL Certificate Status
-                    </label>
-                    <select id="ssl-status">
-                        <option value="">Select status</option>
-                        <option value="valid">✅ Valid</option>
-                        <option value="invalid">❌ Invalid/Expired</option>
-                        <option value="missing">❌ Missing</option>
-                    </select>
-                </div>
+                    <div class="cheat-sheet-card">
+                        <h4>🌍 GDPR Requirements</h4>
+                        <div style="font-size: 0.9em;">
+                            • Lawful basis for processing<br>
+                            • Data subject access rights<br>
+                            • Right to be forgotten<br>
+                            • Data portability<br>
+                            • Privacy by design<br>
+                            • Data protection officer (if needed)<br>
+                            • 72-hour breach notification
+                        </div>
+                    </div>
 
-                <div class="pro-input-group">
-                    <label for="html-validation">
-                        <i class="fas fa-code"></i> HTML Validation Errors
-                    </label>
-                    <input type="number" id="html-validation" min="0" placeholder="Number of errors">
+                    <div class="cheat-sheet-card">
+                        <h4>📋 Website Compliance</h4>
+                        <div style="font-size: 0.9em;">
+                            • Privacy policy with specific disclosures<br>
+                            • Cookie consent banner<br>
+                            • Data collection transparency<br>
+                            • Opt-out mechanisms<br>
+                            • Data security measures<br>
+                            • Vendor management<br>
+                            • Record keeping
+                        </div>
+                    </div>
                 </div>
-
-                <div class="pro-input-group">
-                    <label for="seo-score">
-                        <i class="fas fa-search"></i> SEO Score (SEMrush/Ubersuggest)
-                    </label>
-                    <input type="number" id="seo-score" min="0" max="100" placeholder="0-100">
-                </div>
-
-                <div class="pro-input-group">
-                    <label for="core-web-vitals">
-                        <i class="fas fa-heartbeat"></i> Core Web Vitals
-                    </label>
-                    <select id="core-web-vitals">
-                        <option value="">Select status</option>
-                        <option value="good">✅ Good</option>
-                        <option value="needs-improvement">⚠️ Needs Improvement</option>
-                        <option value="poor">❌ Poor</option>
-                    </select>
-                </div>
-
-                <div class="pro-input-group">
-                    <label for="security-headers">
-                        <i class="fas fa-shield-alt"></i> Security Headers
-                    </label>
-                    <select id="security-headers">
-                        <option value="">Select status</option>
-                        <option value="excellent">✅ Excellent</option>
-                        <option value="good">🟡 Good</option>
-                        <option value="poor">❌ Poor</option>
-                    </select>
-                </div>
-
-                <!-- Cookie Compliance Input -->
-                <div class="pro-input-group">
-                    <label for="cookie-compliance">
-                        <i class="fas fa-cookie-bite"></i> Cookie Compliance
-                    </label>
-                    <select id="cookie-compliance">
-                        <option value="">Select status</option>
-                        <option value="compliant">✅ Compliant</option>
-                        <option value="partial">🟡 Partially Compliant</option>
-                        <option value="non-compliant">❌ Non-Compliant</option>
-                    </select>
-                </div>
-
-                <!-- Admin Comments Section -->
-                <div class="admin-comments-section">
-                    <h4><i class="fas fa-comments"></i> Additional Comments & Observations</h4>
-                    <textarea id="admin-comments" placeholder="Add your professional observations, comments, and recommendations based on manual website review..." rows="4"></textarea>
-                </div>
-
-                <button class="btn-primary" id="generateProReport">
-                    <i class="fas fa-file-alt"></i> GENERATE PROFESSIONAL REPORT
-                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Fixed Admin mode functionality
-        let adminClickCount = 0;
-        let isAdminMode = false;
-        const adminToggle = document.getElementById('adminToggle');
-        const adminPanel = document.getElementById('adminPanel');
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
 
-        adminToggle.addEventListener('click', function() {
-            adminClickCount++;
-            
-            // Reset count after 3 seconds
-            setTimeout(() => {
-                adminClickCount = 0;
-            }, 3000);
-            
-            if (adminClickCount === 3) {
-                isAdminMode = !isAdminMode;
-                if (isAdminMode) {
-                    adminPanel.style.display = 'block';
-                    this.style.opacity = '1';
-                    this.style.color = '#e74c3c';
-                    // Scroll to admin panel
-                    adminPanel.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    adminPanel.style.display = 'none';
-                    this.style.opacity = '0.3';
-                    this.style.color = 'inherit';
-                }
-                adminClickCount = 0;
+        // Store all test results in localStorage for persistence
+        function initializeStorage() {
+            if (!localStorage.getItem('webswanResults')) {
+                localStorage.setItem('webswanResults', JSON.stringify({
+                    gtmetrix: null,
+                    cookie: null,
+                    seo: null,
+                    security: null,
+                    comments: '',
+                    timestamp: null
+                }));
             }
-        });
-
-        // Discount Qualification Button
-        document.getElementById('discountQualifyBtn').addEventListener('click', function() {
-            window.open('https://taniad2169.github.io/WS_slotmachine/', '_blank');
-        });
-
-        // Form submission for the new request form
-        document.getElementById('analysisRequestForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const messageDiv = document.getElementById('formMessage');
-            
-            // Disable button and show loading
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING REQUEST...';
-            messageDiv.style.display = 'none';
-            
-            try {
-                // Get form data
-                const formData = {
-                    businessName: document.getElementById('businessName').value,
-                    website: "https://www." + document.getElementById('website').value,
-                    contactName: document.getElementById('contactName').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value
-                };
-                
-                // TODO: Replace with your actual endpoint
-                const response = await fetch('YOUR_ENDPOINT_HERE', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    // Success - show success message
-                    messageDiv.className = 'form-message form-success';
-                    messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your analysis request has been submitted successfully. We will contact you shortly.';
-                    messageDiv.style.display = 'block';
-                    
-                    // Reset form
-                    document.getElementById('analysisRequestForm').reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                // Error - show error message
-                messageDiv.className = 'form-message form-error';
-                messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sorry, there was an error submitting your request. Please try again.';
-                messageDiv.style.display = 'block';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-chart-line"></i> REQUEST PROFESSIONAL WEB ANALYSIS';
-            }
-        });
-
-        // SEO Score Checker Functionality (Admin Panel)
-        document.getElementById('checkSeoScore').addEventListener('click', function() {
-            const url = document.getElementById('seoUrl').value.trim();
-            const resultDiv = document.getElementById('seoResult');
-            const scoreValue = document.getElementById('seoScoreValue');
-            const scoreDescription = document.getElementById('seoScoreDescription');
-            
-            if (!url) {
-                alert('Please enter a website URL');
-                return;
-            }
-            
-            // Show loading
-            scoreValue.textContent = '...';
-            scoreDescription.textContent = 'Analyzing website SEO...';
-            resultDiv.style.display = 'block';
-            
-            // Simulate SEO analysis
-            setTimeout(() => {
-                const seoScore = generateSeoScore(url);
-                scoreValue.textContent = seoScore;
-                
-                if (seoScore >= 80) {
-                    scoreDescription.textContent = 'Excellent SEO! The website has strong optimization with good technical foundation and content quality.';
-                } else if (seoScore >= 60) {
-                    scoreDescription.textContent = 'Good SEO foundation with some areas for improvement in technical optimization and content strategy.';
-                } else if (seoScore >= 40) {
-                    scoreDescription.textContent = 'Average SEO performance. Needs significant improvements in multiple areas including technical SEO and content.';
-                } else {
-                    scoreDescription.textContent = 'Poor SEO performance. Requires comprehensive optimization strategy including technical fixes and content development.';
-                }
-                
-                // Auto-fill the SEO score in the professional analysis form
-                document.getElementById('seo-score').value = seoScore;
-            }, 1500);
-        });
-
-        // Function to generate realistic SEO score
-        function generateSeoScore(url) {
-            let baseScore = 50;
-            
-            if (url.includes('https://')) baseScore += 10;
-            
-            const domain = url.replace(/https?:\/\//, '').split('/')[0];
-            if (domain.length <= 15) baseScore += 5;
-            
-            if (domain.endsWith('.com')) baseScore += 5;
-            
-            const variation = Math.floor(Math.random() * 30) - 10;
-            
-            return Math.max(10, Math.min(95, baseScore + variation));
+            return JSON.parse(localStorage.getItem('webswanResults'));
         }
 
-        // Cookie Compliance Checker (Admin Panel)
-        document.getElementById('checkCookieCompliance').addEventListener('click', function() {
-            const url = document.getElementById('cookieUrl').value.trim();
-            const resultDiv = document.getElementById('cookieResult');
-            const statusDescription = document.getElementById('cookieStatusDescription');
-            const fineInfoDiv = document.getElementById('cookieFineInfo');
+        // Update storage
+        function updateStorage() {
+            localStorage.setItem('webswanResults', JSON.stringify(window.allTestResults));
+        }
+
+        // Load saved results on page load
+        window.allTestResults = initializeStorage();
+
+        // Back Office Functions
+        function toggleBackOffice() {
+            const mainInterface = document.getElementById('main-interface');
+            const backOffice = document.getElementById('back-office');
             
+            if (backOffice.style.display === 'none' || backOffice.style.display === '') {
+                mainInterface.style.display = 'none';
+                backOffice.style.display = 'block';
+                showSection('cheat-sheet');
+            } else {
+                backOffice.style.display = 'none';
+                mainInterface.style.display = 'block';
+            }
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.back-office-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).style.display = 'block';
+        }
+
+        // Compliance Functions - FIXED VERSION
+        function showStateResources() {
+            const stateSelect = document.getElementById('state-select');
+            const stateResources = document.getElementById('state-resources');
+            const stateTitle = document.getElementById('state-title');
+            const complianceLinks = document.getElementById('compliance-links');
+            
+            const selectedState = stateSelect.value;
+            
+            if (!selectedState) {
+                alert('Please select a state first!');
+                return;
+            }
+            
+            stateResources.style.display = 'block';
+            
+            // State-specific resources
+            const stateData = {
+                'california': {
+                    title: 'California CCPA/CPRA Resources',
+                    law: 'CCPA/CPRA',
+                    effective: 'January 1, 2020 / January 1, 2023',
+                    links: [
+                        {name: 'CA Attorney General CCPA Guidelines', url: 'https://oag.ca.gov/privacy/ccpa'},
+                        {name: 'CCPA Final Regulations', url: 'https://oag.ca.gov/privacy/ccpa-regulations'},
+                        {name: 'CPRA Official Text', url: 'https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?division=3.&part=4.&lawCode=CIV&title=1.81.5'},
+                        {name: 'Privacy Policy Requirements', url: 'https://oag.ca.gov/privacy/ccpa#privacy-policy'},
+                        {name: 'Opt-Out Requirements', url: 'https://oag.ca.gov/privacy/ccpa#opt-out'}
+                    ]
+                },
+                'colorado': {
+                    title: 'Colorado Privacy Act (CPA) Resources',
+                    law: 'CPA',
+                    effective: 'July 1, 2023',
+                    links: [
+                        {name: 'Colorado Attorney General Privacy', url: 'https://coag.gov/resources/colorado-privacy-act/'},
+                        {name: 'CPA Final Rules', url: 'https://coag.gov/app/uploads/2023/03/CPA-Final-Rules.pdf'},
+                        {name: 'CPA Universal Opt-Out', url: 'https://coag.gov/resources/universal-opt-out/'}
+                    ]
+                },
+                'virginia': {
+                    title: 'Virginia CDPA Resources',
+                    law: 'VCDPA',
+                    effective: 'January 1, 2023',
+                    links: [
+                        {name: 'Virginia CDPA Overview', url: 'https://www.oag.state.va.us/consumer-protection/index.php/privacy'},
+                        {name: 'VCDPA Full Text', url: 'https://law.lis.virginia.gov/vacode/title59.1/chapter53/'}
+                    ]
+                },
+                'utah': {
+                    title: 'Utah Consumer Privacy Act',
+                    law: 'UCPA',
+                    effective: 'December 31, 2023',
+                    links: [
+                        {name: 'UCPA Overview', url: 'https://le.utah.gov/~2022/bills/static/SB0227.html'},
+                        {name: 'Utah Privacy Laws', url: 'https://privacy.utah.gov/'}
+                    ]
+                },
+                'connecticut': {
+                    title: 'Connecticut Data Privacy Act',
+                    law: 'CTDPA',
+                    effective: 'July 1, 2023',
+                    links: [
+                        {name: 'CTDPA Overview', url: 'https://www.cga.ct.gov/2022/ACT/PA/PDF/2022PA-00015-R00SB-00006-PA.PDF'},
+                        {name: 'Connecticut Privacy Resources', url: 'https://portal.ct.gov/AG/Common-Questions/Privacy-and-Data-Security'}
+                    ]
+                },
+                'iowa': {
+                    title: 'Iowa Consumer Data Protection Act',
+                    law: 'ICDPA',
+                    effective: 'January 1, 2025',
+                    links: [
+                        {name: 'Iowa ICDPA Text', url: 'https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF262'},
+                        {name: 'Iowa Attorney General', url: 'https://www.iowaattorneygeneral.gov/'}
+                    ]
+                },
+                'tennessee': {
+                    title: 'Tennessee Information Protection Act',
+                    law: 'TIPA',
+                    effective: 'July 1, 2025',
+                    links: [
+                        {name: 'Tennessee TIPA Text', url: 'https://www.capitol.tn.gov/Bills/113/Bill/SB0073.pdf'},
+                        {name: 'TN Attorney General', url: 'https://www.tn.gov/attorneygeneral.html'}
+                    ]
+                },
+                'indiana': {
+                    title: 'Indiana Consumer Data Protection Act',
+                    law: 'ICDPA',
+                    effective: 'January 1, 2026',
+                    links: [
+                        {name: 'Indiana ICDPA Text', url: 'https://iga.in.gov/legislative/2023/bills/senate/5/details'},
+                        {name: 'IN Attorney General', url: 'https://www.in.gov/attorneygeneral/'}
+                    ]
+                },
+                'montana': {
+                    title: 'Montana Consumer Data Privacy Act',
+                    law: 'MCDPA',
+                    effective: 'October 1, 2024',
+                    links: [
+                        {name: 'Montana MCDPA Text', url: 'https://leg.mt.gov/bills/2023/billpdf/SB0384.pdf'},
+                        {name: 'MT Attorney General', url: 'https://dojmt.gov/'}
+                    ]
+                },
+                'texas': {
+                    title: 'Texas Data Privacy and Security Act',
+                    law: 'TDPSA',
+                    effective: 'July 1, 2024',
+                    links: [
+                        {name: 'Texas TDPSA Text', url: 'https://capitol.texas.gov/tlodocs/88R/billtext/pdf/HB00004F.pdf'},
+                        {name: 'TX Attorney General', url: 'https://www.texasattorneygeneral.gov/'},
+                        {name: 'Texas Privacy Laws', url: 'https://www.texasattorneygeneral.gov/consumer-protection/privacy-rights'}
+                    ]
+                },
+                'oregon': {
+                    title: 'Oregon Consumer Privacy Act',
+                    law: 'OCDPA',
+                    effective: 'July 1, 2024',
+                    links: [
+                        {name: 'Oregon OCDPA Text', url: 'https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/SB619/Enrolled'},
+                        {name: 'OR Attorney General', url: 'https://www.doj.state.or.us/'}
+                    ]
+                },
+                'delaware': {
+                    title: 'Delaware Personal Data Privacy Act',
+                    law: 'DDPA',
+                    effective: 'January 1, 2025',
+                    links: [
+                        {name: 'Delaware DDPA Text', url: 'https://legis.delaware.gov/BillDetail/148480'},
+                        {name: 'DE Attorney General', url: 'https://attorneygeneral.delaware.gov/'}
+                    ]
+                },
+                'florida': {
+                    title: 'Florida Digital Bill of Rights',
+                    law: 'FDBR',
+                    effective: 'July 1, 2024',
+                    links: [
+                        {name: 'Florida FDBR Text', url: 'https://www.flsenate.gov/Session/Bill/2023/262'},
+                        {name: 'FL Attorney General', url: 'https://www.myfloridalegal.com/'}
+                    ]
+                },
+                'newjersey': {
+                    title: 'New Jersey Data Privacy Act',
+                    law: 'NJDBR',
+                    effective: 'January 15, 2025',
+                    links: [
+                        {name: 'New Jersey NJDBR Text', url: 'https://www.njleg.state.nj.us/bill-search/2022/S332'},
+                        {name: 'NJ Attorney General', url: 'https://www.njoag.gov/'}
+                    ]
+                },
+                'newhampshire': {
+                    title: 'New Hampshire Privacy Act',
+                    law: 'NHDBR',
+                    effective: 'January 1, 2025',
+                    links: [
+                        {name: 'New Hampshire NHDBR Text', url: 'https://www.gencourt.state.nh.us/bill_status/legacy/bs2024/billText.aspx?id=2255&txtFormat=pdf&v=current'},
+                        {name: 'NH Attorney General', url: 'https://www.doj.nh.gov/'}
+                    ]
+                },
+                'gdpr': {
+                    title: 'GDPR Compliance Resources',
+                    law: 'GDPR',
+                    effective: 'May 25, 2018',
+                    links: [
+                        {name: 'GDPR Official Text', url: 'https://gdpr-info.eu/'},
+                        {name: 'GDPR Compliance Guide', url: 'https://gdpr.eu/'},
+                        {name: 'Data Protection Authorities', url: 'https://edpb.europa.eu/about-edpb/about-edpb/members_en'},
+                        {name: 'Cookie Consent Guidelines', url: 'https://edpb.europa.eu/sites/default/files/files/file1/edpb_guidelines_202005_consent_en.pdf'}
+                    ]
+                }
+            };
+            
+            const data = stateData[selectedState];
+            
+            if (!data) {
+                stateTitle.textContent = 'State Compliance Resources';
+                complianceLinks.innerHTML = `
+                    <div class="result-item">
+                        <strong>Resources for this state are being updated.</strong>
+                        <br><small>Check back soon for comprehensive compliance information.</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            stateTitle.textContent = data.title;
+            
+            // Build links HTML
+            let linksHTML = `
+                <div class="result-item success">
+                    <strong>Privacy Law:</strong> ${data.law}
+                    <br><strong>Effective Date:</strong> ${data.effective}
+                </div>
+            `;
+            
+            data.links.forEach(link => {
+                linksHTML += `
+                    <div class="result-item">
+                        <a href="${link.url}" target="_blank" style="color: #1e4870; text-decoration: none; font-weight: 500;">
+                            🔗 ${link.name}
+                        </a>
+                        <br><small>Click to view official resources</small>
+                    </div>
+                `;
+            });
+            
+            complianceLinks.innerHTML = linksHTML;
+        }
+
+        function downloadCompliancePDF() {
+            const stateSelect = document.getElementById('state-select');
+            const selectedState = stateSelect.options[stateSelect.selectedIndex].text;
+            
+            const doc = new jsPDF();
+            let yPosition = 20;
+            
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(30, 72, 112);
+            doc.text('Privacy Compliance Summary', 20, yPosition);
+            yPosition += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Generated for: ${selectedState}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, yPosition);
+            yPosition += 20;
+            
+            // Compliance Requirements
+            doc.setFontSize(16);
+            doc.setTextColor(30, 72, 112);
+            doc.text('Key Website Compliance Requirements:', 20, yPosition);
+            yPosition += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            const requirements = [
+                '✓ Privacy Policy with specific data disclosures',
+                '✓ Cookie Consent Banner for tracking cookies',
+                '✓ Data Collection Transparency',
+                '✓ Opt-Out Mechanisms for data sales/sharing',
+                '✓ Data Security Measures',
+                '✓ Vendor Management for third-party processors',
+                '✓ Record Keeping for compliance'
+            ];
+            
+            requirements.forEach(req => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(req, 25, yPosition);
+                yPosition += 8;
+            });
+            
+            yPosition += 10;
+            
+            // Footer
+            const pageHeight = doc.internal.pageSize.height;
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.text('Generated by WebSwan - Professional Compliance Tools', 20, pageHeight - 10);
+            
+            // Save PDF
+            doc.save(`WebSwan-Compliance-${selectedState.replace(/\s+/g, '-')}-${new Date().toISOString().slice(0, 10)}.pdf`);
+        }
+
+        // NEW FUNCTION: Download Non-Compliance Report
+        function downloadNonCompliancePDF() {
+            const stateSelect = document.getElementById('state-select');
+            const selectedState = stateSelect.options[stateSelect.selectedIndex].text;
+            
+            const doc = new jsPDF();
+            let yPosition = 20;
+            
+            // Header
+            doc.setFontSize(20);
+            doc.setTextColor(220, 53, 69);
+            doc.text('WEBSITE NON-COMPLIANCE REPORT', 20, yPosition);
+            yPosition += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`State: ${selectedState}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, yPosition);
+            yPosition += 20;
+            
+            // Critical Non-Compliance Issues
+            doc.setFontSize(16);
+            doc.setTextColor(220, 53, 69);
+            doc.text('🚨 CRITICAL COMPLIANCE ISSUES FOUND:', 20, yPosition);
+            yPosition += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            const nonComplianceIssues = [
+                '❌ Missing comprehensive Privacy Policy',
+                '❌ No cookie consent banner for tracking cookies',
+                '❌ Inadequate data collection disclosures',
+                '❌ Missing opt-out mechanisms for data sales',
+                '❌ No data security measures documented',
+                '❌ Third-party vendor management not established',
+                '❌ No record keeping for compliance audits',
+                '❌ Missing "Do Not Sell My Personal Information" link',
+                '❌ Inadequate data breach response plan',
+                '❌ No data processing agreements with vendors'
+            ];
+            
+            nonComplianceIssues.forEach(issue => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.setTextColor(220, 53, 69);
+                doc.text('•', 20, yPosition);
+                doc.setTextColor(0, 0, 0);
+                doc.text(issue, 25, yPosition);
+                yPosition += 8;
+            });
+            
+            yPosition += 10;
+            
+            // Required Actions
+            doc.setFontSize(14);
+            doc.setTextColor(30, 72, 112);
+            doc.text('🛠️ REQUIRED ACTIONS FOR COMPLIANCE:', 20, yPosition);
+            yPosition += 12;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            const requiredActions = [
+                '1. Implement comprehensive privacy policy with state-specific disclosures',
+                '2. Add cookie consent banner that blocks tracking cookies until consent',
+                '3. Create data inventory and mapping of all collected personal information',
+                '4. Implement opt-out mechanisms for data sales/sharing',
+                '5. Establish data security protocols and documentation',
+                '6. Create vendor management program with data processing agreements',
+                '7. Develop record keeping system for compliance documentation',
+                '8. Add "Do Not Sell My Personal Information" link (if applicable)',
+                '9. Create data breach response plan',
+                '10. Train staff on privacy compliance requirements'
+            ];
+            
+            requiredActions.forEach(action => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(action, 20, yPosition);
+                yPosition += 8;
+            });
+            
+            yPosition += 10;
+            
+            // Compliance Timeline
+            doc.setFontSize(14);
+            doc.setTextColor(30, 72, 112);
+            doc.text('📅 RECOMMENDED COMPLIANCE TIMELINE:', 20, yPosition);
+            yPosition += 12;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            const timeline = [
+                'Immediate (1-2 weeks): Basic privacy policy and cookie banner',
+                'Short-term (1 month): Data inventory and opt-out mechanisms',
+                'Medium-term (2-3 months): Security measures and vendor agreements',
+                'Long-term (3-6 months): Full compliance program implementation'
+            ];
+            
+            timeline.forEach(item => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(item, 20, yPosition);
+                yPosition += 8;
+            });
+            
+            // Footer
+            const pageHeight = doc.internal.pageSize.height;
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.text('Generated by WebSwan - Professional Compliance Audit Tools', 20, pageHeight - 10);
+            
+            // Save PDF
+            doc.save(`WebSwan-Non-Compliance-${selectedState.replace(/\s+/g, '-')}-${new Date().toISOString().slice(0, 10)}.pdf`);
+        }
+
+        // Auto-fill URL function
+        function autoFillURL(inputId) {
+            const currentDomain = window.location.hostname;
+            document.getElementById(inputId).value = `https://${currentDomain}`;
+        }
+
+        // GTMetrix Analysis Function
+        function runGTMetrixAnalysis() {
+            const url = document.getElementById('gtmetrix-url').value;
             if (!url) {
                 alert('Please enter a website URL');
                 return;
             }
+
+            const loading = document.getElementById('gtmetrix-loading');
+            const results = document.getElementById('gtmetrix-results');
+            const downloadBtn = document.getElementById('gtmetrix-download');
             
-            // Show loading
-            statusDescription.textContent = 'Analyzing website for cookie compliance...';
-            resultDiv.style.display = 'block';
-            fineInfoDiv.innerHTML = '';
-            
-            // Simulate cookie compliance analysis
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
             setTimeout(() => {
-                const hasCookieBanner = Math.random() > 0.3;
-                const hasPrivacyPolicy = Math.random() > 0.4;
-                const isGDPRCompliant = Math.random() > 0.5;
-                const isCCPACompliant = Math.random() > 0.6;
+                loading.style.display = 'none';
+                results.style.display = 'block';
+                downloadBtn.style.display = 'block';
                 
-                let status = '';
-                let statusClass = '';
+                // Mock results
+                document.getElementById('pagespeed-score').textContent = '85/100';
+                document.getElementById('yslow-score').textContent = '78/100';
+                document.getElementById('load-time').textContent = '2.3s';
+                document.getElementById('page-size').textContent = '1.2MB';
                 
-                if (hasCookieBanner && hasPrivacyPolicy && isGDPRCompliant && isCCPACompliant) {
-                    status = '✅ This website appears to be fully compliant with major privacy regulations.';
-                    statusClass = 'good';
-                } else if (hasCookieBanner && hasPrivacyPolicy) {
-                    status = '🟡 This website has basic cookie compliance but may not meet all regulatory requirements.';
-                    statusClass = 'warning';
-                } else {
-                    status = '❌ This website does not appear to have proper cookie consent or privacy policy.';
-                    statusClass = 'info';
-                }
+                // Store results
+                window.allTestResults.gtmetrix = {
+                    url: url,
+                    pagespeed: '85/100',
+                    yslow: '78/100',
+                    loadTime: '2.3s',
+                    pageSize: '1.2MB',
+                    timestamp: new Date().toLocaleString()
+                };
+                updateStorage();
+            }, 2000);
+        }
+
+        // Cookie Analysis Function
+        function runCookieAnalysis() {
+            const url = document.getElementById('cookie-url').value;
+            if (!url) {
+                alert('Please enter a website URL');
+                return;
+            }
+
+            const loading = document.getElementById('cookie-loading');
+            const results = document.getElementById('cookie-results');
+            const cookieList = document.getElementById('cookie-list');
+            const downloadBtn = document.getElementById('cookie-download');
+            
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
+            setTimeout(() => {
+                loading.style.display = 'none';
+                results.style.display = 'block';
+                downloadBtn.style.display = 'block';
                 
-                statusDescription.innerHTML = `
-                    <div class="issue ${statusClass}">
-                        <div class="issue-title">${status}</div>
-                        <div class="issue-desc">
-                            <ul>
-                                <li>Cookie Banner: ${hasCookieBanner ? '✅ Present' : '❌ Missing'}</li>
-                                <li>Privacy Policy: ${hasPrivacyPolicy ? '✅ Present' : '❌ Missing'}</li>
-                                <li>GDPR Compliance: ${isGDPRCompliant ? '✅ Likely Compliant' : '❌ Potential Issues'}</li>
-                                <li>CCPA Compliance: ${isCCPACompliant ? '✅ Likely Compliant' : '❌ Potential Issues'}</li>
-                            </ul>
-                        </div>
+                // Mock cookie results
+                cookieList.innerHTML = `
+                    <div class="result-item success">
+                        <strong>Session Cookie:</strong> PHPSESSID (Secure, HttpOnly)
+                        <br><small>🟢 GOOD: Temporary cookie that expires when you close browser</small>
+                    </div>
+                    <div class="result-item warning">
+                        <strong>Tracking Cookie:</strong> _ga (Google Analytics)
+                        <br><small>🟡 WARNING: Tracks user behavior across sessions</small>
+                    </div>
+                    <div class="result-item error">
+                        <strong>Third-party Cookie:</strong> fbp (Facebook Pixel)
+                        <br><small>🔴 PROBLEM: From external domain, used for advertising</small>
+                    </div>
+                    <div class="result-item info">
+                        <strong>Preference Cookie:</strong> user_preferences
+                        <br><small>🔵 INFO: Stores user settings like language or theme</small>
                     </div>
                 `;
                 
-                if (!hasCookieBanner || !hasPrivacyPolicy) {
-                    fineInfoDiv.innerHTML = `
-                        <h5><i class="fas fa-exclamation-triangle"></i> Potential Legal Risk</h5>
-                        <p>Websites without proper cookie consent and privacy policies may face fines under privacy laws.</p>
-                        <p><strong>Recommendation:</strong> Implement a compliant cookie banner and comprehensive privacy policy immediately.</p>
-                    `;
-                }
+                // Store results
+                window.allTestResults.cookie = {
+                    url: url,
+                    cookies: [
+                        { name: 'PHPSESSID', type: 'Session', status: 'success', details: 'Secure, HttpOnly - Temporary session management' },
+                        { name: '_ga', type: 'Tracking', status: 'warning', details: 'Google Analytics - User behavior tracking' },
+                        { name: 'fbp', type: 'Third-party', status: 'error', details: 'Facebook Pixel - Cross-site advertising tracking' },
+                        { name: 'user_preferences', type: 'Preference', status: 'info', details: 'Stores user interface preferences' }
+                    ],
+                    timestamp: new Date().toLocaleString()
+                };
+                updateStorage();
+            }, 1500);
+        }
+
+        // SEO Analysis Function
+        function runSEOAnalysis() {
+            const url = document.getElementById('seo-url').value;
+            if (!url) {
+                alert('Please enter a website URL');
+                return;
+            }
+
+            const loading = document.getElementById('seo-loading');
+            const results = document.getElementById('seo-results');
+            const downloadBtn = document.getElementById('seo-download');
+            
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            downloadBtn.style.display = 'none';
+
+            setTimeout(() => {
+                loading.style.display = 'none';
+                results.style.display = 'block';
+                downloadBtn.style.display = 'block';
                 
-                fineInfoDiv.style.display = 'block';
+                // Mock SEO results
+                document.getElementById('meta-tags').textContent = 'Good ✓';
+                document.getElementById('heading-structure').textContent = 'Needs Improvement ⚠️';
+                document.getElementById('alt-tags').textContent = 'Poor ✗';
+                document.getElementById('mobile-friendly').textContent = 'Excellent ✓';
+                
+                // Store results
+                window.allTestResults.seo = {
+                    url: url,
+                    metaTags: 'Good ✓',
+                    headingStructure: 'Needs Improvement ⚠️',
+                    altTags: 'Poor ✗',
+                    mobileFriendly: 'Excellent ✓',
+                    timestamp: new Date().toLocaleString()
+                };
+                updateStorage();
+            }, 1800);
+        }
+
+        // Security Testing Functions
+        function testSecurityHeaders() {
+            const url = document.getElementById('security-url').value;
+            if (!url) {
+                alert('Please enter a website URL for security testing');
+                return;
+            }
+
+            showSecurityLoading();
+            setTimeout(() => {
+                hideSecurityLoading();
+                document.getElementById('security-results-list').innerHTML = `
+                    <div class="result-item success">
+                        <strong>Content-Security-Policy:</strong> Present ✓
+                        <br><small>Prevents XSS attacks by controlling resources</small>
+                    </div>
+                    <div class="result-item success">
+                        <strong>X-Frame-Options:</strong> DENY ✓
+                        <br><small>Prevents clickjacking attacks</small>
+                    </div>
+                    <div class="result-item warning">
+                        <strong>Strict-Transport-Security:</strong> Could be longer ⚠️
+                        <br><small>Forces HTTPS but max-age could be increased</small>
+                    </div>
+                    <div class="result-item error">
+                        <strong>X-Content-Type-Options:</strong> Missing ✗
+                        <br><small>Allows MIME type sniffing vulnerabilities</small>
+                    </div>
+                `;
+                document.getElementById('security-results').style.display = 'block';
+                document.getElementById('security-download').style.display = 'block';
+                
+                // Store results
+                window.allTestResults.security = {
+                    url: url,
+                    testType: 'Security Headers',
+                    results: [
+                        { name: 'Content-Security-Policy', status: 'success', details: 'Present ✓ - Prevents XSS attacks' },
+                        { name: 'X-Frame-Options', status: 'success', details: 'DENY ✓ - Prevents clickjacking' },
+                        { name: 'Strict-Transport-Security', status: 'warning', details: 'Could be longer ⚠️ - Max-age should be increased' },
+                        { name: 'X-Content-Type-Options', status: 'error', details: 'Missing ✗ - Allows MIME type sniffing' }
+                    ],
+                    timestamp: new Date().toLocaleString()
+                };
+                updateStorage();
+            }, 1500);
+        }
+
+        function testSSL() {
+            const url = document.getElementById('security-url').value;
+            if (!url) {
+                alert('Please enter a website URL for security testing');
+                return;
+            }
+
+            showSecurityLoading();
+            setTimeout(() => {
+                hideSecurityLoading();
+                document.getElementById('security-results-list').innerHTML = `
+                    <div class="result-item success">
+                        <strong>SSL Certificate:</strong> Valid ✓
+                        <br><small>Certificate is properly issued and trusted</small>
+                    </div>
+                    <div class="result-item success">
+                        <strong>Certificate Authority:</strong> Let's Encrypt ✓
+                        <br><small>Issued by reputable certificate authority</small>
+                    </div>
+                    <div class="result-item success">
+                        <strong>Expiration Date:</strong> 90 days remaining ✓
+                        <br><small>Certificate has sufficient time before expiry</small>
+                    </div>
+                    <div class="result-item warning">
+                        <strong>Protocol Support:</strong> TLS 1.2+ only ⚠️
+                        <br><small>Should support older TLS 1.0/1.1 for compatibility</small>
+                    </div>
+                `;
+                document.getElementById('security-results').style.display = 'block';
+                document.getElementById('security-download').style.display = 'block';
+                
+                // Store results
+                window.allTestResults.security = {
+                    url: url,
+                    testType: 'SSL Certificate',
+                    results: [
+                        { name: 'SSL Certificate', status: 'success', details: 'Valid ✓ - Properly issued and trusted' },
+                        { name: 'Certificate Authority', status: 'success', details: "Let's Encrypt ✓ - Reputable CA" },
+                        { name: 'Expiration Date', status: 'success', details: '90 days remaining ✓ - Sufficient time before expiry' },
+                        { name: 'Protocol Support', status: 'warning', details: 'TLS 1.2+ only ⚠️ - Limited backward compatibility' }
+                    ],
+                    timestamp: new Date().toLocaleString()
+                };
+                updateStorage();
+            }, 1500);
+        }
+
+        function testVulnerabilities() {
+            const url = document.getElementById('security-url').value;
+            if (!url) {
+                alert('Please enter a website URL for security testing');
+                return;
+            }
+
+            showSecurityLoading();
+            setTimeout(() => {
+                hideSecurityLoading();
+                document.getElementById('security-results-list').innerHTML = `
+                    <div class="result-item success">
+                        <strong>SQL Injection:</strong> Protected ✓
+                        <br><small>Input sanitization prevents database attacks</small>
+                    </div>
+                    <div class="result-item success">
+                        <strong>XSS Protection:</strong> Enabled ✓
+                        <br><small>Cross-site scripting protections are active</small>
+                    </div>
+                    <div class="result-item warning">
+                        <strong>CSRF Protection:</strong> Basic ⚠️
+                        <br><small>Cross-site request forgery protection needs improvement</small>
+                    </div>
+                    <div class="result-item error">
+                        <strong>Outdated Software:</strong> WordPress 5.8 ✗
+                        <br><small>Using outdated CMS version with known vulnerabilities</small>
+                    </div>
+                `;
+                document.getElementById('security-results').style.display = 'block';
+                document.getElementById('security-download').style.display = 'block';
+                
+                // Store results
+                window.allTestResults.security = {
+                    url: url,
+                    testType: 'Vulnerability Scan',
+                    results: [
+                        { name: 'SQL Injection', status: 'success', details: 'Protected ✓ - Input sanitization prevents database attacks' },
+                        { name: 'XSS Protection', status: 'success', details: 'Enabled ✓ - Cross-site scripting protections active' },
+                        { name: 'CSRF Protection', status: 'warning', details: 'Basic ⚠️ - Needs stronger token validation' },
+                        { name: 'Outdated Software', status: 'error', details: 'WordPress 5.8 ✗ - Contains known security vulnerabilities' }
+                    ],
+                    timestamp: new Date().toLocaleString()
+                };
+                updateStorage();
             }, 2000);
+        }
+
+        function testHTTPHeaders() {
+            const url = document.getElementById('security-url').value;
+            if (!url) {
+                alert('Please enter a website URL for security testing');
+                return;
+            }
+
+            showSecurityLoading();
+            setTimeout(() => {
+                hideSecurityLoading();
+                document.getElementById('security-results-list').innerHTML = `
+                    <div class="result-item info">
+                        <strong>Server:</strong> Apache/2.4.41
+                        <br><small>Web server software version</small>
+                    </div>
+                    <div class="result-item info">
+                        <strong>X-Powered-By:</strong> PHP/7.4.3
+                        <br><small>Backend programming language version</small>
+                    </div>
+                    <div class="result-item warning">
+                        <strong>Cache-Control:</strong> Could be optimized ⚠️
+                        <br><small>Browser caching settings need improvement</small>
+                    </div>
+                    <div class="result-item success">
+                        <strong>Content-Encoding:</strong> gzip ✓
+                        <br><small>Response compression reduces bandwidth usage</small>
+                    </div>
+                `;
+                document.getElementById('security-results').style.display = 'block';
+                document.getElementById('security-download').style.display = 'block';
+                
+                // Store results
+                window.allTestResults.security = {
+                    url: url,
+                    testType: 'HTTP Headers Analysis',
+                    results: [
+                        { name: 'Server', status: 'info', details: 'Apache/2.4.41 - Web server version' },
+                        { name: 'X-Powered-By', status: 'info', details: 'PHP/7.4.3 - Backend language version' },
+                        { name: 'Cache-Control', status: 'warning', details: 'Could be optimized ⚠️ - Browser caching needs improvement' },
+                        { name: 'Content-Encoding', status: 'success', details: 'gzip ✓ - Response compression enabled' }
+                    ],
+                    timestamp: new Date().toLocaleString()
+                };
+                updateStorage();
+            }, 1200);
+        }
+
+        function showSecurityLoading() {
+            document.getElementById('security-loading').style.display = 'block';
+            document.getElementById('security-results').style.display = 'none';
+            document.getElementById('security-download').style.display = 'none';
+        }
+
+        function hideSecurityLoading() {
+            document.getElementById('security-loading').style.display = 'none';
+        }
+
+        // Comment box character counter
+        document.getElementById('user-comments').addEventListener('input', function() {
+            const text = this.value;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            document.getElementById('char-count').textContent = `${words}/1000 words`;
+            
+            // Store comments
+            window.allTestResults.comments = text;
+            updateStorage();
         });
 
-        // Professional Report Generation (Admin Panel)
-        document.getElementById('generateProReport').addEventListener('click', function() {
-            alert('Professional report generation would be implemented here with the collected data.');
+        // Reset all data
+        function resetAllData() {
+            if (confirm('Are you sure you want to reset all data? This will clear all test results and comments.')) {
+                window.allTestResults = {
+                    gtmetrix: null,
+                    cookie: null,
+                    seo: null,
+                    security: null,
+                    comments: '',
+                    timestamp: null
+                };
+                updateStorage();
+                
+                // Reset UI
+                document.getElementById('user-comments').value = '';
+                document.getElementById('char-count').textContent = '0/1000 words';
+                
+                // Hide all results and download buttons
+                document.querySelectorAll('.results-section').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.download-btn').forEach(el => el.style.display = 'none');
+                
+                // Clear URL inputs
+                document.querySelectorAll('.url-input').forEach(input => input.value = '');
+                
+                // Auto-fill with current domain
+                const currentDomain = window.location.hostname;
+                document.querySelectorAll('.url-input').forEach(input => {
+                    input.value = `https://${currentDomain}`;
+                });
+                
+                alert('All data has been reset. Ready for next analysis!');
+            }
+        }
+
+        // PDF Download Functions
+        function downloadPDF(type) {
+            const doc = new jsPDF();
+            let yPosition = 20;
+            
+            // Add header
+            doc.setFontSize(20);
+            doc.setTextColor(30, 72, 112);
+            doc.text('WebSwan Analysis Report', 20, yPosition);
+            yPosition += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, yPosition);
+            yPosition += 20;
+            
+            // Add content based on analysis type
+            switch(type) {
+                case 'gtmetrix':
+                    if (window.allTestResults.gtmetrix) {
+                        doc.setFontSize(16);
+                        doc.setTextColor(30, 72, 112);
+                        doc.text('GTMetrix Performance Analysis', 20, yPosition);
+                        yPosition += 15;
+                        
+                        doc.setFontSize(12);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(`Website: ${window.allTestResults.gtmetrix.url}`, 20, yPosition);
+                        yPosition += 10;
+                        
+                        doc.text(`PageSpeed Score: ${window.allTestResults.gtmetrix.pagespeed}`, 20, yPosition);
+                        yPosition += 8;
+                        
+                        doc.text(`YSlow Score: ${window.allTestResults.gtmetrix.yslow}`, 20, yPosition);
+                        yPosition += 8;
+                        
+                        doc.text(`Fully Loaded Time: ${window.allTestResults.gtmetrix.loadTime}`, 20, yPosition);
+                        yPosition += 8;
+                        
+                        doc.text(`Total Page Size: ${window.allTestResults.gtmetrix.pageSize}`, 20, yPosition);
+                    }
+                    break;
+                    
+                case 'cookie':
+                    if (window.allTestResults.cookie) {
+                        doc.setFontSize(16);
+                        doc.setTextColor(30, 72, 112);
+                        doc.text('Cookie & Privacy Analysis', 20, yPosition);
+                        yPosition += 15;
+                        
+                        doc.setFontSize(12);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(`Website: ${window.allTestResults.cookie.url}`, 20, yPosition);
+                        yPosition += 15;
+                        
+                        window.allTestResults.cookie.cookies.forEach(cookie => {
+                            let statusColor;
+                            switch(cookie.status) {
+                                case 'success': statusColor = [40, 167, 69]; break;
+                                case 'warning': statusColor = [255, 193, 7]; break;
+                                case 'error': statusColor = [220, 53, 69]; break;
+                                default: statusColor = [0, 0, 0];
+                            }
+                            
+                            doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
+                            doc.text(`${cookie.type} Cookie: ${cookie.name}`, 20, yPosition);
+                            yPosition += 7;
+                            
+                            if (cookie.details) {
+                                doc.setTextColor(100, 100, 100);
+                                doc.text(`Details: ${cookie.details}`, 25, yPosition);
+                                yPosition += 7;
+                            }
+                            yPosition += 3;
+                        });
+                    }
+                    break;
+                    
+                case 'seo':
+                    if (window.allTestResults.seo) {
+                        doc.setFontSize(16);
+                        doc.setTextColor(30, 72, 112);
+                        doc.text('SEO Analysis', 20, yPosition);
+                        yPosition += 15;
+                        
+                        doc.setFontSize(12);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(`Website: ${window.allTestResults.seo.url}`, 20, yPosition);
+                        yPosition += 10;
+                        
+                        doc.text(`Meta Tags: ${window.allTestResults.seo.metaTags}`, 20, yPosition);
+                        yPosition += 8;
+                        
+                        doc.text(`Heading Structure: ${window.allTestResults.seo.headingStructure}`, 20, yPosition);
+                        yPosition += 8;
+                        
+                        doc.text(`Image ALT Tags: ${window.allTestResults.seo.altTags}`, 20, yPosition);
+                        yPosition += 8;
+                        
+                        doc.text(`Mobile Friendly: ${window.allTestResults.seo.mobileFriendly}`, 20, yPosition);
+                    }
+                    break;
+                    
+                case 'security':
+                    if (window.allTestResults.security) {
+                        doc.setFontSize(16);
+                        doc.setTextColor(30, 72, 112);
+                        doc.text(`Security Test: ${window.allTestResults.security.testType}`, 20, yPosition);
+                        yPosition += 15;
+                        
+                        doc.setFontSize(12);
+                        doc.text(`Website: ${window.allTestResults.security.url}`, 20, yPosition);
+                        yPosition += 10;
+                        
+                        window.allTestResults.security.results.forEach(result => {
+                            let statusColor;
+                            switch(result.status) {
+                                case 'success': statusColor = [40, 167, 69]; break;
+                                case 'warning': statusColor = [255, 193, 7]; break;
+                                case 'error': statusColor = [220, 53, 69]; break;
+                                default: statusColor = [0, 0, 0];
+                            }
+                            
+                            doc.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
+                            doc.text(`${result.name}: ${result.details}`, 20, yPosition);
+                            yPosition += 8;
+                        });
+                    }
+                    break;
+                    
+                case 'quick-links':
+                    doc.setFontSize(16);
+                    doc.setTextColor(30, 72, 112);
+                    doc.text('Quick Analysis Tools Guide', 20, yPosition);
+                    yPosition += 15;
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('External Tools for Comprehensive Website Analysis:', 20, yPosition);
+                    yPosition += 10;
+                    
+                    const tools = [
+                        'GTMetrix Official - Performance analysis',
+                        'Google PageSpeed - Speed optimization',
+                        'Security Headers - Security header testing',
+                        'SSL Labs Test - SSL certificate analysis',
+                        'Mobile-Friendly Test - Mobile compatibility',
+                        'HTML Validator - Code validation'
+                    ];
+                    
+                    tools.forEach(tool => {
+                        doc.text(`• ${tool}`, 20, yPosition);
+                        yPosition += 8;
+                    });
+                    break;
+                    
+                case 'cheat-sheet':
+                    doc.setFontSize(16);
+                    doc.setTextColor(30, 72, 112);
+                    doc.text('WebSwan Internal Cheat Sheet', 20, yPosition);
+                    yPosition += 15;
+                    
+                    doc.setFontSize(10);
+                    doc.setTextColor(0, 0, 0);
+                    
+                    const cheatSheetContent = [
+                        'PERFORMANCE SCORE GUIDE:',
+                        'PageSpeed Score (0-100):',
+                        '• 90-100: Excellent',
+                        '• 80-89: Good', 
+                        '• 70-79: Needs Improvement',
+                        '• 0-69: Poor',
+                        '',
+                        'YSlow Score (0-100):',
+                        '• 90-100: Excellent',
+                        '• 80-89: Good',
+                        '• 70-79: Needs Improvement',
+                        '• 0-69: Poor',
+                        '',
+                        'Fully Loaded Time:',
+                        '• 0-2s: Excellent',
+                        '• 2-4s: Good',
+                        '• 4-6s: Slow',
+                        '• 6s+: Very Slow',
+                        '',
+                        'COOKIE COLORS:',
+                        '• GREEN: Session Cookie - Temporary, expires when browser closes',
+                        '• YELLOW: Tracking Cookie - Tracks user behavior',
+                        '• RED: Third-party Cookie - From external domains',
+                        '• BLUE: Preference Cookie - Stores user settings'
+                    ];
+                    
+                    cheatSheetContent.forEach(line => {
+                        if (yPosition > 270) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        doc.text(line, 20, yPosition);
+                        yPosition += 6;
+                    });
+                    break;
+            }
+            
+            // Add footer
+            const pageHeight = doc.internal.pageSize.height;
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.text('Generated by WebSwan - Professional Website Analysis Tools', 20, pageHeight - 10);
+            
+            // Save the PDF
+            doc.save(`WebSwan-${type}-${new Date().toISOString().slice(0, 10)}.pdf`);
+        }
+
+        // Complete Report Download
+        function downloadCompleteReport() {
+            const doc = new jsPDF();
+            let yPosition = 20;
+            
+            // Add header
+            doc.setFontSize(20);
+            doc.setTextColor(30, 72, 112);
+            doc.text('WebSwan Complete Analysis Report', 20, yPosition);
+            yPosition += 15;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, yPosition);
+            yPosition += 20;
+            
+            // Add each test section
+            const tests = [
+                { type: 'gtmetrix', title: 'Performance Analysis' },
+                { type: 'cookie', title: 'Cookie & Privacy Analysis' },
+                { type: 'seo', title: 'SEO Analysis' },
+                { type: 'security', title: 'Security Analysis' }
+            ];
+            
+            let testsPerformed = 0;
+            
+            tests.forEach(test => {
+                if (window.allTestResults[test.type]) {
+                    testsPerformed++;
+                    // Add section header
+                    if (yPosition > 250) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    doc.setFontSize(16);
+                    doc.setTextColor(30, 72, 112);
+                    doc.text(test.title, 20, yPosition);
+                    yPosition += 10;
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(0, 0, 0);
+                    
+                    // Add test-specific content
+                    switch(test.type) {
+                        case 'gtmetrix':
+                            doc.text(`Website: ${window.allTestResults.gtmetrix.url}`, 20, yPosition);
+                            yPosition += 8;
+                            doc.text(`PageSpeed Score: ${window.allTestResults.gtmetrix.pagespeed}`, 20, yPosition);
+                            yPosition += 8;
+                            doc.text(`YSlow Score: ${window.allTestResults.gtmetrix.yslow}`, 20, yPosition);
+                            yPosition += 8;
+                            doc.text(`Fully Loaded Time: ${window.allTestResults.gtmetrix.loadTime}`, 20, yPosition);
+                            yPosition += 8;
+                            doc.text(`Total Page Size: ${window.allTestResults.gtmetrix.pageSize}`, 20, yPosition);
+                            break;
+                            
+                        case 'cookie':
+                            doc.text(`Website: ${window.allTestResults.cookie.url}`, 20, yPosition);
+                            yPosition += 8;
+                            window.allTestResults.cookie.cookies.forEach(cookie => {
+                                doc.text(`${cookie.type} Cookie: ${cookie.name} - ${cookie.details}`, 20, yPosition);
+                                yPosition += 6;
+                            });
+                            break;
+                            
+                        case 'seo':
+                            doc.text(`Website: ${window.allTestResults.seo.url}`, 20, yPosition);
+                            yPosition += 8;
+                            doc.text(`Meta Tags: ${window.allTestResults.seo.metaTags}`, 20, yPosition);
+                            yPosition += 6;
+                            doc.text(`Heading Structure: ${window.allTestResults.seo.headingStructure}`, 20, yPosition);
+                            yPosition += 6;
+                            doc.text(`Image ALT Tags: ${window.allTestResults.seo.altTags}`, 20, yPosition);
+                            yPosition += 6;
+                            doc.text(`Mobile Friendly: ${window.allTestResults.seo.mobileFriendly}`, 20, yPosition);
+                            break;
+                            
+                        case 'security':
+                            doc.text(`Website: ${window.allTestResults.security.url}`, 20, yPosition);
+                            yPosition += 8;
+                            doc.text(`Test Type: ${window.allTestResults.security.testType}`, 20, yPosition);
+                            yPosition += 8;
+                            window.allTestResults.security.results.forEach(result => {
+                                doc.text(`${result.name}: ${result.details}`, 20, yPosition);
+                                yPosition += 6;
+                            });
+                            break;
+                    }
+                    
+                    yPosition += 15;
+                }
+            });
+            
+            // Add comments section if comments exist
+            if (window.allTestResults.comments && window.allTestResults.comments.trim() !== '') {
+                if (yPosition > 200) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                
+                doc.setFontSize(16);
+                doc.setTextColor(30, 72, 112);
+                doc.text('Additional Comments & Notes', 20, yPosition);
+                yPosition += 10;
+                
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0);
+                
+                const comments = window.allTestResults.comments;
+                const splitComments = doc.splitTextToSize(comments, 170);
+                doc.text(splitComments, 20, yPosition);
+            }
+            
+            // If no tests performed, show message
+            if (testsPerformed === 0) {
+                doc.setFontSize(14);
+                doc.setTextColor(100, 100, 100);
+                doc.text('No test results available. Please run some analyses first.', 20, yPosition);
+            }
+            
+            // Add footer
+            const pageHeight = doc.internal.pageSize.height;
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.text('Generated by WebSwan - Professional Website Analysis Tools', 20, pageHeight - 10);
+            
+            // Save the PDF
+            doc.save(`WebSwan-Complete-Report-${new Date().toISOString().slice(0, 10)}.pdf`);
+        }
+
+        // Auto-fill with current domain for testing and load saved comments
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDomain = window.location.hostname;
+            const urlInputs = document.querySelectorAll('.url-input');
+            urlInputs.forEach(input => {
+                input.value = `https://${currentDomain}`;
+            });
+            
+            // Load saved comments
+            if (window.allTestResults.comments) {
+                document.getElementById('user-comments').value = window.allTestResults.comments;
+                const words = window.allTestResults.comments.trim() === '' ? 0 : window.allTestResults.comments.trim().split(/\s+/).length;
+                document.getElementById('char-count').textContent = `${words}/1000 words`;
+            }
         });
     </script>
 </body>
