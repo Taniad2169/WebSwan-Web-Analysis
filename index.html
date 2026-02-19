@@ -662,6 +662,33 @@
             box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
         }
 
+        /* NEW: Rich Results Test specific styles */
+        .rich-results-card {
+            margin-top: 20px;
+            border-top: 3px solid #4285f4;
+        }
+
+        .rich-results-link {
+            display: inline-block;
+            background: linear-gradient(to right, #4285f4, #34a853);
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .rich-results-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
+        }
+
         @media (max-width: 768px) {
             .analysis-grid {
                 grid-template-columns: 1fr;
@@ -1015,6 +1042,41 @@
                 </div>
             </div>
 
+            <!-- Rich Results Test Card -->
+            <div class="analysis-card rich-results-card">
+                <div class="card-header">
+                    <div class="card-icon">🔍</div>
+                    <h2 class="card-title">Google Rich Results Test</h2>
+                </div>
+                <p style="margin-bottom: 20px; color: #666;">Test your website's structured data and see how it appears in Google search results with rich snippets</p>
+                
+                <div class="input-group">
+                    <label for="rich-results-url">Enter Website URL:</label>
+                    <input type="url" id="rich-results-url" class="url-input" placeholder="https://example.com" required>
+                    <button class="auto-fill-btn" onclick="autoFillURL('rich-results-url')">🔗 Auto-fill Current Domain</button>
+                </div>
+                
+                <a href="#" id="rich-results-link" class="rich-results-link" target="_blank">
+                    🔍 Test Rich Results on Google
+                </a>
+                
+                <div class="observations-section" style="margin-top: 15px;">
+                    <h5>📋 What is Rich Results Testing?</h5>
+                    <div class="observation-item">
+                        <strong>What This Test Does:</strong> Google's Rich Results Test analyzes your webpage to see if it's eligible to display rich results in Google Search. Rich results can include features like star ratings, product prices, event details, and job postings that make your listing stand out in search results.
+                    </div>
+                    <div class="observation-item">
+                        <strong>Structured Data:</strong> Checks if your website has proper schema markup that helps Google understand your content and display enhanced search results.
+                    </div>
+                    <div class="observation-item">
+                        <strong>SEO Benefits:</strong> Rich results can significantly increase click-through rates by making your search listing more prominent and informative.
+                    </div>
+                    <div class="observation-item">
+                        <strong>Example Result:</strong> <a href="https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ" target="_blank" style="color: #4285f4;">View Sample Rich Results Test</a>
+                    </div>
+                </div>
+            </div>
+
             <!-- Comments Section -->
             <div class="comments-section">
                 <h3>💬 Additional Comments & Observations</h3>
@@ -1032,6 +1094,7 @@
                     <a href="#" class="link-item">🍪 Cookie Compliance Guide</a>
                     <a href="#" class="link-item">🔍 SEO Best Practices</a>
                     <a href="#" class="link-item">🛡️ Security Headers Guide</a>
+                    <a href="https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ" class="link-item" target="_blank">✨ Rich Results Sample Test</a>
                 </div>
                 <button class="quick-links-download" onclick="downloadQuickLinks()">📄 Download Resource Guide</button>
             </div>
@@ -1103,6 +1166,18 @@
                             <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Implement Referrer-Policy</li>
                         </ul>
                     </div>
+
+                    <div class="cheat-sheet-card">
+                        <h4>✨ Rich Results & Schema Markup</h4>
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Implement Organization schema</li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Add LocalBusiness markup for local SEO</li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Use Product schema for e-commerce</li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Add Review schema for testimonials</li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Test with Google Rich Results Tool</li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ <a href="https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ" target="_blank" style="color: #4285f4;">Sample Rich Results Test</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
@@ -1142,6 +1217,7 @@
                         <li>Enter the website URL you want to analyze</li>
                         <li>Click the appropriate analysis button for the test you want to run</li>
                         <li>Review the results and detailed analysis</li>
+                        <li>Use the Google Rich Results Test to check your structured data</li>
                         <li>Download the comprehensive report for documentation</li>
                     </ol>
                     <p>For additional support, contact our team at support@webswan.com</p>
@@ -1174,6 +1250,19 @@
             const currentDomain = window.location.hostname;
             document.getElementById(inputId).value = 'https://' + currentDomain;
         }
+
+        // Update Rich Results Link
+        document.getElementById('rich-results-url').addEventListener('input', function() {
+            const url = this.value;
+            const link = document.getElementById('rich-results-link');
+            if (url) {
+                // For demo purposes, we're using a sample URL
+                // In a real app, you would need to use Google's API
+                link.href = `https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ&url=${encodeURIComponent(url)}`;
+            } else {
+                link.href = 'https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ';
+            }
+        });
 
         // Toggle Back Office
         function toggleBackOffice() {
