@@ -51,6 +51,152 @@
             background: linear-gradient(to right, #5a6268, #727b84);
         }
 
+        /* Login Overlay */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #194c7d 0%, #94e3cf 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .login-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .login-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .login-title {
+            font-size: 24px;
+            color: #1e4870;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        /* Password Modal */
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-modal.active {
+            display: flex;
+        }
+
+        .password-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 350px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .password-box h3 {
+            color: #1e4870;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #2cd0e6;
+        }
+
+        .password-btn {
+            background: linear-gradient(to right, #2cd0e6, #58e8d7);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .password-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.4);
+        }
+
+        .password-error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .locked-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 1001;
+            display: none;
+        }
+
         header {
             text-align: center;
             padding: 40px 20px;
@@ -732,6 +878,25 @@
     </style>
 </head>
 <body>
+    <!-- Login Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div class="login-icon" id="loginIcon">🔐</div>
+            <div class="login-title">WebSwan Protected</div>
+            <div class="login-subtitle">Click to unlock</div>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="password-modal" id="passwordModal">
+        <div class="password-box">
+            <h3>🔐 Enter Password</h3>
+            <input type="password" class="password-input" id="passwordInput" maxlength="3" placeholder="•••">
+            <button class="password-btn" onclick="checkPassword()">Unlock WebSwan</button>
+            <div class="password-error" id="passwordError">Incorrect password. Try again.</div>
+        </div>
+    </div>
+
     <button class="back-office-btn" onclick="toggleBackOffice()">🔧 Back Office</button>
 
     <div class="container">
@@ -1230,6 +1395,64 @@
     <script>
         // Initialize jsPDF
         const { jsPDF } = window.jspdf;
+
+        // Login System
+        let clickCount = 0;
+        const requiredClicks = 7;
+        const correctPassword = "333";
+
+        // Login icon click handler
+        document.getElementById('loginIcon').addEventListener('click', function() {
+            clickCount++;
+            
+            // Visual feedback
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+            
+            if (clickCount >= requiredClicks) {
+                // Show password modal
+                document.getElementById('passwordModal').classList.add('active');
+                clickCount = 0; // Reset counter
+            }
+        });
+
+        // Password check function
+        window.checkPassword = function() {
+            const enteredPassword = document.getElementById('passwordInput').value;
+            if (enteredPassword === correctPassword) {
+                // Correct password - unlock the app
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('passwordModal').classList.remove('active');
+                
+                // Auto-fill URLs after login
+                const currentDomain = window.location.hostname;
+                const urlInputs = document.querySelectorAll('.url-input');
+                urlInputs.forEach(input => {
+                    input.value = `https://${currentDomain}`;
+                });
+                
+                // Show welcome notification
+                showNotification('🔓 Welcome to WebSwan!');
+            } else {
+                // Wrong password
+                document.getElementById('passwordError').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('passwordError').style.display = 'none';
+                }, 3000);
+            }
+        };
+
+        // Close modal when clicking outside (optional)
+        document.getElementById('passwordModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
 
         // Store test results
         let testResults = {
@@ -1902,13 +2125,28 @@
             }
         }
 
+        function showNotification(message) {
+            const existingToast = document.querySelector('.notification-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const toast = document.createElement('div');
+            toast.className = 'notification-toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
+
         // Auto-fill with current domain for testing
         document.addEventListener('DOMContentLoaded', function() {
-            const currentDomain = window.location.hostname;
-            const urlInputs = document.querySelectorAll('.url-input');
-            urlInputs.forEach(input => {
-                input.value = `https://${currentDomain}`;
-            });
+            // Don't auto-fill until after login
+            // This will be handled after successful login
         });
     </script>
 </body>
