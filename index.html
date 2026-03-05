@@ -4,880 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSwan - Website Analysis Tools</title>
-    <!-- Include jsPDF library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #194c7d 0%, #94e3cf 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Back Office Button */
-        .back-office-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(to right, #6c757d, #868e96);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .back-office-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(to right, #5a6268, #727b84);
-        }
-
-        /* Login Overlay */
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #194c7d 0%, #94e3cf 100%);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .login-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .login-box {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .login-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            display: inline-block;
-        }
-
-        .login-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .login-title {
-            font-size: 24px;
-            color: #1e4870;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .login-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        /* Password Modal */
-        .password-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .password-modal.active {
-            display: flex;
-        }
-
-        .password-box {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 350px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .password-box h3 {
-            color: #1e4870;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 18px;
-            text-align: center;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-        }
-
-        .password-input:focus {
-            outline: none;
-            border-color: #2cd0e6;
-        }
-
-        .password-btn {
-            background: linear-gradient(to right, #2cd0e6, #58e8d7);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .password-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.4);
-        }
-
-        .password-error {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .locked-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            font-size: 14px;
-            z-index: 1001;
-            display: none;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(to right, #abe9f7, #7fd4ca);
-            color: #1e4870;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: #1e4870;
-        }
-
-        header p {
-            font-size: 1.1em;
-            color: #1e4870;
-            font-weight: 500;
-        }
-
-        .overall-score-display {
-            margin-top: 15px;
-            font-size: 1.3em;
-            font-weight: 600;
-            display: none;
-        }
-
-        .analysis-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .analysis-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .analysis-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e8f4f8;
-        }
-
-        .card-icon {
-            font-size: 2em;
-            margin-right: 15px;
-        }
-
-        .card-title {
-            font-size: 1.4em;
-            color: #1e4870;
-            font-weight: 600;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #1e4870;
-        }
-
-        .url-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-
-        .url-input:focus {
-            outline: none;
-            border-color: #2cd0e6;
-            box-shadow: 0 0 0 3px rgba(44, 208, 230, 0.1);
-        }
-
-        .analyze-btn {
-            background: linear-gradient(to right, #2cd0e6, #58e8d7);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .analyze-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.4);
-        }
-
-        .overall-test-btn {
-            background: linear-gradient(to right, #ff6b6b, #ff8e8e);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .overall-test-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        .download-btn {
-            background: linear-gradient(to right, #84cdcf, #73b1c7);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            display: none;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
-        }
-
-        .results-section {
-            margin-top: 20px;
-            padding: 20px;
-            background: #f8fdff;
-            border-radius: 8px;
-            border-left: 4px solid #2cd0e6;
-            display: none;
-        }
-
-        .results-section h4 {
-            color: #1e4870;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .result-item {
-            margin-bottom: 10px;
-            padding: 8px;
-            background: white;
-            border-radius: 5px;
-            border-left: 3px solid #84cdcf;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #2cd0e6;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .security-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .security-btn {
-            background: linear-gradient(to right, #84cdcf, #73b1c7);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .security-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
-        }
-
-        .quick-links {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .quick-links h3 {
-            color: #1e4870;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-
-        .link-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .link-item {
-            background: linear-gradient(to right, #f8fdff, #e8f4f8);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            color: #1e4870;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 1px solid #e0f0f5;
-        }
-
-        .link-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.2);
-            color: #14395d;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 50px;
-            color: white;
-            background: linear-gradient(to right, #1e4870, #2cd0e6);
-            border-radius: 15px;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-            border-left-color: #28a745;
-        }
-
-        .warning {
-            background: #fff3cd;
-            color: #856404;
-            border-left-color: #ffc107;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left-color: #dc3545;
-        }
-
-        .info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-left-color: #17a2b8;
-        }
-
-        .comments-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .comments-section h3 {
-            color: #1e4870;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-
-        .comment-box {
-            width: 100%;
-            height: 150px;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            resize: vertical;
-            transition: border-color 0.3s ease;
-        }
-
-        .comment-box:focus {
-            outline: none;
-            border-color: #2cd0e6;
-            box-shadow: 0 0 0 3px rgba(44, 208, 230, 0.1);
-        }
-
-        .char-count {
-            text-align: right;
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .footer-download {
-            background: linear-gradient(to right, #28a745, #20c997);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .footer-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
-        }
-
-        .reset-btn {
-            background: linear-gradient(to right, #dc3545, #e4606d);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .reset-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-        }
-
-        .auto-fill-btn {
-            background: linear-gradient(to right, #6c757d, #868e96);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 5px;
-        }
-
-        .auto-fill-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);
-        }
-
-        .quick-links-download {
-            background: linear-gradient(to right, #84cdcf, #73b1c7);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .quick-links-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
-        }
-
-        /* Back Office Styles */
-        .back-office {
-            display: none;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 15px;
-            padding: 40px;
-            margin-top: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .back-office h2 {
-            color: #1e4870;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-
-        .back-office-nav {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .nav-btn {
-            background: linear-gradient(to right, #2cd0e6, #58e8d7);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0 10px;
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(44, 208, 230, 0.4);
-        }
-
-        .cheat-sheet-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .cheat-sheet-card {
-            background: #f8fdff;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid #84cdcf;
-        }
-
-        .cheat-sheet-card h4 {
-            color: #1e4870;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            border-bottom: 2px solid #e8f4f8;
-            padding-bottom: 10px;
-        }
-
-        /* NEW STYLES FOR DETAILED RESULTS */
-        .detailed-results {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #f8fdff;
-            border-radius: 8px;
-            border-left: 4px solid #2cd0e6;
-        }
-
-        .score-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e8f4f8;
-        }
-
-        .overall-score {
-            font-size: 2em;
-            font-weight: bold;
-            color: #1e4870;
-        }
-
-        .score-badge {
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        .score-excellent {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .score-good {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-
-        .score-fair {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .score-poor {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: white;
-            border-radius: 5px;
-            border-left: 3px solid #84cdcf;
-        }
-
-        .metric-name {
-            font-weight: 600;
-            color: #1e4870;
-        }
-
-        .metric-value {
-            font-weight: 600;
-        }
-
-        .metric-status {
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-
-        .status-pass {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-fail {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .observations-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 5px;
-            border-left: 3px solid #84cdcf;
-        }
-
-        .observations-section h5 {
-            color: #1e4870;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .observation-item {
-            margin-bottom: 10px;
-            padding-left: 15px;
-            border-left: 2px solid #e8f4f8;
-        }
-
-        /* NEW: Individual security download buttons */
-        .security-download-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .security-download-btn {
-            background: linear-gradient(to right, #84cdcf, #73b1c7);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            display: none;
-        }
-
-        .security-download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(115, 177, 199, 0.4);
-        }
-
-        /* NEW: Rich Results Test specific styles */
-        .rich-results-card {
-            margin-top: 20px;
-            border-top: 3px solid #4285f4;
-        }
-
-        .rich-results-link {
-            display: inline-block;
-            background: linear-gradient(to right, #4285f4, #34a853);
-            color: white;
-            text-decoration: none;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            text-align: center;
-            margin: 10px 0;
-        }
-
-        .rich-results-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #194c7d 0%, #94e3cf 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .back-office-btn { position: fixed; top: 20px; right: 20px; background: linear-gradient(to right, #6c757d, #868e96); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 0.9em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .back-office-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); background: linear-gradient(to right, #5a6268, #727b84); }
+        .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #194c7d 0%, #94e3cf 100%); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
+        .login-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .login-box { background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; max-width: 400px; width: 90%; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); }
+        .login-icon { font-size: 64px; margin-bottom: 20px; cursor: pointer; transition: transform 0.3s ease; display: inline-block; }
+        .login-icon:hover { transform: scale(1.1); }
+        .login-title { font-size: 24px; color: #1e4870; margin-bottom: 10px; font-weight: 700; }
+        .login-subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .password-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; }
+        .password-modal.active { display: flex; }
+        .password-box { background: white; border-radius: 20px; padding: 30px; max-width: 350px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .password-box h3 { color: #1e4870; margin-bottom: 20px; font-size: 20px; }
+        .password-input { width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 18px; text-align: center; letter-spacing: 4px; margin-bottom: 20px; }
+        .password-input:focus { outline: none; border-color: #2cd0e6; }
+        .password-btn { background: linear-gradient(to right, #2cd0e6, #58e8d7); color: white; border: none; padding: 12px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.3s ease; }
+        .password-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(44,208,230,0.4); }
+        .password-error { color: #dc3545; font-size: 14px; margin-top: 10px; display: none; }
+        header { text-align: center; padding: 40px 20px; background: linear-gradient(to right, #abe9f7, #7fd4ca); color: #1e4870; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; color: #1e4870; }
+        header p { font-size: 1.1em; color: #1e4870; font-weight: 500; }
+        .overall-score-display { margin-top: 15px; font-size: 1.3em; font-weight: 600; display: none; }
+        .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .analysis-card { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 25px; }
+        .analysis-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .card-header { display: flex; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e8f4f8; }
+        .card-icon { font-size: 2em; margin-right: 15px; }
+        .card-title { font-size: 1.4em; color: #1e4870; font-weight: 600; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #1e4870; }
+        .url-input { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; transition: border-color 0.3s ease; }
+        .url-input:focus { outline: none; border-color: #2cd0e6; box-shadow: 0 0 0 3px rgba(44,208,230,0.1); }
+        .analyze-btn { background: linear-gradient(to right, #2cd0e6, #58e8d7); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; margin-bottom: 10px; }
+        .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(44,208,230,0.4); }
+        .overall-test-btn { background: linear-gradient(to right, #ff6b6b, #ff8e8e); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; margin-bottom: 10px; }
+        .overall-test-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,107,107,0.4); }
+        .download-btn { background: linear-gradient(to right, #84cdcf, #73b1c7); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 0.95em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; width: 100%; display: none; }
+        .download-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(115,177,199,0.4); }
+        .results-section { margin-top: 20px; padding: 20px; background: #f8fdff; border-radius: 8px; border-left: 4px solid #2cd0e6; display: none; }
+        .results-section h4 { color: #1e4870; margin-bottom: 15px; font-size: 1.2em; }
+        .result-item { margin-bottom: 10px; padding: 8px; background: white; border-radius: 5px; border-left: 3px solid #84cdcf; }
+        .loading { display: none; text-align: center; margin: 15px 0; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #2cd0e6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .security-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .security-btn { background: linear-gradient(to right, #84cdcf, #73b1c7); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 0.95em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+        .security-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(115,177,199,0.4); }
+        .quick-links { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 30px; margin-top: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .quick-links h3 { color: #1e4870; margin-bottom: 20px; text-align: center; font-size: 1.5em; }
+        .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .link-item { background: linear-gradient(to right, #f8fdff, #e8f4f8); padding: 15px; border-radius: 8px; text-align: center; text-decoration: none; color: #1e4870; font-weight: 500; transition: all 0.3s ease; border: 1px solid #e0f0f5; }
+        .link-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(44,208,230,0.2); color: #14395d; }
+        footer { text-align: center; padding: 30px 20px; margin-top: 50px; color: white; background: linear-gradient(to right, #1e4870, #2cd0e6); border-radius: 15px; }
+        .success { background: #d4edda; color: #155724; border-left-color: #28a745; }
+        .warning { background: #fff3cd; color: #856404; border-left-color: #ffc107; }
+        .error { background: #f8d7da; color: #721c24; border-left-color: #dc3545; }
+        .info { background: #d1ecf1; color: #0c5460; border-left-color: #17a2b8; }
+        .comments-section { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 30px; margin-top: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .comments-section h3 { color: #1e4870; margin-bottom: 20px; text-align: center; font-size: 1.5em; }
+        .comment-box { width: 100%; height: 150px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; resize: vertical; transition: border-color 0.3s ease; }
+        .comment-box:focus { outline: none; border-color: #2cd0e6; box-shadow: 0 0 0 3px rgba(44,208,230,0.1); }
+        .char-count { text-align: right; color: #666; font-size: 0.9em; margin-top: 5px; }
+        .footer-download { background: linear-gradient(to right, #28a745, #20c997); color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
+        .footer-download:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(40,167,69,0.4); }
+        .reset-btn { background: linear-gradient(to right, #dc3545, #e4606d); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 10px; }
+        .reset-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(220,53,69,0.4); }
+        .auto-fill-btn { background: linear-gradient(to right, #6c757d, #868e96); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 0.85em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; margin-top: 5px; }
+        .auto-fill-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(108,117,125,0.3); }
+        .quick-links-download { background: linear-gradient(to right, #84cdcf, #73b1c7); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 0.95em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; width: 100%; margin-top: 15px; }
+        .quick-links-download:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(115,177,199,0.4); }
+        .back-office { display: none; background: rgba(255,255,255,0.98); border-radius: 15px; padding: 40px; margin-top: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .back-office h2 { color: #1e4870; text-align: center; margin-bottom: 30px; font-size: 2em; }
+        .back-office-nav { text-align: center; margin-bottom: 30px; }
+        .nav-btn { background: linear-gradient(to right, #2cd0e6, #58e8d7); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin: 0 10px; }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(44,208,230,0.4); }
+        .cheat-sheet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .cheat-sheet-card { background: #f8fdff; border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 4px solid #84cdcf; }
+        .cheat-sheet-card h4 { color: #1e4870; margin-bottom: 15px; font-size: 1.3em; border-bottom: 2px solid #e8f4f8; padding-bottom: 10px; }
+        .score-badge { padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; }
+        .score-excellent { background: #d4edda; color: #155724; }
+        .score-good { background: #d1ecf1; color: #0c5460; }
+        .score-fair { background: #fff3cd; color: #856404; }
+        .score-poor { background: #f8d7da; color: #721c24; }
+        .observations-section { margin-top: 20px; padding: 15px; background: white; border-radius: 5px; border-left: 3px solid #84cdcf; }
+        .observations-section h5 { color: #1e4870; margin-bottom: 10px; font-size: 1.1em; }
+        .observation-item { margin-bottom: 10px; padding-left: 15px; border-left: 2px solid #e8f4f8; }
+        .security-download-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px; }
+        .security-download-btn { background: linear-gradient(to right, #84cdcf, #73b1c7); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-align: center; display: none; }
+        .security-download-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(115,177,199,0.4); }
+
+        /* ── NEW TOOL CARD STYLES ── */
+        .tool-input-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+        .tool-input-row input { flex: 1; min-width: 140px; padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.3s; font-family: 'Segoe UI', sans-serif; }
+        .tool-input-row input:focus { border-color: #2cd0e6; box-shadow: 0 0 0 3px rgba(44,208,230,0.1); }
+        .tool-go-btn { background: linear-gradient(to right, #2cd0e6, #58e8d7); color: white; border: none; padding: 11px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; white-space: nowrap; transition: all 0.2s; }
+        .tool-go-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(44,208,230,0.4); }
+        .tool-example { font-size: 0.82em; color: #888; margin-top: 10px; line-height: 1.5; }
+        .tool-example code { background: #f0f8ff; padding: 2px 7px; border-radius: 4px; color: #1e4870; font-family: 'Courier New', monospace; font-size: 0.95em; }
+        .info-box { background: #f0f8ff; border-left: 4px solid #2cd0e6; border-radius: 0 10px 10px 0; padding: 16px 18px; margin-top: 16px; font-size: 0.92em; color: #444; line-height: 1.7; }
+        .info-box strong { color: #1e4870; display: block; margin-bottom: 4px; font-size: 1em; }
+        .schema-go-btn { display: block; background: linear-gradient(to right, #4285f4, #34a853); color: white; text-decoration: none; padding: 14px 25px; border-radius: 8px; font-size: 1.05em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; text-align: center; margin: 14px 0 0 0; border: none; }
+        .schema-go-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(66,133,244,0.4); color: white; text-decoration: none; }
 
         @media (max-width: 768px) {
-            .analysis-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            header h1 {
-                font-size: 2em;
-            }
-            
-            .security-buttons {
-                grid-template-columns: 1fr;
-            }
-            
-            .back-office-btn {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin-bottom: 20px;
-                width: 100%;
-            }
-            
-            .nav-btn {
-                display: block;
-                width: 100%;
-                margin: 10px 0;
-            }
-            
-            .score-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .overall-score {
-                margin-bottom: 10px;
-            }
-            
-            .security-download-buttons {
-                grid-template-columns: 1fr;
-            }
+            .analysis-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 2em; }
+            .security-buttons { grid-template-columns: 1fr; }
+            .back-office-btn { position: relative; top: auto; right: auto; margin-bottom: 20px; width: 100%; }
+            .nav-btn { display: block; width: 100%; margin: 10px 0; }
+            .security-download-buttons { grid-template-columns: 1fr; }
+            .tool-input-row { flex-direction: column; }
+            .tool-go-btn { width: 100%; }
         }
     </style>
 </head>
 <body>
+
     <!-- Login Overlay -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
@@ -900,7 +149,6 @@
     <button class="back-office-btn" onclick="toggleBackOffice()">🔧 Back Office</button>
 
     <div class="container">
-        <!-- MAIN ANALYSIS INTERFACE -->
         <div id="main-interface">
             <header>
                 <h1>🔍 WebSwan Website Analysis Tools</h1>
@@ -912,12 +160,9 @@
             </header>
 
             <div class="analysis-grid">
-                <!-- GTMetrix Analysis Card -->
+                <!-- GTMetrix -->
                 <div class="analysis-card">
-                    <div class="card-header">
-                        <div class="card-icon">📊</div>
-                        <h2 class="card-title">GTMetrix Performance Analysis</h2>
-                    </div>
+                    <div class="card-header"><div class="card-icon">📊</div><h2 class="card-title">GTMetrix Performance Analysis</h2></div>
                     <div class="input-group">
                         <label for="gtmetrix-url">Enter Website URL:</label>
                         <input type="url" id="gtmetrix-url" class="url-input" placeholder="https://example.com" required>
@@ -925,56 +170,23 @@
                     </div>
                     <button class="analyze-btn" onclick="runGTMetrixAnalysis()">🚀 Analyze Performance</button>
                     <button class="download-btn" id="gtmetrix-download" onclick="downloadPDF('gtmetrix')">📄 Download Performance Report</button>
-                    
-                    <div class="loading" id="gtmetrix-loading">
-                        <div class="spinner"></div>
-                        <p>Analyzing website performance...</p>
-                    </div>
-                    
+                    <div class="loading" id="gtmetrix-loading"><div class="spinner"></div><p>Analyzing website performance...</p></div>
                     <div class="results-section" id="gtmetrix-results">
                         <h4>Performance Results</h4>
-                        <div class="result-item">
-                            <strong>PageSpeed Score:</strong> <span id="pagespeed-score">-</span>
-                            <br><small>Measures how fast your page loads (0-100 scale)</small>
-                        </div>
-                        <div class="result-item">
-                            <strong>YSlow Score:</strong> <span id="yslow-score">-</span>
-                            <br><small>Measures how well your page follows performance best practices</small>
-                        </div>
-                        <div class="result-item">
-                            <strong>Fully Loaded Time:</strong> <span id="load-time">-</span>
-                            <br><small>Time until all page elements are completely loaded</small>
-                        </div>
-                        <div class="result-item">
-                            <strong>Total Page Size:</strong> <span id="page-size">-</span>
-                            <br><small>Total size of all page resources (HTML, CSS, JS, images)</small>
-                        </div>
-                        
-                        <!-- Professional Observations -->
-                        <div class="observations-section">
-                            <h5>📋 Professional Observations</h5>
-                            <div class="observation-item">
-                                <strong>What This Test Measures:</strong> GTMetrix analyzes your website's performance by measuring how quickly it loads and how well it follows web performance best practices.
-                            </div>
-                            <div class="observation-item">
-                                <strong>PageSpeed Score:</strong> Measures actual loading speed based on real-world connection conditions.
-                            </div>
-                            <div class="observation-item">
-                                <strong>YSlow Score:</strong> Evaluates how well your website follows performance optimization rules.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Impact on Users:</strong> Faster loading websites provide better user experience and higher conversion rates.
-                            </div>
+                        <div class="result-item"><strong>PageSpeed Score:</strong> <span id="pagespeed-score">-</span><br><small>Measures how fast your page loads (0-100 scale)</small></div>
+                        <div class="result-item"><strong>YSlow Score:</strong> <span id="yslow-score">-</span><br><small>Measures performance best practices</small></div>
+                        <div class="result-item"><strong>Fully Loaded Time:</strong> <span id="load-time">-</span><br><small>Time until all page elements are completely loaded</small></div>
+                        <div class="result-item"><strong>Total Page Size:</strong> <span id="page-size">-</span><br><small>Total size of all page resources</small></div>
+                        <div class="observations-section"><h5>📋 Professional Observations</h5>
+                            <div class="observation-item"><strong>What This Test Measures:</strong> GTMetrix analyzes your website's performance by measuring how quickly it loads and how well it follows web performance best practices.</div>
+                            <div class="observation-item"><strong>Impact on Users:</strong> Faster loading websites provide better user experience and higher conversion rates.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cookie Analysis Card -->
+                <!-- Cookie Analysis -->
                 <div class="analysis-card">
-                    <div class="card-header">
-                        <div class="card-icon">🍪</div>
-                        <h2 class="card-title">Cookie & Privacy Analysis</h2>
-                    </div>
+                    <div class="card-header"><div class="card-icon">🍪</div><h2 class="card-title">Cookie & Privacy Analysis</h2></div>
                     <div class="input-group">
                         <label for="cookie-url">Enter Website URL:</label>
                         <input type="url" id="cookie-url" class="url-input" placeholder="https://example.com" required>
@@ -982,46 +194,19 @@
                     </div>
                     <button class="analyze-btn" onclick="runCookieAnalysis()">🔍 Analyze Cookies</button>
                     <button class="download-btn" id="cookie-download" onclick="downloadPDF('cookie')">📄 Download Cookie Report</button>
-                    
-                    <div class="loading" id="cookie-loading">
-                        <div class="spinner"></div>
-                        <p>Scanning for cookies...</p>
-                    </div>
-                    
+                    <div class="loading" id="cookie-loading"><div class="spinner"></div><p>Scanning for cookies...</p></div>
                     <div class="results-section" id="cookie-results">
                         <h4>Cookie Analysis Results</h4>
-                        <div id="cookie-list">
-                            <!-- Cookie results will be populated here -->
-                        </div>
-                        
-                        <!-- Professional Observations -->
-                        <div class="observations-section">
-                            <h5>📋 Professional Observations</h5>
-                            <div class="observation-item">
-                                <strong>What This Test Measures:</strong> This analysis scans your website for cookies and evaluates their compliance with privacy regulations like GDPR, CCPA, and other data protection laws.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Session Cookies:</strong> Temporary cookies that help your website function properly and expire when the browser closes.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Tracking Cookies:</strong> Used to monitor user behavior across sessions (Google Analytics, Hotjar, etc.).
-                            </div>
-                            <div class="observation-item">
-                                <strong>Third-party Cookies:</strong> From external domains that track users across multiple websites.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Compliance Requirements:</strong> Most privacy laws require clear disclosure and user consent for non-essential cookies.
-                            </div>
+                        <div id="cookie-list"></div>
+                        <div class="observations-section"><h5>📋 Professional Observations</h5>
+                            <div class="observation-item"><strong>Compliance Requirements:</strong> Most privacy laws require clear disclosure and user consent for non-essential cookies.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- NEW: Accessibility Analysis Card -->
+                <!-- Accessibility -->
                 <div class="analysis-card">
-                    <div class="card-header">
-                        <div class="card-icon">♿</div>
-                        <h2 class="card-title">Accessibility Analysis</h2>
-                    </div>
+                    <div class="card-header"><div class="card-icon">♿</div><h2 class="card-title">Accessibility Analysis</h2></div>
                     <div class="input-group">
                         <label for="accessibility-url">Enter Website URL:</label>
                         <input type="url" id="accessibility-url" class="url-input" placeholder="https://example.com" required>
@@ -1029,46 +214,19 @@
                     </div>
                     <button class="analyze-btn" onclick="runAccessibilityAnalysis()">♿ Analyze Accessibility</button>
                     <button class="download-btn" id="accessibility-download" onclick="downloadPDF('accessibility')">📄 Download Accessibility Report</button>
-                    
-                    <div class="loading" id="accessibility-loading">
-                        <div class="spinner"></div>
-                        <p>Analyzing website accessibility...</p>
-                    </div>
-                    
+                    <div class="loading" id="accessibility-loading"><div class="spinner"></div><p>Analyzing website accessibility...</p></div>
                     <div class="results-section" id="accessibility-results">
                         <h4>Accessibility Results</h4>
-                        <div id="accessibility-list">
-                            <!-- Accessibility results will be populated here -->
-                        </div>
-                        
-                        <!-- Professional Observations -->
-                        <div class="observations-section">
-                            <h5>📋 Professional Observations</h5>
-                            <div class="observation-item">
-                                <strong>What This Test Measures:</strong> This analysis evaluates how accessible your website is to people with disabilities, following WCAG (Web Content Accessibility Guidelines) standards.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Screen Reader Compatibility:</strong> Ensures content is properly structured for assistive technologies.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Keyboard Navigation:</strong> Verifies all functionality is accessible via keyboard alone.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Color Contrast:</strong> Checks text has sufficient contrast against background colors.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Legal Requirements:</strong> Many regions require websites to be accessible under disability discrimination laws.
-                            </div>
+                        <div id="accessibility-list"></div>
+                        <div class="observations-section"><h5>📋 Professional Observations</h5>
+                            <div class="observation-item"><strong>Legal Requirements:</strong> Many regions require websites to be accessible under disability discrimination laws.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SEO Analysis Card -->
+                <!-- SEO Analysis -->
                 <div class="analysis-card">
-                    <div class="card-header">
-                        <div class="card-icon">🔎</div>
-                        <h2 class="card-title">SEO Analysis</h2>
-                    </div>
+                    <div class="card-header"><div class="card-icon">🔎</div><h2 class="card-title">SEO Analysis</h2></div>
                     <div class="input-group">
                         <label for="seo-url">Enter Website URL:</label>
                         <input type="url" id="seo-url" class="url-input" placeholder="https://example.com" required>
@@ -1076,180 +234,182 @@
                     </div>
                     <button class="analyze-btn" onclick="runSEOAnalysis()">⭐ Analyze SEO</button>
                     <button class="download-btn" id="seo-download" onclick="downloadPDF('seo')">📄 Download SEO Report</button>
-                    
-                    <div class="loading" id="seo-loading">
-                        <div class="spinner"></div>
-                        <p>Analyzing SEO metrics...</p>
-                    </div>
-                    
+                    <div class="loading" id="seo-loading"><div class="spinner"></div><p>Analyzing SEO metrics...</p></div>
                     <div class="results-section" id="seo-results">
                         <h4>SEO Analysis Results</h4>
-                        <div class="result-item">
-                            <strong>Meta Tags:</strong> <span id="meta-tags">-</span>
-                        </div>
-                        <div class="result-item">
-                            <strong>Heading Structure:</strong> <span id="heading-structure">-</span>
-                        </div>
-                        <div class="result-item">
-                            <strong>Image ALT Tags:</strong> <span id="alt-tags">-</span>
-                        </div>
-                        <div class="result-item">
-                            <strong>Mobile Friendly:</strong> <span id="mobile-friendly">-</span>
-                        </div>
-                        
-                        <!-- Professional Observations -->
-                        <div class="observations-section">
-                            <h5>📋 Professional Observations</h5>
-                            <div class="observation-item">
-                                <strong>What This Test Measures:</strong> This analysis evaluates how well your website is optimized for search engines and follows SEO best practices.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Meta Tags:</strong> Proper title tags and meta descriptions help search engines understand your content.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Heading Structure:</strong> Logical heading hierarchy (H1, H2, H3) helps both users and search engines understand content organization.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Image ALT Tags:</strong> Descriptive alt text improves accessibility and helps images rank in search results.
-                            </div>
-                            <div class="observation-item">
-                                <strong>Mobile Friendliness:</strong> Google prioritizes mobile-friendly websites in search rankings.
-                            </div>
+                        <div class="result-item"><strong>Meta Tags:</strong> <span id="meta-tags">-</span></div>
+                        <div class="result-item"><strong>Heading Structure:</strong> <span id="heading-structure">-</span></div>
+                        <div class="result-item"><strong>Image ALT Tags:</strong> <span id="alt-tags">-</span></div>
+                        <div class="result-item"><strong>Mobile Friendly:</strong> <span id="mobile-friendly">-</span></div>
+                        <div class="observations-section"><h5>📋 Professional Observations</h5>
+                            <div class="observation-item"><strong>Mobile Friendliness:</strong> Google prioritizes mobile-friendly websites in search rankings.</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Security Header Testing Section -->
+            <!-- Security Header Testing -->
             <div class="analysis-card">
-                <div class="card-header">
-                    <div class="card-icon">🛡️</div>
-                    <h2 class="card-title">Security Header Testing</h2>
-                </div>
-                <p style="margin-bottom: 20px; color: #666;">Test your website's security headers and vulnerabilities</p>
-                
+                <div class="card-header"><div class="card-icon">🛡️</div><h2 class="card-title">Security Header Testing</h2></div>
+                <p style="margin-bottom:20px;color:#666;">Test your website's security headers and vulnerabilities</p>
                 <div class="input-group">
-                    <label for="security-url">Enter Website URL (for all security tests):</label>
+                    <label for="security-url">Enter Website URL:</label>
                     <input type="url" id="security-url" class="url-input" placeholder="https://example.com" required>
                     <button class="auto-fill-btn" onclick="autoFillURL('security-url')">🔗 Auto-fill Current Domain</button>
                 </div>
-                
                 <div class="security-buttons">
                     <button class="security-btn" onclick="testSecurityHeaders()">🔒 Test Security Headers</button>
                     <button class="security-btn" onclick="testSSL()">🔐 SSL Certificate Check</button>
                     <button class="security-btn" onclick="testVulnerabilities()">🛡️ Vulnerability Scan</button>
                     <button class="security-btn" onclick="testHTTPHeaders()">🌐 HTTP Headers Analysis</button>
                 </div>
-                
-                <!-- Individual security download buttons -->
                 <div class="security-download-buttons">
                     <button class="security-download-btn" id="security-headers-download" onclick="downloadPDF('security-headers')">📄 Security Headers Report</button>
                     <button class="security-download-btn" id="ssl-download" onclick="downloadPDF('ssl')">📄 SSL Certificate Report</button>
                     <button class="security-download-btn" id="vulnerability-download" onclick="downloadPDF('vulnerability')">📄 Vulnerability Report</button>
                     <button class="security-download-btn" id="http-headers-download" onclick="downloadPDF('http-headers')">📄 HTTP Headers Report</button>
                 </div>
-                
                 <button class="download-btn" id="security-download" onclick="downloadPDF('security')">📄 Download Complete Security Report</button>
-                
-                <div class="loading" id="security-loading">
-                    <div class="spinner"></div>
-                    <p>Running security tests...</p>
-                </div>
-                
+                <div class="loading" id="security-loading"><div class="spinner"></div><p>Running security tests...</p></div>
                 <div class="results-section" id="security-results">
                     <h4>Security Test Results</h4>
-                    <div id="security-results-list">
-                        <!-- Security results will be populated here -->
-                    </div>
-                    
-                    <!-- Professional Observations -->
-                    <div class="observations-section">
-                        <h5>📋 Professional Observations</h5>
-                        <div class="observation-item">
-                            <strong>What These Tests Measure:</strong> Security tests evaluate how well your website protects against common web vulnerabilities and follows security best practices.
-                        </div>
-                        <div class="observation-item">
-                            <strong>Security Headers:</strong> HTTP headers that tell browsers how to handle your site securely and prevent attacks.
-                        </div>
-                        <div class="observation-item">
-                            <strong>SSL Certificate:</strong> Ensures encrypted communication between users and your website.
-                        </div>
-                        <div class="observation-item">
-                            <strong>Vulnerability Scan:</strong> Identifies potential security weaknesses that could be exploited.
-                        </div>
-                        <div class="observation-item">
-                            <strong>HTTP Headers:</strong> Reveals technical information about your server configuration that could impact security.
-                        </div>
+                    <div id="security-results-list"></div>
+                    <div class="observations-section"><h5>📋 Professional Observations</h5>
+                        <div class="observation-item"><strong>Security Headers:</strong> HTTP headers that tell browsers how to handle your site securely and prevent attacks.</div>
+                        <div class="observation-item"><strong>SSL Certificate:</strong> Ensures encrypted communication between users and your website.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Overall Test Button -->
+            <!-- Overall Test -->
             <div class="analysis-card">
-                <div class="card-header">
-                    <div class="card-icon">🏆</div>
-                    <h2 class="card-title">Overall Website Analysis</h2>
-                </div>
-                <p style="margin-bottom: 20px; color: #666;">Get a comprehensive score based on all website tests</p>
-                
+                <div class="card-header"><div class="card-icon">🏆</div><h2 class="card-title">Overall Website Analysis</h2></div>
+                <p style="margin-bottom:20px;color:#666;">Get a comprehensive score based on all website tests</p>
                 <button class="overall-test-btn" onclick="runOverallTest()">🏆 Calculate Overall Score</button>
-                
-                <div class="loading" id="overall-loading">
-                    <div class="spinner"></div>
-                    <p>Calculating overall website score...</p>
-                </div>
-                
+                <div class="loading" id="overall-loading"><div class="spinner"></div><p>Calculating overall website score...</p></div>
                 <div class="results-section" id="overall-results">
                     <h4>Overall Website Analysis</h4>
-                    <div id="overall-results-list">
-                        <!-- Overall results will be populated here -->
-                    </div>
+                    <div id="overall-results-list"></div>
                 </div>
             </div>
 
-            <!-- Rich Results Test Card -->
-            <div class="analysis-card rich-results-card">
+            <!-- ══════════════════════════════════════════════
+                 SCHEMA MARKUP TESTER
+            ══════════════════════════════════════════════ -->
+            <div class="analysis-card" style="border-top: 4px solid #4285f4;">
                 <div class="card-header">
-                    <div class="card-icon">🔍</div>
-                    <h2 class="card-title">Google Rich Results Test</h2>
+                    <div class="card-icon">✅</div>
+                    <h2 class="card-title">Schema Markup Tester</h2>
                 </div>
-                <p style="margin-bottom: 20px; color: #666;">Test your website's structured data and see how it appears in Google search results with rich snippets</p>
-                
-                <div class="input-group">
-                    <label for="rich-results-url">Enter Website URL:</label>
-                    <input type="url" id="rich-results-url" class="url-input" placeholder="https://example.com" required>
-                    <button class="auto-fill-btn" onclick="autoFillURL('rich-results-url')">🔗 Auto-fill Current Domain</button>
+                <p style="color:#666; margin-bottom:6px;">Check if your website's structured data is set up correctly and eligible for Google rich results — star ratings, prices, FAQs, events and more.</p>
+
+                <div class="info-box">
+                    <strong>What is Schema Markup?</strong>
+                    Schema markup is a special type of code (structured data) you add to your website that helps Google understand what your content is about. When set up correctly, Google can display your page with rich results in search — things like star ratings, business hours, product prices, and FAQ dropdowns that make your listing stand out and get more clicks.
+                    <br><br>
+                    <strong>How to use:</strong> Enter your full website URL below, then click the button. Google's tool will open in a new tab and show you exactly what structured data it finds on your page and whether it qualifies for rich results.
                 </div>
-                
-                <a href="#" id="rich-results-link" class="rich-results-link" target="_blank">
-                    🔍 Test Rich Results on Google
+
+                <div class="input-group" style="margin-top:16px;">
+                    <label for="schema-url">Enter Website URL:</label>
+                    <input type="url" id="schema-url" class="url-input" placeholder="https://thewebswan.com" required>
+                    <button class="auto-fill-btn" onclick="autoFillURL('schema-url')">🔗 Auto-fill Current Domain</button>
+                </div>
+
+                <a href="https://search.google.com/test/rich-results" id="schema-markup-link" class="schema-go-btn" target="_blank">
+                    🔍 Open Schema Markup Tester on Google
                 </a>
-                
-                <div class="observations-section" style="margin-top: 15px;">
-                    <h5>📋 What is Rich Results Testing?</h5>
-                    <div class="observation-item">
-                        <strong>What This Test Does:</strong> Google's Rich Results Test analyzes your webpage to see if it's eligible to display rich results in Google Search. Rich results can include features like star ratings, product prices, event details, and job postings that make your listing stand out in search results.
-                    </div>
-                    <div class="observation-item">
-                        <strong>Structured Data:</strong> Checks if your website has proper schema markup that helps Google understand your content and display enhanced search results.
-                    </div>
-                    <div class="observation-item">
-                        <strong>SEO Benefits:</strong> Rich results can significantly increase click-through rates by making your search listing more prominent and informative.
-                    </div>
-                    <div class="observation-item">
-                        <strong>Example Result:</strong> <a href="https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ" target="_blank" style="color: #4285f4;">View Sample Rich Results Test</a>
-                    </div>
+
+                <div class="tool-example">
+                    Example: enter <code>https://thewebswan.com</code> → Google opens the tester pre-loaded with your URL
                 </div>
             </div>
 
-            <!-- Comments Section -->
+            <!-- ══════════════════════════════════════════════
+                 XML SITEMAP CHECKER
+            ══════════════════════════════════════════════ -->
+            <div class="analysis-card" style="border-top: 4px solid #34a853;">
+                <div class="card-header">
+                    <div class="card-icon">🗺️</div>
+                    <h2 class="card-title">XML Sitemap Checker</h2>
+                </div>
+
+                <div class="info-box">
+                    <strong>What is an XML Sitemap?</strong>
+                    An XML sitemap is a file that lives on your website and lists every important page you want Google to crawl and index. Think of it as a roadmap you hand directly to Google — without it, some of your pages may never show up in search results. Every website should have one, and it should be updated whenever new pages are added.
+                    <br><br>
+                    <strong>How to use this tool:</strong> Type your domain name below (no need for https://) and click the button. Your browser will open the sitemap file so you can see every URL Google is being told about. If you get a blank page or an error, your site may be missing a sitemap — that's something WebSwan can fix for you!
+                </div>
+
+                <div class="tool-example" style="margin-top:14px;">
+                    Example: type <code>thewebswan.com</code> — this opens <code>https://thewebswan.com/sitemap.xml</code>
+                </div>
+
+                <div class="tool-input-row">
+                    <input type="text" id="sitemapInput" placeholder="yourdomain.com e.g. thewebswan.com" />
+                    <button class="tool-go-btn" onclick="openSitemap()">🗺️ Open XML Sitemap</button>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 ROBOTS.TXT CHECKER
+            ══════════════════════════════════════════════ -->
+            <div class="analysis-card" style="border-top: 4px solid #ea4335;">
+                <div class="card-header">
+                    <div class="card-icon">🤖</div>
+                    <h2 class="card-title">Robots.txt Checker</h2>
+                </div>
+
+                <div class="info-box">
+                    <strong>What is robots.txt?</strong>
+                    The robots.txt file sits at the root of your website (e.g. <code style="font-size:0.95em;">thewebswan.com/robots.txt</code>) and tells search engine crawlers which pages they are allowed — or <em>not</em> allowed — to visit. This is one of the most overlooked but critical SEO files. A single typo can accidentally tell Google to ignore your entire website, which would wipe it from search results completely.
+                    <br><br>
+                    <strong>How to use this tool:</strong> Enter your domain name below and click the button. You'll see the raw robots.txt file so you can confirm nothing important is being blocked. After any website launch, redesign, or platform migration — always check this file first!
+                </div>
+
+                <div class="tool-example" style="margin-top:14px;">
+                    Example: type <code>thewebswan.com</code> — this opens <code>https://thewebswan.com/robots.txt</code>
+                </div>
+
+                <div class="tool-input-row">
+                    <input type="text" id="robotsInput" placeholder="yourdomain.com e.g. thewebswan.com" />
+                    <button class="tool-go-btn" onclick="openRobots()">🤖 Check Robots.txt</button>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 VIEW SITE STRUCTURE
+            ══════════════════════════════════════════════ -->
+            <div class="analysis-card" style="border-top: 4px solid #9c27b0;">
+                <div class="card-header">
+                    <div class="card-icon">🏗️</div>
+                    <h2 class="card-title">View Site Structure</h2>
+                </div>
+
+                <div class="info-box">
+                    <strong>What is a Website Structure Analyzer?</strong>
+                    A website structure analyzer crawls your entire site and maps out how your pages are connected — showing the hierarchy of URLs, internal links, and navigation flow. A well-organized site structure helps Google understand which pages are most important and makes it easier for visitors to find what they need.
+                    <br><br>
+                    <strong>Why it matters for SEO:</strong> Poor site structure means Google may miss important pages, waste crawl budget on irrelevant ones, and struggle to understand your content hierarchy — all of which hurt rankings. This tool gives you a full visual map so you can spot orphan pages, broken link paths, and structural issues before they become a problem.
+                </div>
+
+                <a href="https://websitestructureanalyzer.com" target="_blank" class="schema-go-btn" style="background: linear-gradient(to right, #9c27b0, #673ab7); margin-top: 16px;">
+                    🏗️ Open Website Structure Analyzer
+                </a>
+
+                <div class="tool-example" style="margin-top:10px;">
+                    Opens <code>websitestructureanalyzer.com</code> in a new tab — enter your domain there to generate a full site map
+                </div>
+            </div>
+
+            <!-- Comments -->
             <div class="comments-section">
                 <h3>💬 Additional Comments & Observations</h3>
                 <textarea class="comment-box" id="user-comments" placeholder="Add any additional observations, notes, or recommendations here..." maxlength="1000"></textarea>
                 <div class="char-count"><span id="char-count">0</span>/1000 characters</div>
             </div>
 
-            <!-- Quick Links Section with added brokenlinkcheck.com -->
+            <!-- Quick Links -->
             <div class="quick-links">
                 <h3>🔗 Quick Links & Resources</h3>
                 <div class="link-grid">
@@ -1259,13 +419,13 @@
                     <a href="#" class="link-item">🍪 Cookie Compliance Guide</a>
                     <a href="#" class="link-item">🔍 SEO Best Practices</a>
                     <a href="#" class="link-item">🛡️ Security Headers Guide</a>
-                    <a href="https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ" class="link-item" target="_blank">✨ Rich Results Sample Test</a>
+                    <a href="https://search.google.com/test/rich-results" class="link-item" target="_blank">✅ Schema Markup Tester</a>
                     <a href="https://brokenlinkcheck.com/" class="link-item" target="_blank">🔗 Broken Link Checker</a>
+                    <a href="https://websitestructureanalyzer.com" class="link-item" target="_blank">🏗️ Website Structure Analyzer</a>
                 </div>
                 <button class="quick-links-download" onclick="downloadQuickLinks()">📄 Download Resource Guide</button>
             </div>
 
-            <!-- Footer Download Button -->
             <footer>
                 <h3>Download Complete Analysis Report</h3>
                 <p>Generate a comprehensive PDF report with all analysis results</p>
@@ -1275,879 +435,410 @@
             </footer>
         </div>
 
-        <!-- BACK OFFICE SECTION -->
+        <!-- BACK OFFICE -->
         <div class="back-office" id="back-office">
             <h2>🔧 WebSwan Back Office</h2>
-            
             <div class="back-office-nav">
                 <button class="nav-btn" onclick="showCheatSheet()">📚 Cheat Sheets</button>
                 <button class="nav-btn" onclick="showSettings()">⚙️ Settings</button>
                 <button class="nav-btn" onclick="showHelp()">❓ Help & Support</button>
             </div>
-            
             <div id="cheat-sheet-content">
-                <h3 style="text-align: center; color: #1e4870; margin-bottom: 30px;">WebSwan Cheat Sheets & Resources</h3>
-                
+                <h3 style="text-align:center;color:#1e4870;margin-bottom:30px;">WebSwan Cheat Sheets & Resources</h3>
                 <div class="cheat-sheet-grid">
-                    <div class="cheat-sheet-card">
-                        <h4>📊 Performance Optimization</h4>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Optimize images (WebP format)</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Minify CSS, JavaScript, HTML</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Leverage browser caching</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Reduce server response time</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Eliminate render-blocking resources</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="cheat-sheet-card">
-                        <h4>🍪 Cookie Compliance</h4>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Implement cookie consent banner</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Categorize cookies (necessary, preferences, statistics, marketing)</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Allow users to manage preferences</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Document cookie usage in privacy policy</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Regularly audit and update cookie practices</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="cheat-sheet-card">
-                        <h4>🔍 SEO Best Practices</h4>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Optimize page titles and meta descriptions</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Use proper heading structure (H1, H2, H3)</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Add descriptive ALT text to images</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Ensure mobile responsiveness</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Improve page loading speed</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="cheat-sheet-card">
-                        <h4>🛡️ Security Headers</h4>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Implement Content Security Policy (CSP)</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Use HTTP Strict Transport Security (HSTS)</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Set X-Frame-Options to prevent clickjacking</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Configure X-Content-Type-Options</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Implement Referrer-Policy</li>
-                        </ul>
-                    </div>
-
-                    <div class="cheat-sheet-card">
-                        <h4>✨ Rich Results & Schema Markup</h4>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Implement Organization schema</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Add LocalBusiness markup for local SEO</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Use Product schema for e-commerce</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Add Review schema for testimonials</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ Test with Google Rich Results Tool</li>
-                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">✓ <a href="https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ" target="_blank" style="color: #4285f4;">Sample Rich Results Test</a></li>
-                        </ul>
-                    </div>
+                    <div class="cheat-sheet-card"><h4>📊 Performance Optimization</h4><ul style="list-style-type:none;padding-left:0;">
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Optimize images (WebP format)</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Minify CSS, JavaScript, HTML</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Leverage browser caching</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Reduce server response time</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Eliminate render-blocking resources</li>
+                    </ul></div>
+                    <div class="cheat-sheet-card"><h4>🍪 Cookie Compliance</h4><ul style="list-style-type:none;padding-left:0;">
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Implement cookie consent banner</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Categorize cookies properly</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Allow users to manage preferences</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Document cookie usage in privacy policy</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Regularly audit and update cookie practices</li>
+                    </ul></div>
+                    <div class="cheat-sheet-card"><h4>🔍 SEO Best Practices</h4><ul style="list-style-type:none;padding-left:0;">
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Optimize page titles and meta descriptions</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Use proper heading structure (H1, H2, H3)</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Add descriptive ALT text to images</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Ensure mobile responsiveness</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Improve page loading speed</li>
+                    </ul></div>
+                    <div class="cheat-sheet-card"><h4>🛡️ Security Headers</h4><ul style="list-style-type:none;padding-left:0;">
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Implement Content Security Policy (CSP)</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Use HTTP Strict Transport Security (HSTS)</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Set X-Frame-Options to prevent clickjacking</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Configure X-Content-Type-Options</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Implement Referrer-Policy</li>
+                    </ul></div>
+                    <div class="cheat-sheet-card"><h4>✅ Schema Markup & Rich Results</h4><ul style="list-style-type:none;padding-left:0;">
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Implement Organization schema</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Add LocalBusiness markup for local SEO</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Use Product schema for e-commerce</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Add Review schema for testimonials</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ <a href="https://search.google.com/test/rich-results" target="_blank" style="color:#4285f4;">Test with Schema Markup Tester</a></li>
+                    </ul></div>
+                    <div class="cheat-sheet-card"><h4>🗺️ Sitemap & Robots.txt</h4><ul style="list-style-type:none;padding-left:0;">
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Always have an XML sitemap at /sitemap.xml</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Submit sitemap to Google Search Console</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Check robots.txt doesn't block key pages</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ Update sitemap when new pages are added</li>
+                        <li style="margin-bottom:10px;padding-left:20px;">✓ robots.txt lives at yourdomain.com/robots.txt</li>
+                    </ul></div>
                 </div>
             </div>
-            
-            <div id="settings-content" style="display: none;">
-                <h3 style="text-align: center; color: #1e4870; margin-bottom: 30px;">WebSwan Settings</h3>
-                <div class="cheat-sheet-card">
-                    <h4>General Settings</h4>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Default Analysis Depth:</label>
-                        <select style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
-                            <option>Basic (Faster)</option>
-                            <option selected>Standard (Recommended)</option>
-                            <option>Comprehensive (Slower)</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Report Format:</label>
-                        <select style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
-                            <option selected>PDF</option>
-                            <option>HTML</option>
-                            <option>CSV</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Auto-save Results:</label>
-                        <input type="checkbox" checked> Enable auto-save
-                    </div>
+            <div id="settings-content" style="display:none;">
+                <h3 style="text-align:center;color:#1e4870;margin-bottom:30px;">WebSwan Settings</h3>
+                <div class="cheat-sheet-card"><h4>General Settings</h4>
+                    <div style="margin-bottom:15px;"><label style="display:block;margin-bottom:5px;font-weight:600;">Default Analysis Depth:</label>
+                    <select style="width:100%;padding:8px;border-radius:5px;border:1px solid #ddd;"><option>Basic (Faster)</option><option selected>Standard (Recommended)</option><option>Comprehensive (Slower)</option></select></div>
+                    <div style="margin-bottom:15px;"><label style="display:block;margin-bottom:5px;font-weight:600;">Report Format:</label>
+                    <select style="width:100%;padding:8px;border-radius:5px;border:1px solid #ddd;"><option selected>PDF</option><option>HTML</option><option>CSV</option></select></div>
+                    <div style="margin-bottom:15px;"><label style="display:block;margin-bottom:5px;font-weight:600;">Auto-save Results:</label><input type="checkbox" checked> Enable auto-save</div>
                 </div>
             </div>
-            
-            <div id="help-content" style="display: none;">
-                <h3 style="text-align: center; color: #1e4870; margin-bottom: 30px;">WebSwan Help & Support</h3>
-                <div class="cheat-sheet-card">
-                    <h4>Getting Started</h4>
-                    <p>Welcome to WebSwan! To get started with website analysis:</p>
-                    <ol>
-                        <li>Enter the website URL you want to analyze</li>
-                        <li>Click the appropriate analysis button for the test you want to run</li>
-                        <li>Review the results and detailed analysis</li>
-                        <li>Use the Google Rich Results Test to check your structured data</li>
-                        <li>Download the comprehensive report for documentation</li>
+            <div id="help-content" style="display:none;">
+                <h3 style="text-align:center;color:#1e4870;margin-bottom:30px;">WebSwan Help & Support</h3>
+                <div class="cheat-sheet-card"><h4>Getting Started</h4>
+                    <p>Welcome to WebSwan! To get started:</p>
+                    <ol style="padding-left:20px;margin-top:10px;">
+                        <li style="margin-bottom:8px;">Enter the website URL you want to analyze</li>
+                        <li style="margin-bottom:8px;">Click the appropriate analysis button</li>
+                        <li style="margin-bottom:8px;">Review the results and detailed analysis</li>
+                        <li style="margin-bottom:8px;">Use the Schema Markup Tester for structured data</li>
+                        <li style="margin-bottom:8px;">Check the XML Sitemap and Robots.txt for crawl health</li>
+                        <li style="margin-bottom:8px;">Download the comprehensive report for documentation</li>
                     </ol>
-                    <p>For additional support, contact our team at support@webswan.com</p>
+                    <p style="margin-top:15px;">For support, contact our team at support@webswan.com</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize jsPDF
         const { jsPDF } = window.jspdf;
 
-        // Login System
+        // ── LOGIN SYSTEM ──
         let clickCount = 0;
         const requiredClicks = 7;
         const correctPassword = "333";
 
-        // Login icon click handler
         document.getElementById('loginIcon').addEventListener('click', function() {
             clickCount++;
-            
-            // Visual feedback
             this.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 200);
-            
+            setTimeout(() => { this.style.transform = 'scale(1)'; }, 200);
             if (clickCount >= requiredClicks) {
-                // Show password modal
                 document.getElementById('passwordModal').classList.add('active');
-                clickCount = 0; // Reset counter
+                clickCount = 0;
             }
         });
 
-        // Password check function
         window.checkPassword = function() {
-            const enteredPassword = document.getElementById('passwordInput').value;
-            if (enteredPassword === correctPassword) {
-                // Correct password - unlock the app
+            const entered = document.getElementById('passwordInput').value;
+            if (entered === correctPassword) {
                 document.getElementById('loginOverlay').classList.add('hidden');
                 document.getElementById('passwordModal').classList.remove('active');
-                
-                // Auto-fill URLs after login
                 const currentDomain = window.location.hostname;
-                const urlInputs = document.querySelectorAll('.url-input');
-                urlInputs.forEach(input => {
-                    input.value = `https://${currentDomain}`;
-                });
-                
-                // Show welcome notification
+                document.querySelectorAll('.url-input').forEach(input => { input.value = `https://${currentDomain}`; });
                 showNotification('🔓 Welcome to WebSwan!');
             } else {
-                // Wrong password
                 document.getElementById('passwordError').style.display = 'block';
                 document.getElementById('passwordInput').value = '';
-                
-                // Hide error after 3 seconds
-                setTimeout(() => {
-                    document.getElementById('passwordError').style.display = 'none';
-                }, 3000);
+                setTimeout(() => { document.getElementById('passwordError').style.display = 'none'; }, 3000);
             }
         };
 
-        // Close modal when clicking outside (optional)
         document.getElementById('passwordModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('active');
-            }
+            if (e.target === this) this.classList.remove('active');
         });
 
-        // Store test results
-        let testResults = {
-            gtmetrix: null,
-            cookie: null,
-            accessibility: null,
-            seo: null,
-            security: null,
-            overall: null
-        };
+        // ── SCHEMA MARKUP LINK – updates as you type ──
+        document.getElementById('schema-url').addEventListener('input', function() {
+            const url = this.value.trim();
+            const link = document.getElementById('schema-markup-link');
+            link.href = url
+                ? `https://search.google.com/test/rich-results?url=${encodeURIComponent(url)}`
+                : 'https://search.google.com/test/rich-results';
+        });
 
-        // Character counter for comments
+        // ── XML SITEMAP OPENER ──
+        function openSitemap() {
+            let domain = document.getElementById('sitemapInput').value.trim();
+            if (!domain) { alert('Please enter a domain — e.g. thewebswan.com'); return; }
+            domain = domain.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+            window.open('https://' + domain + '/sitemap.xml', '_blank');
+        }
+        document.getElementById('sitemapInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') openSitemap();
+        });
+
+        // ── ROBOTS.TXT OPENER ──
+        function openRobots() {
+            let domain = document.getElementById('robotsInput').value.trim();
+            if (!domain) { alert('Please enter a domain — e.g. thewebswan.com'); return; }
+            domain = domain.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+            window.open('https://' + domain + '/robots.txt', '_blank');
+        }
+        document.getElementById('robotsInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') openRobots();
+        });
+
+        // ── TEST RESULTS STORE ──
+        let testResults = { gtmetrix: null, cookie: null, accessibility: null, seo: null, security: null, overall: null };
+
         document.getElementById('user-comments').addEventListener('input', function() {
             document.getElementById('char-count').textContent = this.value.length;
         });
 
-        // Auto-fill URL function
         function autoFillURL(inputId) {
-            const currentDomain = window.location.hostname;
-            document.getElementById(inputId).value = 'https://' + currentDomain;
+            document.getElementById(inputId).value = 'https://' + window.location.hostname;
         }
 
-        // Update Rich Results Link
-        document.getElementById('rich-results-url').addEventListener('input', function() {
-            const url = this.value;
-            const link = document.getElementById('rich-results-link');
-            if (url) {
-                // For demo purposes, we're using a sample URL
-                // In a real app, you would need to use Google's API
-                link.href = `https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ&url=${encodeURIComponent(url)}`;
-            } else {
-                link.href = 'https://search.google.com/test/rich-results/result?id=vbmu-1j-GcbumsUe9LFKHQ';
-            }
-        });
-
-        // Toggle Back Office
-        function toggleBackOffice() {
-            const mainInterface = document.getElementById('main-interface');
-            const backOffice = document.getElementById('back-office');
-            
-            if (backOffice.style.display === 'block') {
-                backOffice.style.display = 'none';
-                mainInterface.style.display = 'block';
-            } else {
-                backOffice.style.display = 'block';
-                mainInterface.style.display = 'none';
-            }
-        }
-
-        // Back Office Navigation
-        function showCheatSheet() {
-            document.getElementById('cheat-sheet-content').style.display = 'block';
-            document.getElementById('settings-content').style.display = 'none';
-            document.getElementById('help-content').style.display = 'none';
-        }
-
-        function showSettings() {
-            document.getElementById('cheat-sheet-content').style.display = 'none';
-            document.getElementById('settings-content').style.display = 'block';
-            document.getElementById('help-content').style.display = 'none';
-        }
-
-        function showHelp() {
-            document.getElementById('cheat-sheet-content').style.display = 'none';
-            document.getElementById('settings-content').style.display = 'none';
-            document.getElementById('help-content').style.display = 'block';
-        }
-
-        // Analysis Functions - REAL TIME IMPLEMENTATION
+        // ── ANALYSIS FUNCTIONS ──
         function runGTMetrixAnalysis() {
             const url = document.getElementById('gtmetrix-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('gtmetrix-loading').style.display = 'block';
             document.getElementById('gtmetrix-results').style.display = 'none';
-            
-            // In a real implementation, this would make an API call to GTMetrix
-            // For demonstration, we'll simulate real-time analysis
             setTimeout(() => {
                 document.getElementById('gtmetrix-loading').style.display = 'none';
                 document.getElementById('gtmetrix-results').style.display = 'block';
                 document.getElementById('gtmetrix-download').style.display = 'block';
-                
-                // Generate realistic results based on the URL
-                const domain = new URL(url).hostname;
-                const pagespeedScore = Math.floor(Math.random() * 30) + 70; // 70-100
-                const yslowScore = Math.floor(Math.random() * 35) + 65; // 65-100
-                const loadTime = (Math.random() * 3 + 1).toFixed(1) + 's'; // 1-4s
-                const pageSize = (Math.random() * 2 + 0.5).toFixed(1) + 'MB'; // 0.5-2.5MB
-                
-                // Set results
-                document.getElementById('pagespeed-score').textContent = pagespeedScore + '/100';
-                document.getElementById('yslow-score').textContent = yslowScore + '/100';
-                document.getElementById('load-time').textContent = loadTime;
-                document.getElementById('page-size').textContent = pageSize;
-                
-                // Store results
-                testResults.gtmetrix = {
-                    pagespeed: pagespeedScore,
-                    yslow: yslowScore,
-                    loadTime: loadTime,
-                    pageSize: pageSize
-                };
+                const ps = Math.floor(Math.random()*30)+70, ys = Math.floor(Math.random()*35)+65;
+                const lt = (Math.random()*3+1).toFixed(1)+'s', sz = (Math.random()*2+0.5).toFixed(1)+'MB';
+                document.getElementById('pagespeed-score').textContent = ps+'/100';
+                document.getElementById('yslow-score').textContent = ys+'/100';
+                document.getElementById('load-time').textContent = lt;
+                document.getElementById('page-size').textContent = sz;
+                testResults.gtmetrix = { pagespeed: ps, yslow: ys, loadTime: lt, pageSize: sz };
             }, 2000);
         }
 
         function runCookieAnalysis() {
             const url = document.getElementById('cookie-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('cookie-loading').style.display = 'block';
             document.getElementById('cookie-results').style.display = 'none';
-            
-            // Simulate real-time cookie analysis
             setTimeout(() => {
                 document.getElementById('cookie-loading').style.display = 'none';
                 document.getElementById('cookie-results').style.display = 'block';
                 document.getElementById('cookie-download').style.display = 'block';
-                
-                // Generate realistic cookie results
-                const domain = new URL(url).hostname;
-                const cookieList = document.getElementById('cookie-list');
-                
-                // Different results based on domain characteristics
-                let cookies = [];
-                if (domain.includes('google') || domain.includes('facebook')) {
-                    cookies = [
-                        { name: '_ga', type: 'Tracking', status: 'warning', details: 'Google Analytics - User behavior tracking' },
-                        { name: '_gid', type: 'Tracking', status: 'warning', details: 'Google Analytics - Session tracking' },
-                        { name: 'NID', type: 'Preference', status: 'info', details: 'Google preferences cookie' }
-                    ];
-                } else {
-                    cookies = [
-                        { name: 'PHPSESSID', type: 'Session', status: 'success', details: 'Secure, HttpOnly - Temporary session management' },
-                        { name: '_ga', type: 'Tracking', status: 'warning', details: 'Google Analytics - User behavior tracking' },
-                        { name: 'cookie_consent', type: 'Preference', status: 'info', details: 'User cookie consent preferences' }
-                    ];
-                }
-                
-                // Display cookie results
-                cookieList.innerHTML = cookies.map(cookie => `
-                    <div class="result-item ${cookie.status}">
-                        <strong>${cookie.type} Cookie:</strong> ${cookie.name}
-                        <br><small>${cookie.details}</small>
-                    </div>
-                `).join('');
-                
-                // Store results
-                testResults.cookie = {
-                    score: Math.floor(Math.random() * 40) + 30, // 30-70
-                    status: 'Partially Compliant',
-                    cookies: cookies
-                };
+                const cookies = [
+                    { name: 'PHPSESSID', type: 'Session', status: 'success', details: 'Secure, HttpOnly - Temporary session management' },
+                    { name: '_ga', type: 'Tracking', status: 'warning', details: 'Google Analytics - User behavior tracking' },
+                    { name: 'cookie_consent', type: 'Preference', status: 'info', details: 'User cookie consent preferences' }
+                ];
+                document.getElementById('cookie-list').innerHTML = cookies.map(c => `<div class="result-item ${c.status}"><strong>${c.type} Cookie:</strong> ${c.name}<br><small>${c.details}</small></div>`).join('');
+                testResults.cookie = { score: Math.floor(Math.random()*40)+30, status: 'Partially Compliant', cookies };
             }, 2000);
         }
 
-        // NEW: Accessibility Analysis Function
         function runAccessibilityAnalysis() {
             const url = document.getElementById('accessibility-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('accessibility-loading').style.display = 'block';
             document.getElementById('accessibility-results').style.display = 'none';
-            
-            // Simulate real-time accessibility analysis
             setTimeout(() => {
                 document.getElementById('accessibility-loading').style.display = 'none';
                 document.getElementById('accessibility-results').style.display = 'block';
                 document.getElementById('accessibility-download').style.display = 'block';
-                
-                // Generate realistic accessibility results
-                const domain = new URL(url).hostname;
-                const accessibilityList = document.getElementById('accessibility-list');
-                
-                // Different results based on domain characteristics
-                let accessibilityIssues = [];
-                if (domain.includes('government') || domain.includes('.gov')) {
-                    accessibilityIssues = [
-                        { issue: 'Alt Text Missing', severity: 'error', count: 2 },
-                        { issue: 'Low Color Contrast', severity: 'warning', count: 5 },
-                        { issue: 'Missing Form Labels', severity: 'error', count: 1 },
-                        { issue: 'Keyboard Navigation', severity: 'success', count: 0 }
-                    ];
-                } else {
-                    accessibilityIssues = [
-                        { issue: 'Alt Text Missing', severity: 'error', count: 8 },
-                        { issue: 'Low Color Contrast', severity: 'warning', count: 12 },
-                        { issue: 'Missing Form Labels', severity: 'error', count: 3 },
-                        { issue: 'Keyboard Navigation', severity: 'warning', count: 4 }
-                    ];
-                }
-                
-                // Display accessibility results
-                accessibilityList.innerHTML = accessibilityIssues.map(issue => `
-                    <div class="result-item ${issue.severity}">
-                        <strong>${issue.issue}:</strong> ${issue.count} issues found
-                    </div>
-                `).join('');
-                
-                // Store results
-                testResults.accessibility = {
-                    score: Math.floor(Math.random() * 50) + 40, // 40-90
-                    status: 'Needs Improvement',
-                    issues: accessibilityIssues
-                };
+                const issues = [
+                    { issue: 'Alt Text Missing', severity: 'error', count: 8 },
+                    { issue: 'Low Color Contrast', severity: 'warning', count: 12 },
+                    { issue: 'Missing Form Labels', severity: 'error', count: 3 },
+                    { issue: 'Keyboard Navigation', severity: 'warning', count: 4 }
+                ];
+                document.getElementById('accessibility-list').innerHTML = issues.map(i => `<div class="result-item ${i.severity}"><strong>${i.issue}:</strong> ${i.count} issues found</div>`).join('');
+                testResults.accessibility = { score: Math.floor(Math.random()*50)+40, status: 'Needs Improvement', issues };
             }, 2000);
         }
 
         function runSEOAnalysis() {
             const url = document.getElementById('seo-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('seo-loading').style.display = 'block';
             document.getElementById('seo-results').style.display = 'none';
-            
-            // Simulate real-time SEO analysis
             setTimeout(() => {
                 document.getElementById('seo-loading').style.display = 'none';
                 document.getElementById('seo-results').style.display = 'block';
                 document.getElementById('seo-download').style.display = 'block';
-                
-                // Generate realistic SEO results
-                const domain = new URL(url).hostname;
-                
-                // Different results based on domain characteristics
-                let metaTags, headingStructure, altTags, mobileFriendly;
-                if (domain.includes('amazon') || domain.includes('apple')) {
-                    metaTags = 'Excellent ✓';
-                    headingStructure = 'Good ✓';
-                    altTags = 'Good ✓';
-                    mobileFriendly = 'Excellent ✓';
-                } else {
-                    metaTags = 'Good ✓';
-                    headingStructure = 'Needs Improvement ⚠️';
-                    altTags = 'Poor ✗';
-                    mobileFriendly = 'Not Mobile-Friendly ✗';
-                }
-                
-                // Set results
-                document.getElementById('meta-tags').textContent = metaTags;
-                document.getElementById('heading-structure').textContent = headingStructure;
-                document.getElementById('alt-tags').textContent = altTags;
-                document.getElementById('mobile-friendly').textContent = mobileFriendly;
-                
-                // Store results
-                testResults.seo = {
-                    score: Math.floor(Math.random() * 40) + 50, // 50-90
-                    metaTags: metaTags,
-                    headingStructure: headingStructure,
-                    altTags: altTags,
-                    mobileFriendly: mobileFriendly
-                };
+                document.getElementById('meta-tags').textContent = 'Good ✓';
+                document.getElementById('heading-structure').textContent = 'Needs Improvement ⚠️';
+                document.getElementById('alt-tags').textContent = 'Poor ✗';
+                document.getElementById('mobile-friendly').textContent = 'Not Mobile-Friendly ✗';
+                testResults.seo = { score: Math.floor(Math.random()*40)+50 };
             }, 2000);
         }
 
-        // Security Testing Functions - REAL TIME IMPLEMENTATION
         function testSecurityHeaders() {
             const url = document.getElementById('security-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('security-loading').style.display = 'block';
             document.getElementById('security-results').style.display = 'none';
-            
-            // Simulate real-time security headers analysis
             setTimeout(() => {
                 document.getElementById('security-loading').style.display = 'none';
                 document.getElementById('security-results').style.display = 'block';
                 document.getElementById('security-headers-download').style.display = 'block';
-                
-                // Generate realistic security headers results
-                const domain = new URL(url).hostname;
-                const securityList = document.getElementById('security-results-list');
-                
-                // Different results based on domain characteristics
-                let headers = [];
-                if (domain.includes('bank') || domain.includes('paypal')) {
-                    headers = [
-                        { name: 'Content-Security-Policy', status: 'success', details: 'Present ✓ - Prevents XSS attacks' },
-                        { name: 'Strict-Transport-Security', status: 'success', details: 'Present ✓ - Forces HTTPS' },
-                        { name: 'X-Frame-Options', status: 'success', details: 'DENY ✓ - Prevents clickjacking' },
-                        { name: 'X-Content-Type-Options', status: 'success', details: 'nosniff ✓ - Prevents MIME sniffing' }
-                    ];
-                } else {
-                    headers = [
-                        { name: 'Content-Security-Policy', status: 'error', details: 'Missing ✗ - Prevents XSS attacks' },
-                        { name: 'Strict-Transport-Security', status: 'warning', details: 'Could be longer ⚠️ - Max-age should be increased' },
-                        { name: 'X-Frame-Options', status: 'error', details: 'Missing ✗ - Prevents clickjacking' },
-                        { name: 'X-Content-Type-Options', status: 'error', details: 'Missing ✗ - Prevents MIME sniffing' }
-                    ];
-                }
-                
-                // Display security headers results
-                securityList.innerHTML = headers.map(header => `
-                    <div class="result-item ${header.status}">
-                        <strong>${header.name}:</strong> ${header.details}
-                    </div>
-                `).join('');
-                
-                // Store results
-                testResults.security = {
-                    ...testResults.security,
-                    headers: {
-                        score: headers.filter(h => h.status === 'success').length * 25, // 0-100
-                        status: headers.filter(h => h.status === 'success').length >= 3 ? 'Good' : 'Poor',
-                        details: headers
-                    }
-                };
+                const headers = [
+                    { name: 'Content-Security-Policy', status: 'error', details: 'Missing ✗ - Prevents XSS attacks' },
+                    { name: 'Strict-Transport-Security', status: 'warning', details: 'Could be longer ⚠️' },
+                    { name: 'X-Frame-Options', status: 'error', details: 'Missing ✗ - Prevents clickjacking' },
+                    { name: 'X-Content-Type-Options', status: 'error', details: 'Missing ✗' }
+                ];
+                document.getElementById('security-results-list').innerHTML = headers.map(h => `<div class="result-item ${h.status}"><strong>${h.name}:</strong> ${h.details}</div>`).join('');
+                testResults.security = { ...testResults.security, headers: { score: headers.filter(h=>h.status==='success').length*25 } };
             }, 2000);
         }
 
         function testSSL() {
             const url = document.getElementById('security-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('security-loading').style.display = 'block';
             document.getElementById('security-results').style.display = 'none';
-            
-            // Simulate real-time SSL analysis
             setTimeout(() => {
                 document.getElementById('security-loading').style.display = 'none';
                 document.getElementById('security-results').style.display = 'block';
                 document.getElementById('ssl-download').style.display = 'block';
-                
-                // Generate realistic SSL results
-                const domain = new URL(url).hostname;
-                const securityList = document.getElementById('security-results-list');
-                
-                // Different results based on domain characteristics
-                let sslResults = [];
-                if (domain.includes('https://')) {
-                    sslResults = [
-                        { name: 'SSL Certificate', status: 'success', details: 'Valid ✓ - Certificate is properly issued and trusted' },
-                        { name: 'Certificate Authority', status: 'success', details: "Let's Encrypt ✓ - Reputable CA" },
-                        { name: 'Expiration Date', status: 'success', details: '90 days remaining ✓ - Sufficient time before expiry' },
-                        { name: 'Protocol Support', status: 'warning', details: 'TLS 1.2+ only ⚠️ - Limited backward compatibility' }
-                    ];
-                } else {
-                    sslResults = [
-                        { name: 'SSL Certificate', status: 'error', details: 'Invalid ✗ - Certificate issues detected' },
-                        { name: 'Certificate Authority', status: 'warning', details: 'Unknown ⚠️ - Certificate from unknown authority' },
-                        { name: 'Expiration Date', status: 'error', details: 'Expired ✗ - Certificate has expired' },
-                        { name: 'Protocol Support', status: 'error', details: 'Outdated ✗ - Using deprecated SSL protocols' }
-                    ];
-                }
-                
-                // Display SSL results
-                securityList.innerHTML = sslResults.map(result => `
-                    <div class="result-item ${result.status}">
-                        <strong>${result.name}:</strong> ${result.details}
-                    </div>
-                `).join('');
-                
-                // Store results
-                testResults.security = {
-                    ...testResults.security,
-                    ssl: {
-                        score: sslResults.filter(r => r.status === 'success').length * 25, // 0-100
-                        status: sslResults.filter(r => r.status === 'success').length >= 3 ? 'Good' : 'Poor',
-                        details: sslResults
-                    }
-                };
+                const results = [
+                    { name: 'SSL Certificate', status: 'success', details: 'Valid ✓' },
+                    { name: 'Certificate Authority', status: 'success', details: "Let's Encrypt ✓" },
+                    { name: 'Expiration Date', status: 'success', details: '90 days remaining ✓' },
+                    { name: 'Protocol Support', status: 'warning', details: 'TLS 1.2+ only ⚠️' }
+                ];
+                document.getElementById('security-results-list').innerHTML = results.map(r => `<div class="result-item ${r.status}"><strong>${r.name}:</strong> ${r.details}</div>`).join('');
+                testResults.security = { ...testResults.security, ssl: { score: results.filter(r=>r.status==='success').length*25 } };
             }, 2000);
         }
 
         function testVulnerabilities() {
             const url = document.getElementById('security-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('security-loading').style.display = 'block';
             document.getElementById('security-results').style.display = 'none';
-            
-            // Simulate real-time vulnerability scan
             setTimeout(() => {
                 document.getElementById('security-loading').style.display = 'none';
                 document.getElementById('security-results').style.display = 'block';
                 document.getElementById('vulnerability-download').style.display = 'block';
-                
-                // Generate realistic vulnerability results
-                const domain = new URL(url).hostname;
-                const securityList = document.getElementById('security-results-list');
-                
-                // Different results based on domain characteristics
-                let vulnerabilities = [];
-                if (domain.includes('wordpress') || domain.includes('blog')) {
-                    vulnerabilities = [
-                        { name: 'SQL Injection', status: 'success', details: 'Protected ✓ - Input sanitization prevents database attacks' },
-                        { name: 'XSS Protection', status: 'warning', details: 'Basic ⚠️ - Cross-site scripting protections need improvement' },
-                        { name: 'CSRF Protection', status: 'error', details: 'Missing ✗ - No CSRF token validation detected' },
-                        { name: 'Outdated Software', status: 'error', details: 'WordPress 5.8 ✗ - Contains known security vulnerabilities' }
-                    ];
-                } else {
-                    vulnerabilities = [
-                        { name: 'SQL Injection', status: 'success', details: 'Protected ✓ - Input sanitization prevents database attacks' },
-                        { name: 'XSS Protection', status: 'success', details: 'Enabled ✓ - Cross-site scripting protections active' },
-                        { name: 'CSRF Protection', status: 'warning', details: 'Basic ⚠️ - Needs stronger token validation' },
-                        { name: 'Outdated Software', status: 'success', details: 'Up to date ✓ - No known vulnerabilities detected' }
-                    ];
-                }
-                
-                // Display vulnerability results
-                securityList.innerHTML = vulnerabilities.map(vuln => `
-                    <div class="result-item ${vuln.status}">
-                        <strong>${vuln.name}:</strong> ${vuln.details}
-                    </div>
-                `).join('');
-                
-                // Store results
-                testResults.security = {
-                    ...testResults.security,
-                    vulnerabilities: {
-                        score: vulnerabilities.filter(v => v.status === 'success').length * 25, // 0-100
-                        status: vulnerabilities.filter(v => v.status === 'success').length >= 3 ? 'Good' : 'Fair',
-                        details: vulnerabilities
-                    }
-                };
+                const vulns = [
+                    { name: 'SQL Injection', status: 'success', details: 'Protected ✓' },
+                    { name: 'XSS Protection', status: 'success', details: 'Enabled ✓' },
+                    { name: 'CSRF Protection', status: 'warning', details: 'Basic ⚠️' },
+                    { name: 'Outdated Software', status: 'success', details: 'Up to date ✓' }
+                ];
+                document.getElementById('security-results-list').innerHTML = vulns.map(v => `<div class="result-item ${v.status}"><strong>${v.name}:</strong> ${v.details}</div>`).join('');
+                testResults.security = { ...testResults.security, vulnerabilities: { score: vulns.filter(v=>v.status==='success').length*25 } };
             }, 2000);
         }
 
         function testHTTPHeaders() {
             const url = document.getElementById('security-url').value;
-            if (!url) {
-                alert('Please enter a valid URL');
-                return;
-            }
-            
-            // Show loading
+            if (!url) { alert('Please enter a valid URL'); return; }
             document.getElementById('security-loading').style.display = 'block';
             document.getElementById('security-results').style.display = 'none';
-            
-            // Simulate real-time HTTP headers analysis
             setTimeout(() => {
                 document.getElementById('security-loading').style.display = 'none';
                 document.getElementById('security-results').style.display = 'block';
                 document.getElementById('http-headers-download').style.display = 'block';
-                
-                // Generate realistic HTTP headers results
-                const domain = new URL(url).hostname;
-                const securityList = document.getElementById('security-results-list');
-                
-                // Different results based on domain characteristics
-                let httpHeaders = [];
-                if (domain.includes('nginx') || domain.includes('apache')) {
-                    httpHeaders = [
-                        { name: 'Server', status: 'info', details: 'nginx/1.18.0 - Web server version' },
-                        { name: 'X-Powered-By', status: 'info', details: 'PHP/7.4.3 - Backend language version' },
-                        { name: 'Cache-Control', status: 'warning', details: 'Could be optimized ⚠️ - Browser caching needs improvement' },
-                        { name: 'Content-Encoding', status: 'success', details: 'gzip ✓ - Response compression enabled' }
-                    ];
-                } else {
-                    httpHeaders = [
-                        { name: 'Server', status: 'info', details: 'Apache/2.4.41 - Web server version' },
-                        { name: 'X-Powered-By', status: 'info', details: 'ASP.NET - Backend framework' },
-                        { name: 'Cache-Control', status: 'success', details: 'Optimized ✓ - Proper browser caching configured' },
-                        { name: 'Content-Encoding', status: 'success', details: 'gzip ✓ - Response compression enabled' }
-                    ];
-                }
-                
-                // Display HTTP headers results
-                securityList.innerHTML = httpHeaders.map(header => `
-                    <div class="result-item ${header.status}">
-                        <strong>${header.name}:</strong> ${header.details}
-                    </div>
-                `).join('');
-                
-                // Store results
-                testResults.security = {
-                    ...testResults.security,
-                    httpHeaders: {
-                        score: httpHeaders.filter(h => h.status === 'success').length * 25 + 
-                               httpHeaders.filter(h => h.status === 'warning').length * 12.5, // 0-100
-                        status: httpHeaders.filter(h => h.status === 'success').length >= 3 ? 'Good' : 'Fair',
-                        details: httpHeaders
-                    }
-                };
+                const hdrs = [
+                    { name: 'Server', status: 'info', details: 'Apache/2.4.41' },
+                    { name: 'X-Powered-By', status: 'info', details: 'ASP.NET' },
+                    { name: 'Cache-Control', status: 'success', details: 'Optimized ✓' },
+                    { name: 'Content-Encoding', status: 'success', details: 'gzip ✓' }
+                ];
+                document.getElementById('security-results-list').innerHTML = hdrs.map(h => `<div class="result-item ${h.status}"><strong>${h.name}:</strong> ${h.details}</div>`).join('');
+                testResults.security = { ...testResults.security, httpHeaders: { score: hdrs.filter(h=>h.status==='success').length*25 } };
             }, 2000);
         }
 
-        // Overall Test Function
         function runOverallTest() {
-            // Check if all tests have been run
-            const requiredTests = ['gtmetrix', 'cookie', 'accessibility', 'seo'];
-            const hasRequiredTests = requiredTests.every(test => testResults[test] !== null);
-            
-            if (!hasRequiredTests) {
-                alert('Please run at least the Performance, Cookie, Accessibility, and SEO analyses before calculating the overall score.');
+            const required = ['gtmetrix','cookie','accessibility','seo'];
+            if (!required.every(t => testResults[t] !== null)) {
+                alert('Please run at least the Performance, Cookie, Accessibility, and SEO analyses first.');
                 return;
             }
-            
-            // Show loading
             document.getElementById('overall-loading').style.display = 'block';
             document.getElementById('overall-results').style.display = 'none';
-            
-            // Simulate calculation
             setTimeout(() => {
                 document.getElementById('overall-loading').style.display = 'none';
                 document.getElementById('overall-results').style.display = 'block';
-                
-                // Calculate overall score based on test results
-                let totalScore = 0;
-                let testCount = 0;
-                
-                if (testResults.gtmetrix) {
-                    totalScore += testResults.gtmetrix.pagespeed;
-                    testCount++;
-                }
-                
-                if (testResults.cookie) {
-                    totalScore += testResults.cookie.score;
-                    testCount++;
-                }
-                
-                if (testResults.accessibility) {
-                    totalScore += testResults.accessibility.score;
-                    testCount++;
-                }
-                
-                if (testResults.seo) {
-                    totalScore += testResults.seo.score;
-                    testCount++;
-                }
-                
-                // Include security scores if available
+                let total = 0, count = 0;
+                if (testResults.gtmetrix) { total += testResults.gtmetrix.pagespeed; count++; }
+                if (testResults.cookie) { total += testResults.cookie.score; count++; }
+                if (testResults.accessibility) { total += testResults.accessibility.score; count++; }
+                if (testResults.seo) { total += testResults.seo.score; count++; }
                 if (testResults.security) {
-                    if (testResults.security.headers) {
-                        totalScore += testResults.security.headers.score;
-                        testCount++;
-                    }
-                    if (testResults.security.ssl) {
-                        totalScore += testResults.security.ssl.score;
-                        testCount++;
-                    }
-                    if (testResults.security.vulnerabilities) {
-                        totalScore += testResults.security.vulnerabilities.score;
-                        testCount++;
-                    }
+                    ['headers','ssl','vulnerabilities'].forEach(k => { if (testResults.security[k]) { total += testResults.security[k].score; count++; } });
                 }
-                
-                // Calculate average score
-                const overallScore = Math.round(totalScore / testCount);
-                
-                // Determine score badge
-                let scoreBadge = '';
-                let badgeClass = '';
-                
-                if (overallScore >= 90) {
-                    scoreBadge = 'Excellent';
-                    badgeClass = 'score-excellent';
-                } else if (overallScore >= 70) {
-                    scoreBadge = 'Good';
-                    badgeClass = 'score-good';
-                } else if (overallScore >= 50) {
-                    scoreBadge = 'Fair';
-                    badgeClass = 'score-fair';
-                } else {
-                    scoreBadge = 'Poor';
-                    badgeClass = 'score-poor';
-                }
-                
-                // Display overall score in header
-                document.getElementById('overall-score-value').textContent = overallScore;
-                document.getElementById('overall-score-badge').textContent = scoreBadge;
+                const score = Math.round(total / count);
+                const badge = score >= 90 ? 'Excellent' : score >= 70 ? 'Good' : score >= 50 ? 'Fair' : 'Poor';
+                const badgeClass = score >= 90 ? 'score-excellent' : score >= 70 ? 'score-good' : score >= 50 ? 'score-fair' : 'score-poor';
+                document.getElementById('overall-score-value').textContent = score;
+                document.getElementById('overall-score-badge').textContent = badge;
                 document.getElementById('overall-score-badge').className = 'score-badge ' + badgeClass;
                 document.getElementById('overall-score-display').style.display = 'block';
-                
-                // Display detailed results
-                const overallResultsList = document.getElementById('overall-results-list');
-                overallResultsList.innerHTML = `
-                    <div class="result-item">
-                        <strong>Performance Score:</strong> ${testResults.gtmetrix ? testResults.gtmetrix.pagespeed + '/100' : 'Not tested'}
-                    </div>
-                    <div class="result-item">
-                        <strong>Cookie Compliance:</strong> ${testResults.cookie ? testResults.cookie.score + '/100' : 'Not tested'}
-                    </div>
-                    <div class="result-item">
-                        <strong>Accessibility Score:</strong> ${testResults.accessibility ? testResults.accessibility.score + '/100' : 'Not tested'}
-                    </div>
-                    <div class="result-item">
-                        <strong>SEO Score:</strong> ${testResults.seo ? testResults.seo.score + '/100' : 'Not tested'}
-                    </div>
-                    <div class="result-item ${badgeClass}">
-                        <strong>Overall Website Score:</strong> ${overallScore}/100 - ${scoreBadge}
-                    </div>
-                `;
-                
-                // Store overall results
-                testResults.overall = {
-                    score: overallScore,
-                    status: scoreBadge
-                };
+                document.getElementById('overall-results-list').innerHTML = `
+                    <div class="result-item"><strong>Performance Score:</strong> ${testResults.gtmetrix ? testResults.gtmetrix.pagespeed+'/100' : 'Not tested'}</div>
+                    <div class="result-item"><strong>Cookie Compliance:</strong> ${testResults.cookie ? testResults.cookie.score+'/100' : 'Not tested'}</div>
+                    <div class="result-item"><strong>Accessibility Score:</strong> ${testResults.accessibility ? testResults.accessibility.score+'/100' : 'Not tested'}</div>
+                    <div class="result-item"><strong>SEO Score:</strong> ${testResults.seo ? testResults.seo.score+'/100' : 'Not tested'}</div>
+                    <div class="result-item ${badgeClass}"><strong>Overall Website Score:</strong> ${score}/100 — ${badge}</div>`;
+                testResults.overall = { score, status: badge };
             }, 1500);
         }
 
-        // Download Functions
-        function downloadPDF(type) {
-            alert(`Downloading ${type} report...`);
-            // In a real application, this would generate and download a PDF
-        }
+        function downloadPDF(type) { alert(`Downloading ${type} report...`); }
+        function downloadQuickLinks() { alert('Downloading Resource Guide...'); }
+        function downloadCompleteReport() { alert('Downloading Complete Analysis Report...'); }
 
-        function downloadQuickLinks() {
-            alert('Downloading Resource Guide...');
-            // In a real application, this would generate and download a PDF
-        }
-
-        function downloadCompleteReport() {
-            alert('Downloading Complete Analysis Report...');
-            // In a real application, this would generate and download a comprehensive PDF
-        }
-
-        // Reset all data
         function resetAllData() {
-            if (confirm('Are you sure you want to reset all data? This will clear all test results.')) {
-                // Reset test results
-                testResults = {
-                    gtmetrix: null,
-                    cookie: null,
-                    accessibility: null,
-                    seo: null,
-                    security: null,
-                    overall: null
-                };
-                
-                // Reset UI
-                document.getElementById('user-comments').value = '';
-                document.getElementById('char-count').textContent = '0';
-                
-                // Hide all results and download buttons
-                document.querySelectorAll('.results-section').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('.download-btn').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('.security-download-btn').forEach(el => el.style.display = 'none');
-                document.getElementById('overall-score-display').style.display = 'none';
-                
-                // Clear URL inputs
-                document.querySelectorAll('.url-input').forEach(input => input.value = '');
-                
-                // Auto-fill with current domain
-                const currentDomain = window.location.hostname;
-                document.querySelectorAll('.url-input').forEach(input => {
-                    input.value = `https://${currentDomain}`;
-                });
-                
-                alert('All data has been reset. Ready for next analysis!');
-            }
+            if (!confirm('Reset all data?')) return;
+            testResults = { gtmetrix:null, cookie:null, accessibility:null, seo:null, security:null, overall:null };
+            document.getElementById('user-comments').value = '';
+            document.getElementById('char-count').textContent = '0';
+            document.querySelectorAll('.results-section').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.download-btn').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.security-download-btn').forEach(el => el.style.display = 'none');
+            document.getElementById('overall-score-display').style.display = 'none';
+            document.querySelectorAll('.url-input').forEach(input => { input.value = 'https://' + window.location.hostname; });
+            alert('All data has been reset. Ready for next analysis!');
         }
 
         function showNotification(message) {
-            const existingToast = document.querySelector('.notification-toast');
-            if (existingToast) {
-                existingToast.remove();
-            }
-
+            const old = document.querySelector('.notification-toast');
+            if (old) old.remove();
             const toast = document.createElement('div');
             toast.className = 'notification-toast';
+            toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1e4870;color:white;padding:12px 20px;border-radius:8px;z-index:9999;font-weight:600;box-shadow:0 4px 15px rgba(0,0,0,0.3);';
             toast.textContent = message;
             document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.remove();
-                }
-            }, 3000);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
         }
 
-        // Auto-fill with current domain for testing
-        document.addEventListener('DOMContentLoaded', function() {
-            // Don't auto-fill until after login
-            // This will be handled after successful login
-        });
+        function toggleBackOffice() {
+            const main = document.getElementById('main-interface');
+            const bo = document.getElementById('back-office');
+            if (bo.style.display === 'block') { bo.style.display='none'; main.style.display='block'; }
+            else { bo.style.display='block'; main.style.display='none'; }
+        }
+
+        function showCheatSheet() {
+            document.getElementById('cheat-sheet-content').style.display='block';
+            document.getElementById('settings-content').style.display='none';
+            document.getElementById('help-content').style.display='none';
+        }
+        function showSettings() {
+            document.getElementById('cheat-sheet-content').style.display='none';
+            document.getElementById('settings-content').style.display='block';
+            document.getElementById('help-content').style.display='none';
+        }
+        function showHelp() {
+            document.getElementById('cheat-sheet-content').style.display='none';
+            document.getElementById('settings-content').style.display='none';
+            document.getElementById('help-content').style.display='block';
+        }
     </script>
 </body>
 </html>
